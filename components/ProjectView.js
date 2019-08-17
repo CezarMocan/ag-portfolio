@@ -11,38 +11,55 @@ const URLs = [ '/static/images/hr1.jpg',
 
 class ProjectView extends React.Component {
     state = {
-        images: [], 
-        nextWidth: 100 + 200 * Math.random(),
-        nextRotation: Math.random() * (Math.PI / 8) - Math.PI / 16,
+        images: [],
     }
-    onMouseMove = (e) => {
-        if (this._mT) {
-            this._mT.style.left = `${e.clientX}px`
-            this._mT.style.top = `${e.clientY}px`
-            this._mT.style.width = `${this.state.nextWidth}px`
-            this._mT.style.height = `${1.7 * this.state.nextWidth}px`
-            this._mT.style.transform = `translateX(-50%) translateY(-50%) rotate(${this.toDeg(this.state.nextRotation)})`;
+    constructor(props) {
+        super(props)
+        const width = 100 + 200 * Math.random()
+        this.markerAttributes = {
+            rotation: 0,
+            width,
+            height: 1.7 * width
         }
     }
+    updateMarkerAttributes = ({ x = null, y = null, width = null, height = null, rotation = null, visible = null }) => {
+        if (!this._mT) return
+        if (visible !== null) this._mT.style.visibility = visible ? 'visible' : 'hidden'
+        if (x !== null) this._mT.style.left = `${x}px`
+        if (y !== null) this._mT.style.top = `${y}px`
+        if (width !== null) this._mT.style.width = `${width}px`
+        if (height !== null) this._mT.style.height = `${height}px`
+        if (rotation !== null) this._mT.style.transform = `translateX(-50%) translateY(-50%) rotate(${this.toDeg(rotation)})`;
+    }
+    onMouseMove = (e) => {
+        this.updateMarkerAttributes({
+            x: e.clientX,
+            y: e.clientY,
+            width: this.markerAttributes.width,
+            height: this.markerAttributes.height,
+            rotation: this.markerAttributes.rotation,
+            visible: true
+        })
+    }    
     onMouseDown = (e) => {
-        console.log('pos: ', e.clientX, e.clientY)
         let images = this.state.images.slice(0)
-        const { nextWidth, nextRotation } = this.state
 
         const index = images.length % URLs.length
         images.push({
             x: e.clientX,
             y: e.clientY,
-            w: nextWidth,
+            w: this.markerAttributes.width,
             h: 100,
-            r: nextRotation,
+            r: this.markerAttributes.rotation,
             url: URLs[index]
         })
         this.setState({ 
-            images,
-            nextWidth: 100 + 200 * Math.random(),
-            nextRotation: Math.random() * (Math.PI / 8) - Math.PI / 16,
+            images
         }, () => {
+            this.markerAttributes.width = 100 + 200 * Math.random()
+            this.markerAttributes.height = 1.7 * this.markerAttributes.width
+            // this.markerAttributes.rotation = Math.random() * (Math.PI / 8) - Math.PI / 16
+            this.updateMarkerAttributes({ ...this.markerAttributes })
         })
     }
     toDeg = (r) => {
@@ -50,7 +67,9 @@ class ProjectView extends React.Component {
         return `${parseInt(d)}deg`
     }
     onScroll = (e) => {
-        console.log(e)
+        const angleDelta = e.deltaY / 200
+        this.markerAttributes.rotation += angleDelta
+        this.updateMarkerAttributes({ rotation: this.markerAttributes.rotation })
     }
     render() {
         const { isAboutPageOpen } = this.props
@@ -63,7 +82,7 @@ class ProjectView extends React.Component {
                 onMouseMove={this.onMouseMove}
                 onMouseDown={this.onMouseDown}
                 onMouseUp={this.onMouseUp}
-                onScroll={this.onScroll}           
+                onWheel={this.onScroll}           
             >
                 { images.map((i, index) => {
                     return (
