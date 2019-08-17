@@ -12,26 +12,45 @@ const URLs = [ '/static/images/hr1.jpg',
 class ProjectView extends React.Component {
     state = {
         images: [], 
+        nextWidth: 100 + 200 * Math.random(),
+        nextRotation: Math.random() * (Math.PI / 8) - Math.PI / 16,
     }
     onMouseMove = (e) => {
         if (this._mT) {
-            this._mT.style.left = `${e.clientX}px`;
-            this._mT.style.top = `${e.clientY}px`;
+            this._mT.style.left = `${e.clientX}px`
+            this._mT.style.top = `${e.clientY}px`
+            this._mT.style.width = `${this.state.nextWidth}px`
+            this._mT.style.height = `${1.7 * this.state.nextWidth}px`
+            this._mT.style.transform = `translateX(-50%) translateY(-50%) rotate(${this.toDeg(this.state.nextRotation)})`;
         }
     }
     onMouseDown = (e) => {
         console.log('pos: ', e.clientX, e.clientY)
         let images = this.state.images.slice(0)
+        const { nextWidth, nextRotation } = this.state
 
+        const index = images.length % URLs.length
         images.push({
             x: e.clientX,
             y: e.clientY,
-            w: 100,
+            w: nextWidth,
             h: 100,
-            r: Math.random() * Math.PI - Math.PI / 2,
-            url: URLs[images.length % URLs.length]
+            r: nextRotation,
+            url: URLs[index]
         })
-        this.setState({ images })
+        this.setState({ 
+            images,
+            nextWidth: 100 + 200 * Math.random(),
+            nextRotation: Math.random() * (Math.PI / 8) - Math.PI / 16,
+        }, () => {
+        })
+    }
+    toDeg = (r) => {
+        const d = (r * 180) / Math.PI
+        return `${parseInt(d)}deg`
+    }
+    onScroll = (e) => {
+        console.log(e)
     }
     render() {
         const { isAboutPageOpen } = this.props
@@ -43,7 +62,8 @@ class ProjectView extends React.Component {
             <div className="project-view-container"
                 onMouseMove={this.onMouseMove}
                 onMouseDown={this.onMouseDown}
-                onMouseUp={this.onMouseUp}                
+                onMouseUp={this.onMouseUp}
+                onScroll={this.onScroll}           
             >
                 { images.map((i, index) => {
                     return (
@@ -55,8 +75,8 @@ class ProjectView extends React.Component {
                                 left: `${i.x}px`,
                                 top: `${i.y}px`,
                                 width: `${i.w}px`,
-                                height: `${i.h}px`,
-                                transform: `translateX(-50%) translateY(-50%) rotate(45deg)`
+                                // height: `${i.h}px`,
+                                transform: `translateX(-50%) translateY(-50%) rotate(${this.toDeg(i.r)})`
                             }}/>
                     )
                 })
