@@ -1,0 +1,30 @@
+@nav-margin: 15px; 
+@nav-icon-size: 25px;
+
+.nav-container {
+    position: fixed;
+    img {
+        width: @nav-icon-size;
+        height: @nav-icon-size;
+    }
+    &.nav-prev {
+        left: @nav-margin;
+        top: @nav-margin;    
+    }
+    &.nav-next {
+        left: @nav-margin;
+        bottom: @nav-margin;    
+    }
+    &.nav-contact {
+        right: @nav-margin;
+        top: @nav-margin;    
+    }
+    &.nav-about {
+        right: @nav-margin;
+        bottom: @nav-margin;    
+    }
+    &.nav-exit {
+        right: @nav-margin;
+        top: @nav-margin;    
+    }
+}
