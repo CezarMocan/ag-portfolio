@@ -8,7 +8,9 @@
     "prebuild": "rm -rf .next",
     "build": "next build",
     "start": "next build && next start",
-    "export": "rm -rf .next && next build && next export"
+    "export": "rm -rf .next && next build && next export",
+    "sync:s3": "AWS_DEFAULT_PROFILE=anthony aws s3 sync out s3://anthonyvgagliardi.com",
+    "deploy": "npm run export && npm run sync:s3"
   },
   "keywords": [],
   "author": "",
