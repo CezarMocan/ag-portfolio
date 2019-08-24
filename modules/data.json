@@ -32,9 +32,9 @@
             "description": "This chair seeks to generate complexity and apparent instability from primitive fabrication techniques. The two alternating profiles record a doubling of the ground and inclination of the copy in order to achieve an unnerved perception somewhere between formality and leisure. The fabrication consists of two alternating profiles made from compression-bent white oak veneers. The nine strips are punctured at the intersections and threaded over 1/8 inch steel rods for alignment and structure. Instead of boring a hole completely through the terminus strips, they are pocketed to hide the articulation of the rods. Movement around the chair is encouraged by the differing elevations. Viewed from the front or overhead it appears monolithic, from the sides it deconstructs into a web-like structure, and the rear offers four narrow vertical members that seem to defy structural logic.",
             "images": [
                 {   "url": "/static/images/hr/1.jpg", "minScale": 0.35, "maxScale": 0.45 },
-                {   "url": "/static/images/hr/2.png", "minScale": 0.35, "maxScale": 0.45 },
-                {   "url": "/static/images/hr/3.png", "minScale": 0.35, "maxScale": 0.45 },
-                {   "url": "/static/images/hr/4.png", "minScale": 0.35, "maxScale": 0.45 },
+                {   "url": "/static/images/hr/2.jpg", "minScale": 0.35, "maxScale": 0.45 },
+                {   "url": "/static/images/hr/3.jpg", "minScale": 0.35, "maxScale": 0.45 },
+                {   "url": "/static/images/hr/4.jpg", "minScale": 0.35, "maxScale": 0.45 },
                 {   "url": "/static/images/hr/5.jpg", "minScale": 0.35, "maxScale": 0.45 }
             ]
         }

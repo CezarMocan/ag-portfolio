@@ -11,13 +11,31 @@ export default class MainContextProvider extends React.Component {
         isAboutPageOpen: false,
         currentProjectId: null,
         data: null,
-        
+
         action: this
     }
 
     // UI related actions
     toggleAboutPage = (isOpen) => {
         this.setState({ isAboutPageOpen: isOpen })
+    }
+
+    navigateNextProject = () => {
+        const { currentProjectId, data } = this.state
+        let currentIndex = data.projectList.indexOf(currentProjectId)
+        currentIndex = (currentIndex + 1) % data.projectList.length
+        this.setState({
+            currentProjectId: data.projectList[currentIndex]
+        })
+    }
+
+    navigatePreviousProject = () => {
+        const { currentProjectId, data } = this.state
+        let currentIndex = data.projectList.indexOf(currentProjectId)
+        currentIndex = (currentIndex - 1 + data.projectList.length) % data.projectList.length
+        this.setState({
+            currentProjectId: data.projectList[currentIndex]
+        })
     }
 
     // Data related actions

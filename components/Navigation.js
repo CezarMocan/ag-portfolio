@@ -4,11 +4,19 @@ import { withMainContext } from '../context/MainContext'
 class Navigation extends React.Component {
     onAboutClick = (evt) => {
         const { toggleAboutPage } = this.props
-        toggleAboutPage(true)
+        if (toggleAboutPage) toggleAboutPage(true)
     }
     onAboutCloseClick = (evt) => {
         const { toggleAboutPage } = this.props
-        toggleAboutPage(false)
+        if (toggleAboutPage) toggleAboutPage(false)
+    }
+    onNavigateNextClick = () => {
+        const { navigateNextProject } = this.props
+        if (navigateNextProject) navigateNextProject()
+    }
+    onNavigatePrevClick = () => {
+        const { navigatePreviousProject } = this.props
+        if (navigatePreviousProject) navigatePreviousProject()
     }
     renderAboutPageNav() {
         return (
@@ -22,10 +30,10 @@ class Navigation extends React.Component {
     renderMainPageNav() {
         return (
             <>
-                <div className="nav-container nav-next interactive">
+                <div className="nav-container nav-next interactive" onClick={this.onNavigateNextClick}>
                     <img src="static/icons/nav_V.svg"/>
                 </div>
-                <div className="nav-container nav-prev interactive">
+                <div className="nav-container nav-prev interactive" onClick={this.onNavigatePrevClick}>
                     <img src="static/icons/nav_A.svg"/>
                 </div>
                 <div className="nav-container nav-about interactive" onClick={this.onAboutClick}>
@@ -53,5 +61,7 @@ Navigation.defaultProps = {
 export default withMainContext((context, props) => ({
     isAboutPageOpen: context.isAboutPageOpen,
     
-    toggleAboutPage: context.action.toggleAboutPage
+    toggleAboutPage: context.action.toggleAboutPage,
+    navigateNextProject: context.action.navigateNextProject,
+    navigatePreviousProject: context.action.navigatePreviousProject,
   }))(Navigation)

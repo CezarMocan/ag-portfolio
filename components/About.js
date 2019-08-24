@@ -12,7 +12,7 @@ class About extends React.Component {
         return (
             <div className={cls}>
                 <p>
-                    &emsp;1. CAN Triennale<br/>
+                    &emsp;1. CAN Triennial<br/>
                     &emsp;2. Kitchen for a Musician<br/>
                     &emsp;3. Bridgeport<br/>
                     &emsp;4. North Canton Ohio Assisted Living<br/>

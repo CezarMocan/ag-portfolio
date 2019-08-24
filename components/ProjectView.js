@@ -2,14 +2,7 @@ import React from 'react'
 import { withMainContext } from '../context/MainContext'
 import ProjectBlock from './ProjectBlock'
 import { toDeg } from '../modules/utils'
-
-const URLs = [ '/static/images/hr1.jpg',
-            '/static/images/hr2.jpg',
-            '/static/images/hr3.jpg', 
-            '/static/images/hr4.jpg',
-            '/static/images/hr5.jpg',
-            '/static/images/hr6.jpg' 
-        ]
+import { BlockTypes } from '../modules/DataModels'
 
 class ProjectView extends React.Component {
     state = {
@@ -48,8 +41,6 @@ class ProjectView extends React.Component {
         const { currentProjectBlocks } = this.state
         let placedBlocks = this.state.placedBlocks.slice(0)
 
-        console.log('current project blocks: ', currentProjectBlocks)
-
         const index = placedBlocks.length % currentProjectBlocks.length
         placedBlocks.push({
             transform: {
@@ -60,7 +51,6 @@ class ProjectView extends React.Component {
                 r: this.markerAttributes.rotation,    
             },
             block: currentProjectBlocks[index]
-            // url: URLs[index]
         })
         this.setState({ 
             placedBlocks
@@ -100,6 +90,8 @@ class ProjectView extends React.Component {
         }
 
         const { placedBlocks } = this.state
+        const textBlocks = placedBlocks.filter(b => b.block.type == BlockTypes.TEXT)
+        const imageBlocks = placedBlocks.filter(b => b.block.type == BlockTypes.IMAGE)
 
         return (
             <div className="project-view-container"
@@ -108,14 +100,19 @@ class ProjectView extends React.Component {
                 onMouseUp={this.onMouseUp}
                 onWheel={this.onScroll}           
             >
-                { placedBlocks.map((i, index) => ( 
-                    <ProjectBlock key={`block-${index}`} block={i.block} transform={i.transform}/> 
+                { imageBlocks.map((i, index) => (
+                    <ProjectBlock key={`block-image-${index}`} block={i.block} transform={i.transform}/> 
                 ))}
 
                 <div className="mouse-tracker"
-                    ref={ m => this._mT = m }>
-
+                    ref={ m => this._mT = m }
+                >
                 </div>
+
+                { textBlocks.map((i, index) => (
+                    <ProjectBlock key={`block-text-${index}`} block={i.block} transform={i.transform}/> 
+                ))}
+
             </div>
         )
     }

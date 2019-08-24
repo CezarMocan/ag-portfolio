@@ -7,7 +7,8 @@ const processProjectData = (projectData) => {
     blocks.push(new TextBlock(projectData.title))
 
     // Then we place all images
-    const noImages = projectData.images.length
+    // const noImages = projectData.images.length
+    const noImages = 1
     for (let i = 0; i < noImages; i++) blocks.push(new ImageBlock(projectData.images[i].url, projectData.images[i]))
 
     // Then we place the description
