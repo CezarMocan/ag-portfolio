@@ -1,5 +1,7 @@
 import React from 'react'
 import { withMainContext } from '../context/MainContext'
+import ProjectBlock from './ProjectBlock'
+import { toDeg } from '../modules/utils'
 
 const URLs = [ '/static/images/hr1.jpg',
             '/static/images/hr2.jpg',
@@ -11,7 +13,8 @@ const URLs = [ '/static/images/hr1.jpg',
 
 class ProjectView extends React.Component {
     state = {
-        images: [],
+        currentProjectBlocks: [],
+        placedBlocks: []
     }
     constructor(props) {
         super(props)
@@ -29,7 +32,7 @@ class ProjectView extends React.Component {
         if (y !== null) this._mT.style.top = `${y}px`
         if (width !== null) this._mT.style.width = `${width}px`
         if (height !== null) this._mT.style.height = `${height}px`
-        if (rotation !== null) this._mT.style.transform = `translateX(-50%) translateY(-50%) rotate(${this.toDeg(rotation)})`;
+        if (rotation !== null) this._mT.style.transform = `translateX(-50%) translateY(-50%) rotate(${toDeg(rotation)})`;
     }
     onMouseMove = (e) => {
         this.updateMarkerAttributes({
@@ -42,40 +45,61 @@ class ProjectView extends React.Component {
         })
     }    
     onMouseDown = (e) => {
-        let images = this.state.images.slice(0)
+        const { currentProjectBlocks } = this.state
+        let placedBlocks = this.state.placedBlocks.slice(0)
 
-        const index = images.length % URLs.length
-        images.push({
-            x: e.clientX,
-            y: e.clientY,
-            w: this.markerAttributes.width,
-            h: 100,
-            r: this.markerAttributes.rotation,
-            url: URLs[index]
+        console.log('current project blocks: ', currentProjectBlocks)
+
+        const index = placedBlocks.length % currentProjectBlocks.length
+        placedBlocks.push({
+            transform: {
+                x: e.clientX,
+                y: e.clientY,
+                w: this.markerAttributes.width,
+                h: 100,
+                r: this.markerAttributes.rotation,    
+            },
+            block: currentProjectBlocks[index]
+            // url: URLs[index]
         })
         this.setState({ 
-            images
+            placedBlocks
         }, () => {
             this.markerAttributes.width = 100 + 200 * Math.random()
             this.markerAttributes.height = 1.7 * this.markerAttributes.width
-            // this.markerAttributes.rotation = Math.random() * (Math.PI / 8) - Math.PI / 16
             this.updateMarkerAttributes({ ...this.markerAttributes })
         })
-    }
-    toDeg = (r) => {
-        const d = (r * 180) / Math.PI
-        return `${parseInt(d)}deg`
     }
     onScroll = (e) => {
         const angleDelta = e.deltaY / 200
         this.markerAttributes.rotation += angleDelta
         this.updateMarkerAttributes({ rotation: this.markerAttributes.rotation })
     }
+    componentDidMount() {
+        const { fetchData } = this.props
+        fetchData()
+    }
+    componentDidUpdate(oldProps) {
+        const { currentProjectId, data } = this.props
+
+        // Current project has been updated
+        if (currentProjectId != oldProps.currentProjectId) {
+            this.setState({ 
+                currentProjectBlocks: this.props.data.blocks[currentProjectId],
+                placedBlocks: []
+            })
+        }
+
+    }
     render() {
-        const { isAboutPageOpen } = this.props
+        const { isAboutPageOpen, data } = this.props        
         if (isAboutPageOpen) return null
 
-        const { images } = this.state
+        if (!data) {
+            return (<h1>Loading</h1>)
+        }
+
+        const { placedBlocks } = this.state
 
         return (
             <div className="project-view-container"
@@ -84,23 +108,10 @@ class ProjectView extends React.Component {
                 onMouseUp={this.onMouseUp}
                 onWheel={this.onScroll}           
             >
-                { images.map((i, index) => {
-                    return (
-                        <img src={i.url} 
-                            key={`image-${index}`} 
-                            className="project-image"
-                            style={{
-                                position: 'absolute',
-                                left: `${i.x}px`,
-                                top: `${i.y}px`,
-                                width: `${i.w}px`,
-                                // height: `${i.h}px`,
-                                transform: `translateX(-50%) translateY(-50%) rotate(${this.toDeg(i.r)})`
-                            }}/>
-                    )
-                })
+                { placedBlocks.map((i, index) => ( 
+                    <ProjectBlock key={`block-${index}`} block={i.block} transform={i.transform}/> 
+                ))}
 
-                }
                 <div className="mouse-tracker"
                     ref={ m => this._mT = m }>
 
@@ -112,4 +123,8 @@ class ProjectView extends React.Component {
 
 export default withMainContext((context, props) => ({
     isAboutPageOpen: context.isAboutPageOpen,
+    currentProjectId: context.currentProjectId,
+    data: context.data,
+
+    fetchData: context.action.fetchData
 }))(ProjectView)

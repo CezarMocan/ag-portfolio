@@ -1,6 +1,7 @@
 {
     "projects": [
         {
+            "id": "can_triennal",
             "title": "CAN Triennial",
             "year": "2018",
             "location": "Cleveland, OH",
@@ -22,6 +23,7 @@
             ]
         },
         {
+            "id": "hr_chair",
             "title": "HR Chair",
             "year": "2015 – Present",
             "location": "New Haven, CT",
