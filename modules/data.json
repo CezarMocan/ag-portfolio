@@ -9,17 +9,17 @@
             "collaborators": "Michael Harrison, Timothy Beverage, Logan Beach",
             "description": "Suburban domestic architecture is often portrayed as the backdrop for a fictitious American dream. Home ownership can tether us to space in deeply gratifying ways; however it can also become a weighty albatross. Throughout the 20th-Century suburban domestic architecture became homogenized; refined into a consistent product for easy consumption. In the wake of the subprime mortgage crisis, the facade of a secure housing market was revealed to be highly speculative. Hedge House asks visitors to consider the fragility of homeownership and the American housing market.  It exists somewhere between a tent and a home, a garage and a room. A structure on the edge of completion and foreclosure.",
             "images": [
-                {   "url": "/static/images/can/1.jpg", "minScale": 0.2, "maxScale": 0.4, "width": 1300, "height": 1954 },
-                {   "url": "/static/images/can/2.png", "minScale": 0.2, "maxScale": 0.4, "width": 2384, "height": 1685 },
-                {   "url": "/static/images/can/3.png", "minScale": 0.2, "maxScale": 0.4, "width": 2384, "height": 1686 },
-                {   "url": "/static/images/can/4.png", "minScale": 0.2, "maxScale": 0.4, "width": 1730, "height": 1805 },
-                {   "url": "/static/images/can/5.jpg", "minScale": 0.2, "maxScale": 0.4, "width": 1888, "height": 2837 },
-                {   "url": "/static/images/can/6.jpg", "minScale": 0.2, "maxScale": 0.4, "width": 1300, "height": 1954 },
-                {   "url": "/static/images/can/7.jpg", "minScale": 0.2, "maxScale": 0.4, "width": 2063, "height": 3100 },
-                {   "url": "/static/images/can/8.jpg", "minScale": 0.2, "maxScale": 0.4, "width": 1700, "height": 1165 },
-                {   "url": "/static/images/can/9.jpg", "minScale": 0.2, "maxScale": 0.4, "width": 1300, "height": 1992 },
-                {   "url": "/static/images/can/10.jpg", "minScale": 0.2, "maxScale": 0.4, "width": 2016, "height": 1512 },
-                {   "url": "/static/images/can/11.jpg", "minScale": 0.2, "maxScale": 0.4, "width": 1300, "height": 1954 }
+                {   "url": "/static/images/can/1.jpg", "minScale": 0.2, "maxScale": 0.2, "width": 1300, "height": 1954 },
+                {   "url": "/static/images/can/2.png", "minScale": 0.2, "maxScale": 0.2, "width": 2384, "height": 1685 },
+                {   "url": "/static/images/can/3.png", "minScale": 0.2, "maxScale": 0.2, "width": 2384, "height": 1686 },
+                {   "url": "/static/images/can/4.png", "minScale": 0.2, "maxScale": 0.2, "width": 1730, "height": 1805 },
+                {   "url": "/static/images/can/5.jpg", "minScale": 0.2, "maxScale": 0.2, "width": 1888, "height": 2837 },
+                {   "url": "/static/images/can/6.jpg", "minScale": 0.2, "maxScale": 0.2, "width": 1300, "height": 1954 },
+                {   "url": "/static/images/can/7.jpg", "minScale": 0.2, "maxScale": 0.2, "width": 2063, "height": 3100 },
+                {   "url": "/static/images/can/8.jpg", "minScale": 0.2, "maxScale": 0.2, "width": 1700, "height": 1165 },
+                {   "url": "/static/images/can/9.jpg", "minScale": 0.2, "maxScale": 0.2, "width": 1300, "height": 1992 },
+                {   "url": "/static/images/can/10.jpg", "minScale": 0.2, "maxScale": 0.2, "width": 2016, "height": 1512 },
+                {   "url": "/static/images/can/11.jpg", "minScale": 0.2, "maxScale": 0.2, "width": 1300, "height": 1954 }
             ]
         },
         {

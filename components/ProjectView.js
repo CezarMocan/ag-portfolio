@@ -1,7 +1,7 @@
 import React from 'react'
 import { withMainContext } from '../context/MainContext'
 import ProjectBlock from './ProjectBlock'
-import { toDeg } from '../modules/utils'
+import { toDeg, randInterval } from '../modules/utils'
 import { BlockTypes } from '../modules/DataModels'
 
 class ProjectView extends React.Component {
@@ -11,7 +11,6 @@ class ProjectView extends React.Component {
     }
     constructor(props) {
         super(props)
-        const width = 100 + 200 * Math.random()
         this.markerAttributes = {
             visible: false,
             x: 0,
@@ -42,7 +41,8 @@ class ProjectView extends React.Component {
         const index = placedBlocks.length % currentProjectBlocks.length
         const block = currentProjectBlocks[index]
 
-        const newWidth = 100 + 200 * Math.random()
+        // const newWidth = 100 + 200 * Math.random()
+        const newWidth = randInterval(block.minScale, block.maxScale) * window.innerWidth
         const newHeight = block.width ? newWidth / block.width * block.height : 1.7 * newWidth
 
         this.updateMarkerDOM({ width: newWidth, height: newHeight })

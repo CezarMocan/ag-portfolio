@@ -8,6 +8,8 @@ export class TextBlock {
         this.type = BlockTypes.TEXT
         this.text = text
         this.options = options
+        this.minScale = 0.25
+        this.maxScale = 0.25
     }
 }
 
@@ -17,6 +19,8 @@ export class ImageBlock {
         this.url = url
         this.width = width
         this.height = height
+        this.minScale = options.minScale || 0.25
+        this.maxScale = options.maxScale || 0.25
         this.options = options
     }
 }
