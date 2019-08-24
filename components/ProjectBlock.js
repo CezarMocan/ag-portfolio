@@ -32,7 +32,7 @@ export default class ProjectBlock extends React.Component {
                     left: `${transform.x}px`,
                     top: `${transform.y}px`,
                     width: `${transform.w}px`,
-                    // height: `${transform.h}px`,
+                    height: `${transform.h}px`,
                     transform: `translateX(-50%) translateY(-50%) rotate(${toDeg(transform.r)})`
                 }}
                 // onMouseMove={this.onMouseMove}

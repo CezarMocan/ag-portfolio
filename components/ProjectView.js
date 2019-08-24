@@ -13,27 +13,44 @@ class ProjectView extends React.Component {
         super(props)
         const width = 100 + 200 * Math.random()
         this.markerAttributes = {
-            rotation: 0,
-            width,
-            height: 1.7 * width
+            visible: false,
+            x: 0,
+            y: 0,
+            width: 0,
+            height: 0,
+            rotation: 0
         }
     }
-    updateMarkerAttributes = ({ x = null, y = null, width = null, height = null, rotation = null, visible = null }) => {
+    updateMarkerDOM = ({ x = null, y = null, width = null, height = null, rotation = null, visible = null }) => {
+        if (visible !== null) this.markerAttributes.visible = visible
+        if (x !== null) this.markerAttributes.x = x
+        if (y !== null) this.markerAttributes.y = y
+        if (width !== null) this.markerAttributes.width = width
+        if (height !== null) this.markerAttributes.height = height
+        if (rotation !== null) this.markerAttributes.rotation = rotation
+        
         if (!this._mT) return
-        if (visible !== null) this._mT.style.visibility = visible ? 'visible' : 'hidden'
-        if (x !== null) this._mT.style.left = `${x}px`
-        if (y !== null) this._mT.style.top = `${y}px`
-        if (width !== null) this._mT.style.width = `${width}px`
-        if (height !== null) this._mT.style.height = `${height}px`
-        if (rotation !== null) this._mT.style.transform = `translateX(-50%) translateY(-50%) rotate(${toDeg(rotation)})`;
+        this._mT.style.visibility = this.markerAttributes.visible ? 'visible' : 'hidden'
+        this._mT.style.left = `${this.markerAttributes.x}px`
+        this._mT.style.top = `${this.markerAttributes.y}px`
+        this._mT.style.width = `${this.markerAttributes.width}px`
+        this._mT.style.height = `${this.markerAttributes.height}px`
+        this._mT.style.transform = `translateX(-50%) translateY(-50%) rotate(${toDeg(this.markerAttributes.rotation)})`;
+    }
+    updateMarkerForNextBlock = () => {
+        const { currentProjectBlocks, placedBlocks } = this.state
+        const index = placedBlocks.length % currentProjectBlocks.length
+        const block = currentProjectBlocks[index]
+
+        const newWidth = 100 + 200 * Math.random()
+        const newHeight = block.width ? newWidth / block.width * block.height : 1.7 * newWidth
+
+        this.updateMarkerDOM({ width: newWidth, height: newHeight })
     }
     onMouseMove = (e) => {
-        this.updateMarkerAttributes({
+        this.updateMarkerDOM({
             x: e.clientX,
             y: e.clientY,
-            width: this.markerAttributes.width,
-            height: this.markerAttributes.height,
-            rotation: this.markerAttributes.rotation,
             visible: true
         })
     }    
@@ -42,28 +59,20 @@ class ProjectView extends React.Component {
         let placedBlocks = this.state.placedBlocks.slice(0)
 
         const index = placedBlocks.length % currentProjectBlocks.length
+        const block = currentProjectBlocks[index]
+
+        const x = e.clientX, y = e.clientY, r = this.markerAttributes.rotation
+        const w = this.markerAttributes.width, h = this.markerAttributes.height
+
         placedBlocks.push({
-            transform: {
-                x: e.clientX,
-                y: e.clientY,
-                w: this.markerAttributes.width,
-                h: 100,
-                r: this.markerAttributes.rotation,    
-            },
-            block: currentProjectBlocks[index]
+            transform: { x, y, w, r, h },
+            block
         })
-        this.setState({ 
-            placedBlocks
-        }, () => {
-            this.markerAttributes.width = 100 + 200 * Math.random()
-            this.markerAttributes.height = 1.7 * this.markerAttributes.width
-            this.updateMarkerAttributes({ ...this.markerAttributes })
-        })
+        this.setState({ placedBlocks }, this.updateMarkerForNextBlock)
     }
     onScroll = (e) => {
         const angleDelta = e.deltaY / 200
-        this.markerAttributes.rotation += angleDelta
-        this.updateMarkerAttributes({ rotation: this.markerAttributes.rotation })
+        this.updateMarkerDOM({ rotation: this.markerAttributes.rotation + angleDelta })
     }
     componentDidMount() {
         const { fetchData } = this.props
@@ -77,7 +86,7 @@ class ProjectView extends React.Component {
             this.setState({ 
                 currentProjectBlocks: this.props.data.blocks[currentProjectId],
                 placedBlocks: []
-            })
+            }, this.updateMarkerForNextBlock)
         }
 
     }

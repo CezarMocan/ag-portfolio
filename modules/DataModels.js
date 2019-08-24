@@ -12,9 +12,11 @@ export class TextBlock {
 }
 
 export class ImageBlock {
-    constructor(url, options = {}) {
+    constructor(url, width = 0, height = 0, options = {}) {
         this.type = BlockTypes.IMAGE
         this.url = url
+        this.width = width
+        this.height = height
         this.options = options
     }
 }
