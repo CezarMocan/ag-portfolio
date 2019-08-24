@@ -1,0 +1,40 @@
+{
+    "projects": [
+        {
+            "title": "CAN Triennial",
+            "year": "2018",
+            "location": "Cleveland, OH",
+            "context": "Almost Studio",
+            "collaborators": "Michael Harrison, Timothy Beverage, Logan Beach",
+            "description": "Suburban domestic architecture is often portrayed as the backdrop for a fictitious American dream. Home ownership can tether us to space in deeply gratifying ways; however it can also become a weighty albatross. Throughout the 20th-Century suburban domestic architecture became homogenized; refined into a consistent product for easy consumption. In the wake of the subprime mortgage crisis, the facade of a secure housing market was revealed to be highly speculative. Hedge House asks visitors to consider the fragility of homeownership and the American housing market.  It exists somewhere between a tent and a home, a garage and a room. A structure on the edge of completion and foreclosure.",
+            "images": [
+                {   "url": "/static/images/can/1.jpg", "minScale": 0.2, "maxScale": 0.4 },
+                {   "url": "/static/images/can/2.png", "minScale": 0.2, "maxScale": 0.4 },
+                {   "url": "/static/images/can/3.png", "minScale": 0.2, "maxScale": 0.4 },
+                {   "url": "/static/images/can/4.png", "minScale": 0.2, "maxScale": 0.4 },
+                {   "url": "/static/images/can/5.jpg", "minScale": 0.2, "maxScale": 0.4 },
+                {   "url": "/static/images/can/6.jpg", "minScale": 0.2, "maxScale": 0.4 },
+                {   "url": "/static/images/can/7.jpg", "minScale": 0.2, "maxScale": 0.4 },
+                {   "url": "/static/images/can/8.jpg", "minScale": 0.2, "maxScale": 0.4 },
+                {   "url": "/static/images/can/9.jpg", "minScale": 0.2, "maxScale": 0.4 },
+                {   "url": "/static/images/can/10.jpg", "minScale": 0.2, "maxScale": 0.4 },
+                {   "url": "/static/images/can/11.jpg", "minScale": 0.2, "maxScale": 0.4 }
+            ]
+        },
+        {
+            "title": "HR Chair",
+            "year": "2015 – Present",
+            "location": "New Haven, CT",
+            "context": "Yale School of Architecture",
+            "collaborators": "Timothy Newton",
+            "description": "This chair seeks to generate complexity and apparent instability from primitive fabrication techniques. The two alternating profiles record a doubling of the ground and inclination of the copy in order to achieve an unnerved perception somewhere between formality and leisure. The fabrication consists of two alternating profiles made from compression-bent white oak veneers. The nine strips are punctured at the intersections and threaded over 1/8 inch steel rods for alignment and structure. Instead of boring a hole completely through the terminus strips, they are pocketed to hide the articulation of the rods. Movement around the chair is encouraged by the differing elevations. Viewed from the front or overhead it appears monolithic, from the sides it deconstructs into a web-like structure, and the rear offers four narrow vertical members that seem to defy structural logic.",
+            "images": [
+                {   "url": "/static/images/hr/1.jpg", "minScale": 0.35, "maxScale": 0.45 },
+                {   "url": "/static/images/hr/2.png", "minScale": 0.35, "maxScale": 0.45 },
+                {   "url": "/static/images/hr/3.png", "minScale": 0.35, "maxScale": 0.45 },
+                {   "url": "/static/images/hr/4.png", "minScale": 0.35, "maxScale": 0.45 },
+                {   "url": "/static/images/hr/5.jpg", "minScale": 0.35, "maxScale": 0.45 }
+            ]
+        }
+    ]
+}
