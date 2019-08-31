@@ -99,7 +99,7 @@ class ProjectView extends React.Component {
         }
 
         const { placedBlocks } = this.state
-        const textBlocks = placedBlocks.filter(b => b.block.type == BlockTypes.TEXT)
+        const textBlocks = placedBlocks.filter(b => b.block.type != BlockTypes.IMAGE)
         const imageBlocks = placedBlocks.filter(b => b.block.type == BlockTypes.IMAGE)
 
         return (

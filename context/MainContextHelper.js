@@ -1,7 +1,11 @@
-import { TextBlock, ImageBlock } from '../modules/DataModels'
+import { TextBlock, PortableTextBlock, ImageBlock } from '../modules/DataModels'
 
 const processProjectData = (projectData) => {
     const blocks = []
+
+    // Then we place the description
+    blocks.push(new PortableTextBlock(projectData.description))
+
 
     // First element that gets placed on the page is always the project title
     blocks.push(new TextBlock(projectData.title))
@@ -13,13 +17,13 @@ const processProjectData = (projectData) => {
         new ImageBlock(projectData.images[i])
     )
 
-    // Then we place the description
-    // blocks.push(new TextBlock(projectData.description))
+    // // Then we place the description
+    // blocks.push(new PortableTextBlock(projectData.description))
 
     // At the end, we place the year, collaborators and context
-    // blocks.push(new TextBlock('Built for ' + projectData.context))
-    // blocks.push(new TextBlock('In collaboration with ' + projectData.collaborators))
-    // blocks.push(new TextBlock(projectData.year))
+    if (projectData.client) blocks.push(new TextBlock('Built for ' + projectData.client))
+    if (projectData.collaborators) blocks.push(new TextBlock('In collaboration with ' + projectData.collaborators))
+    if (projectData.year) blocks.push(new TextBlock(projectData.year))
 
     return blocks
 }

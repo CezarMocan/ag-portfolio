@@ -13,6 +13,7 @@ export const queries = {
       title,
       year,
       collaborators,
+      client,
       description,
       "images": images[]{
         asset->{

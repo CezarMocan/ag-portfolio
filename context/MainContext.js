@@ -41,7 +41,7 @@ export default class MainContextProvider extends React.Component {
 
     // Data related actions
     fetchProjects = async () => {
-        await sleep(2)
+        // await sleep(2)
         // const data = processData(MockData)
 
         console.log('Data is: ', MockData)
