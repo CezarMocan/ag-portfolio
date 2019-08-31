@@ -19,14 +19,12 @@ export default class ProjectBlock extends React.Component {
         const { block, transform } = this.props
         if (!block || !transform) return null
 
-        const cls = classnames({
+        const containerCls = classnames({
             "image": block.type == BlockTypes.IMAGE,
             "text": block.type == BlockTypes.TEXT || block.type == BlockTypes.PORTABLE_TEXT
         })
 
         const { x, y, w, h } = transform
-
-        console.log('RRendering: ', block)
 
         return (
             <div
@@ -43,19 +41,19 @@ export default class ProjectBlock extends React.Component {
                 onWheel={this.onWheel(block.type == BlockTypes.TEXT || block.type == BlockTypes.PORTABLE_TEXT)}
             >
                 { block.type == BlockTypes.IMAGE &&
-                  <div className={cls}>
+                  <div className={containerCls}>
                     <img src={block.getUrl(w)} className="project-image"/>
                   </div>
                 }
                 { block.type == BlockTypes.TEXT &&
-                  <div className={cls}>
+                  <div className={containerCls}>
                     <p className="project-text"> { block.text } </p>
                   </div>
                 }
                 { block.type == BlockTypes.PORTABLE_TEXT &&
                     <PortableBlockContent
                       blocks={block.o}
-                      className={cls}
+                      className={containerCls}
                       renderContainerOnSingleChild={true}
                     />
                 }
