@@ -20,6 +20,21 @@ class ProjectView extends React.Component {
             rotation: 0
         }
     }
+    measureText(el, cls, txt, width) {
+      if (!el) return
+      let p = document.createElement(el)
+      if (cls) p.classList.add(cls)
+      const text = document.createTextNode(txt)
+      p.appendChild(text)
+      p.style.width = `${width}px`
+      p.style.visibility = 'hidden'
+
+      document.body.appendChild(p)
+      const h = p.clientHeight
+      document.body.removeChild(p)
+
+      return h
+    }
     updateMarkerDOM = ({ x = null, y = null, width = null, height = null, rotation = null, visible = null }) => {
         if (visible !== null) this.markerAttributes.visible = visible
         if (x !== null) this.markerAttributes.x = x
@@ -43,7 +58,16 @@ class ProjectView extends React.Component {
 
         // const newWidth = 100 + 200 * Math.random()
         const newWidth = randInterval(block.minScale, block.maxScale) * window.innerWidth
-        const newHeight = block.width ? newWidth / block.width * block.height : 1.7 * newWidth
+        let newHeight
+
+        if (block.width) {
+          newHeight = newWidth / block.width * block.height
+        } else if (block.text) {
+          newHeight = this.measureText('p', '', block.text, newWidth)
+          console.log('CHEA CHING: ', newHeight)
+        } else {
+          newHeight = 1.7 * newWidth
+        }
 
         this.updateMarkerDOM({ width: newWidth, height: newHeight })
     }
@@ -98,12 +122,15 @@ class ProjectView extends React.Component {
             return (<h1>Loading</h1>)
         }
 
-        const { placedBlocks } = this.state
+        const { placedBlocks, currentProjectBlocks } = this.state
         const textBlocks = placedBlocks.filter(b => b.block.type != BlockTypes.IMAGE)
         const imageBlocks = placedBlocks.filter(b => b.block.type == BlockTypes.IMAGE)
 
+        console.log('currentPr: ', currentProjectBlocks)
+
         return (
             <div className="project-view-container"
+                id="testtest"
                 onMouseMove={this.onMouseMove}
                 onMouseDown={this.onMouseDown}
                 onMouseUp={this.onMouseUp}
