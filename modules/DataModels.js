@@ -1,3 +1,10 @@
+import sanityClient from './sanity'
+import imageUrlBuilder from '@sanity/image-url'
+import { mipmap } from './utils'
+
+const imageBuilder = imageUrlBuilder(sanityClient)
+const imageUrlFor = (source) => imageBuilder.image(source)
+
 export const BlockTypes = {
     TEXT: 'TEXT',
     IMAGE: 'IMAGE'
@@ -14,13 +21,22 @@ export class TextBlock {
 }
 
 export class ImageBlock {
-    constructor(url, width = 0, height = 0, options = {}) {
+    constructor(o) {
         this.type = BlockTypes.IMAGE
-        this.url = url
-        this.width = width
-        this.height = height
-        this.minScale = options.minScale || 0.25
-        this.maxScale = options.maxScale || 0.25
-        this.options = options
+
+        this.width = o.asset.originalWidth
+        this.height = o.asset.originalHeight
+        this.aspectRatio = o.asset.aspectRatio
+        this.minScale = o.minScale || 0.25
+        this.maxScale = o.maxScale || 0.25
+        this.lqip = o.asset.lqip
+        this.o = o
+        this._url = imageUrlFor(o).width(750).url()
+    }
+
+    getUrl(width) {
+      if (!width) return this._url
+      const mmWidth = mipmap(width)
+      return imageUrlFor(this.o).width(mmWidth).url()
     }
 }

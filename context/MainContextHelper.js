@@ -10,30 +10,27 @@ const processProjectData = (projectData) => {
     const noImages = projectData.images.length
     // const noImages = 1
     for (let i = 0; i < noImages; i++) blocks.push(
-        new ImageBlock(projectData.images[i].url, 
-            projectData.images[i].width, 
-            projectData.images[i].height, 
-            projectData.images[i])
+        new ImageBlock(projectData.images[i])
     )
 
     // Then we place the description
-    blocks.push(new TextBlock(projectData.description))
+    // blocks.push(new TextBlock(projectData.description))
 
     // At the end, we place the year, collaborators and context
-    blocks.push(new TextBlock('Built for ' + projectData.context))
-    blocks.push(new TextBlock('In collaboration with ' + projectData.collaborators))
-    blocks.push(new TextBlock(projectData.year))
+    // blocks.push(new TextBlock('Built for ' + projectData.context))
+    // blocks.push(new TextBlock('In collaboration with ' + projectData.collaborators))
+    // blocks.push(new TextBlock(projectData.year))
 
     return blocks
 }
 
 export const processData = (data) => {
-    const blocks = data.projects.reduce((acc, project) => {
+    const blocks = data.reduce((acc, project) => {
         acc[project.id] = processProjectData(project)
         return acc
     }, {})
 
-    const projectList = data.projects.reduce((acc, project) => {
+    const projectList = data.reduce((acc, project) => {
         acc.push(project.id)
         return acc
     }, [])
@@ -42,5 +39,5 @@ export const processData = (data) => {
         blocks,
         projectList,
         raw: { ...data }
-    } 
+    }
 }

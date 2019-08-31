@@ -10,3 +10,5 @@ export const randInterval = (l, u) => {
 export const randIntervalInt = (l, u) => {
     return parseInt(Math.floor(randInterval(l, u)))
 }
+
+export const mipmap = (x) => Math.pow(2, Math.ceil(Math.log2(x)))

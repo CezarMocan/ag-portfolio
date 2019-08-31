@@ -13,7 +13,19 @@ export const queries = {
       title,
       year,
       collaborators,
-      description
+      description,
+      "images": images[]{
+        asset->{
+          "originalWidth": metadata.dimensions.width,
+          "originalHeight": metadata.dimensions.height,
+          "aspectRatio": metadata.dimensions.aspectRatio,
+          "lqip": metadata.lqip,
+          size,
+          url,
+          metadata
+        },
+        ...
+      }
     }
   `
 }

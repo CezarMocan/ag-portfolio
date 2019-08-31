@@ -24,22 +24,24 @@ export default class ProjectBlock extends React.Component {
             "text": block.type == BlockTypes.TEXT
         })
 
+        const { x, y, w, h } = transform
+
         return (
-            <div 
+            <div
                 className={cls}
                 style={{
                     position: 'absolute',
-                    left: `${transform.x}px`,
-                    top: `${transform.y}px`,
-                    width: `${transform.w}px`,
-                    height: `${transform.h}px`,
+                    left: `${x}px`,
+                    top: `${y}px`,
+                    width: `${w}px`,
+                    height: `${h}px`,
                     transform: `translateX(-50%) translateY(-50%) rotate(${toDeg(transform.r)})`
                 }}
                 // onMouseMove={this.onMouseMove}
-                onWheel={this.onWheel(block.type == BlockTypes.TEXT)}               
+                onWheel={this.onWheel(block.type == BlockTypes.TEXT)}
             >
                 { block.type == BlockTypes.IMAGE &&
-                    <img src={block.url} className="project-image"/>
+                    <img src={block.getUrl(w)} className="project-image"/>
                 }
                 { block.type == BlockTypes.TEXT &&
                     <p className="project-text"> { block.text } </p>
