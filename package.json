@@ -16,6 +16,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@sanity/block-content-to-react": "^2.0.6",
+    "@sanity/client": "^0.142.0",
+    "@sanity/image-url": "^0.140.12",
     "@zeit/next-less": "^1.0.1",
     "classnames": "^2.2.6",
     "less": "^3.9.0",

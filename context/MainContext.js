@@ -1,4 +1,5 @@
 import React from 'react'
+import sanityClient, { queries } from '../modules/sanity'
 import { processData } from './MainContextHelper'
 import MockData from '../modules/data.json'
 
@@ -39,14 +40,22 @@ export default class MainContextProvider extends React.Component {
     }
 
     // Data related actions
-    fetchData = async () => {
+    fetchProjects = async () => {
         await sleep(2)
         const data = processData(MockData)
         console.log('Data is: ', data)
-        this.setState({ 
+        const projects = await this.fetchProjectsSanity()
+        console.log('Projects: ', projects)
+
+        this.setState({
             data,
             currentProjectId: data.projectList[0]
         })
+    }
+
+    fetchProjectsSanity = async () => {
+      const projects = await sanityClient.fetch(queries.allProjects)
+      return projects
     }
 
     render() {

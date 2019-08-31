@@ -27,7 +27,7 @@ class ProjectView extends React.Component {
         if (width !== null) this.markerAttributes.width = width
         if (height !== null) this.markerAttributes.height = height
         if (rotation !== null) this.markerAttributes.rotation = rotation
-        
+
         if (!this._mT) return
         this._mT.style.visibility = this.markerAttributes.visible ? 'visible' : 'hidden'
         this._mT.style.left = `${this.markerAttributes.x}px`
@@ -53,7 +53,7 @@ class ProjectView extends React.Component {
             y: e.clientY,
             visible: true
         })
-    }    
+    }
     onMouseDown = (e) => {
         const { currentProjectBlocks } = this.state
         let placedBlocks = this.state.placedBlocks.slice(0)
@@ -75,15 +75,15 @@ class ProjectView extends React.Component {
         this.updateMarkerDOM({ rotation: this.markerAttributes.rotation + angleDelta })
     }
     componentDidMount() {
-        const { fetchData } = this.props
-        fetchData()
+        const { fetchProjects } = this.props
+        fetchProjects()
     }
     componentDidUpdate(oldProps) {
         const { currentProjectId, data } = this.props
 
         // Current project has been updated
         if (currentProjectId != oldProps.currentProjectId) {
-            this.setState({ 
+            this.setState({
                 currentProjectBlocks: this.props.data.blocks[currentProjectId],
                 placedBlocks: []
             }, this.updateMarkerForNextBlock)
@@ -91,7 +91,7 @@ class ProjectView extends React.Component {
 
     }
     render() {
-        const { isAboutPageOpen, data } = this.props        
+        const { isAboutPageOpen, data } = this.props
         if (isAboutPageOpen) return null
 
         if (!data) {
@@ -107,10 +107,10 @@ class ProjectView extends React.Component {
                 onMouseMove={this.onMouseMove}
                 onMouseDown={this.onMouseDown}
                 onMouseUp={this.onMouseUp}
-                onWheel={this.onScroll}           
+                onWheel={this.onScroll}
             >
                 { imageBlocks.map((i, index) => (
-                    <ProjectBlock key={`block-image-${index}`} block={i.block} transform={i.transform}/> 
+                    <ProjectBlock key={`block-image-${index}`} block={i.block} transform={i.transform}/>
                 ))}
 
                 <div className="mouse-tracker"
@@ -119,7 +119,7 @@ class ProjectView extends React.Component {
                 </div>
 
                 { textBlocks.map((i, index) => (
-                    <ProjectBlock key={`block-text-${index}`} block={i.block} transform={i.transform}/> 
+                    <ProjectBlock key={`block-text-${index}`} block={i.block} transform={i.transform}/>
                 ))}
 
             </div>
@@ -132,5 +132,5 @@ export default withMainContext((context, props) => ({
     currentProjectId: context.currentProjectId,
     data: context.data,
 
-    fetchData: context.action.fetchData
+    fetchProjects: context.action.fetchProjects
 }))(ProjectView)
