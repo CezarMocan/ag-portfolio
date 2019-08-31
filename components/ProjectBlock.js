@@ -19,6 +19,11 @@ export default class ProjectBlock extends React.Component {
         const { block, transform } = this.props
         if (!block || !transform) return null
 
+        const wrapperCls = classnames({
+          "project-block-container": true,
+          "with-overflow": block.type == BlockTypes.TEXT || block.type == BlockTypes.PORTABLE_TEXT
+        })
+
         const containerCls = classnames({
             "image": block.type == BlockTypes.IMAGE,
             "text": block.type == BlockTypes.TEXT || block.type == BlockTypes.PORTABLE_TEXT
@@ -28,7 +33,7 @@ export default class ProjectBlock extends React.Component {
 
         return (
             <div
-                className="project-block-container"
+                className={wrapperCls}
                 style={{
                     position: 'absolute',
                     left: `${x}px`,

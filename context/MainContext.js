@@ -1,7 +1,6 @@
 import React from 'react'
 import sanityClient, { queries } from '../modules/sanity'
 import { processData } from './MainContextHelper'
-import MockData from '../modules/data.json'
 
 const sleep = (s) => new Promise((res, rej) => setTimeout(res, s * 1000))
 
@@ -41,12 +40,7 @@ export default class MainContextProvider extends React.Component {
 
     // Data related actions
     fetchProjects = async () => {
-        // await sleep(2)
-        // const data = processData(MockData)
-
-        console.log('Data is: ', MockData)
         const projects = await this.fetchProjectsSanity()
-        console.log('Projects: ', projects)
         const data = processData(projects)
 
         this.setState({

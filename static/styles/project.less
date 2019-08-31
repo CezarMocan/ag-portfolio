@@ -17,9 +17,15 @@
 }
 
 .project-block-container {
+    &.with-overflow {
+      overflow-y: scroll;
+    }
     .text {
-        overflow-y: scroll;
-        height: 300px;
+        height: 100%;
+
+        p {
+          margin-top: 0;
+        }
         // min-width: 350px;
         // box-shadow: 5px 5px 15px 15px rgba(0, 0, 0, 0.75);
     }
