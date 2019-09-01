@@ -107,7 +107,7 @@ class ProjectView extends React.Component {
         const { isAboutPageOpen, isMouseTrackerVisible, data } = this.props
 
         if (isAboutPageOpen) return null
-        if (!data) { return (<h1>Loading</h1>) }
+        if (!data) { return null }
 
         const { placedBlocks } = this.state
         const textBlocks = placedBlocks.filter(b => b.block.type != BlockTypes.IMAGE)
