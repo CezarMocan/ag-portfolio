@@ -43,6 +43,8 @@ class ProjectBlock extends React.Component {
 
         const wrapperCls = classnames({
           "project-block-container": true,
+          "text-block-container": block.type == BlockTypes.TEXT || block.type == BlockTypes.PORTABLE_TEXT,
+          "image-block-container": block.type == BlockTypes.IMAGE,
           "with-overflow": block.type == BlockTypes.TEXT || block.type == BlockTypes.PORTABLE_TEXT
         })
 

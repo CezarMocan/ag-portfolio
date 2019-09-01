@@ -18,6 +18,14 @@ class Navigation extends React.Component {
         const { navigatePreviousProject } = this.props
         if (navigatePreviousProject) navigatePreviousProject()
     }
+    onNavigationMouseEnter = (e) => {
+      const { toggleMouseTracker } = this.props
+      toggleMouseTracker(false)
+    }
+    onNavigationMouseLeave = (e) => {
+      const { toggleMouseTracker } = this.props
+      toggleMouseTracker(true)
+    }
     renderAboutPageNav() {
         return (
             <>
@@ -30,16 +38,31 @@ class Navigation extends React.Component {
     renderMainPageNav() {
         return (
             <>
-                <div className="nav-container nav-next interactive" onClick={this.onNavigateNextClick}>
+                <div className="nav-container nav-next interactive"
+                  onClick={this.onNavigateNextClick}
+                  onMouseEnter={this.onNavigationMouseEnter}
+                  onMouseLeave={this.onNavigationMouseLeave}
+                >
                     <img src="static/icons/nav_V.svg"/>
                 </div>
-                <div className="nav-container nav-prev interactive" onClick={this.onNavigatePrevClick}>
+                <div className="nav-container nav-prev interactive"
+                  onClick={this.onNavigatePrevClick}
+                  onMouseEnter={this.onNavigationMouseEnter}
+                  onMouseLeave={this.onNavigationMouseLeave}
+                >
                     <img src="static/icons/nav_A.svg"/>
                 </div>
-                <div className="nav-container nav-about interactive" onClick={this.onAboutClick}>
+                <div className="nav-container nav-about interactive"
+                  onClick={this.onAboutClick}
+                  onMouseEnter={this.onNavigationMouseEnter}
+                  onMouseLeave={this.onNavigationMouseLeave}
+                >
                     <img src="static/icons/nav_G.svg"/>
                 </div>
-                <div className="nav-container nav-contact interactive">
+                <div className="nav-container nav-contact interactive"
+                  onMouseEnter={this.onNavigationMouseEnter}
+                  onMouseLeave={this.onNavigationMouseLeave}
+                >
                     <img src="static/icons/nav_AT.svg"/>
                 </div>
             </>
@@ -60,8 +83,9 @@ Navigation.defaultProps = {
 
 export default withMainContext((context, props) => ({
     isAboutPageOpen: context.isAboutPageOpen,
-    
+
     toggleAboutPage: context.action.toggleAboutPage,
+    toggleMouseTracker: context.action.toggleMouseTracker,
     navigateNextProject: context.action.navigateNextProject,
     navigatePreviousProject: context.action.navigatePreviousProject,
   }))(Navigation)

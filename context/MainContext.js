@@ -12,7 +12,6 @@ export default class MainContextProvider extends React.Component {
         isMouseTrackerVisible: true,
         currentProjectId: null,
 
-
         data: null,
 
         action: this
