@@ -1,4 +1,5 @@
 import React from 'react'
+import { CSSTransitionGroup } from 'react-transition-group'
 import { withMainContext } from '../context/MainContext'
 import ProjectBlock from './ProjectBlock'
 import { toDeg, randInterval } from '../modules/utils'
@@ -92,7 +93,10 @@ class ProjectView extends React.Component {
             transform: { x, y, w, r, h },
             block
         })
-        this.setState({ placedBlocks }, this.updateMarkerForNextBlock)
+        this.setState({ placedBlocks })
+    }
+    onMouseUp = (e) => {
+      this.updateMarkerForNextBlock()
     }
     onScroll = (e) => {
         const angleDelta = e.deltaY / 200
@@ -126,28 +130,32 @@ class ProjectView extends React.Component {
         const textBlocks = placedBlocks.filter(b => b.block.type != BlockTypes.IMAGE)
         const imageBlocks = placedBlocks.filter(b => b.block.type == BlockTypes.IMAGE)
 
-        console.log('currentPr: ', currentProjectBlocks)
-
         return (
             <div className="project-view-container"
-                id="testtest"
                 onMouseMove={this.onMouseMove}
                 onMouseDown={this.onMouseDown}
                 onMouseUp={this.onMouseUp}
                 onWheel={this.onScroll}
             >
-                { imageBlocks.map((i, index) => (
-                    <ProjectBlock key={`block-image-${index}`} block={i.block} transform={i.transform}/>
-                ))}
+                <CSSTransitionGroup
+                  transitionName="project-item-transition"
+                  transitionEnterTimeout={500}
+                  transitionLeaveTimeout={300}>
+                  { imageBlocks.map((i, index) => (
+                      <ProjectBlock key={`block-image-${index}`} block={i.block} transform={i.transform}/>
+                  ))}
+                </CSSTransitionGroup>
 
-                <div className="mouse-tracker"
-                    ref={ m => this._mT = m }
-                >
-                </div>
+                <div className="mouse-tracker" ref={ m => this._mT = m }></div>
 
-                { textBlocks.map((i, index) => (
-                    <ProjectBlock key={`block-text-${index}`} block={i.block} transform={i.transform}/>
-                ))}
+                <CSSTransitionGroup
+                  transitionName="project-item-transition"
+                  transitionEnterTimeout={500}
+                  transitionLeaveTimeout={300}>
+                  { textBlocks.map((i, index) => (
+                      <ProjectBlock key={`block-text-${index}`} block={i.block} transform={i.transform}/>
+                  ))}
+                </CSSTransitionGroup>
 
             </div>
         )

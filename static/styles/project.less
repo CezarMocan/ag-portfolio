@@ -35,3 +35,19 @@
         width: 100%;
     }
 }
+
+.project-item-transition-enter {
+  opacity: 0.01;
+  &.project-item-transition-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in;
+  }
+}
+
+.project-item-transition-leave {
+  opacity: 1;
+  .project-item-transition-leave-active {
+    opacity: 0.01;
+    transition: opacity 300ms ease-out;
+  }
+}
