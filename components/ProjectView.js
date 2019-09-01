@@ -1,8 +1,9 @@
 import React from 'react'
+import classnames from 'classnames'
 import { CSSTransitionGroup } from 'react-transition-group'
 import { withMainContext } from '../context/MainContext'
 import ProjectBlock from './ProjectBlock'
-import { toDeg, randInterval } from '../modules/utils'
+import { toDeg, randInterval, measureText } from '../modules/utils'
 import { BlockTypes } from '../modules/DataModels'
 
 class ProjectView extends React.Component {
@@ -20,21 +21,6 @@ class ProjectView extends React.Component {
             height: 0,
             rotation: 0
         }
-    }
-    measureText(el, cls, txt, width) {
-      if (!el) return
-      let p = document.createElement(el)
-      if (cls) p.classList.add(cls)
-      const text = document.createTextNode(txt)
-      p.appendChild(text)
-      p.style.width = `${width}px`
-      p.style.visibility = 'hidden'
-
-      document.body.appendChild(p)
-      const h = p.clientHeight
-      document.body.removeChild(p)
-
-      return h
     }
     updateMarkerDOM = ({ x = null, y = null, width = null, height = null, rotation = null, visible = null }) => {
         if (visible !== null) this.markerAttributes.visible = visible
@@ -64,10 +50,9 @@ class ProjectView extends React.Component {
         if (block.width) {
           newHeight = newWidth / block.width * block.height
         } else if (block.text) {
-          newHeight = this.measureText('p', '', block.text, newWidth)
-          console.log('CHEA CHING: ', newHeight)
+          newHeight = measureText('p', '', block.text, newWidth).h
         } else {
-          newHeight = 1.7 * newWidth
+          newHeight = newWidth
         }
 
         this.updateMarkerDOM({ width: newWidth, height: newHeight })
@@ -119,16 +104,19 @@ class ProjectView extends React.Component {
 
     }
     render() {
-        const { isAboutPageOpen, data } = this.props
+        const { isAboutPageOpen, isMouseTrackerVisible, data } = this.props
+
         if (isAboutPageOpen) return null
+        if (!data) { return (<h1>Loading</h1>) }
 
-        if (!data) {
-            return (<h1>Loading</h1>)
-        }
-
-        const { placedBlocks, currentProjectBlocks } = this.state
+        const { placedBlocks } = this.state
         const textBlocks = placedBlocks.filter(b => b.block.type != BlockTypes.IMAGE)
         const imageBlocks = placedBlocks.filter(b => b.block.type == BlockTypes.IMAGE)
+
+        const mouseTrackerCls = classnames({
+          'mouse-tracker': true,
+          hidden: !isMouseTrackerVisible
+        })
 
         return (
             <div className="project-view-container"
@@ -146,7 +134,7 @@ class ProjectView extends React.Component {
                   ))}
                 </CSSTransitionGroup>
 
-                <div className="mouse-tracker" ref={ m => this._mT = m }></div>
+                <div className={mouseTrackerCls} ref={ m => this._mT = m }></div>
 
                 <CSSTransitionGroup
                   transitionName="project-item-transition"
@@ -164,6 +152,7 @@ class ProjectView extends React.Component {
 
 export default withMainContext((context, props) => ({
     isAboutPageOpen: context.isAboutPageOpen,
+    isMouseTrackerVisible: context.isMouseTrackerVisible,
     currentProjectId: context.currentProjectId,
     data: context.data,
 

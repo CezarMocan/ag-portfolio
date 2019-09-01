@@ -1,19 +1,41 @@
 import React from 'react'
 import classnames from 'classnames'
 import PortableBlockContent from '@sanity/block-content-to-react'
+import { withMainContext } from '../context/MainContext'
 import { BlockTypes } from '../modules/DataModels'
 import { toDeg } from '../modules/utils'
 
-export default class ProjectBlock extends React.Component {
-    onMouseMove = (e) => {
-        // console.log('block onmousemove', e)
-        // e.stopPropagation()
-        // e.preventDefault()
+class ProjectBlock extends React.Component {
+    isMouseDown = false
+
+    isTextBlockType = (blockType) => {
+      return (blockType == BlockTypes.TEXT || blockType == BlockTypes.PORTABLE_TEXT)
     }
-    onWheel = (isText) => (e) => {
-        // console.log('block onwheel: ', e)
-        if (isText) e.stopPropagation()
-        // e.preventDefault()
+    onWheel = (blockType) => (e) => {
+        if (this.isTextBlockType(blockType))
+          e.stopPropagation()
+    }
+    onMouseDown = (blockType) => (e) => {
+      this.isMouseDown = true
+      if (this.isTextBlockType(blockType))
+        e.stopPropagation()
+    }
+    onMouseUp = (blockType) => (e) => {
+      if (this.isTextBlockType(blockType) && this.isMouseDown)
+        e.stopPropagation()
+      this.isMouseDown = false
+    }
+    onMouseEnter = (blockType) => (e) => {
+      if (this.isTextBlockType(blockType)) {
+        const { toggleMouseTracker } = this.props
+        toggleMouseTracker(false)
+      }
+    }
+    onMouseLeave = (blockType) => (e) => {
+      if (this.isTextBlockType(blockType)) {
+        const { toggleMouseTracker } = this.props
+        toggleMouseTracker(true)
+      }
     }
     render() {
         const { block, transform } = this.props
@@ -42,8 +64,11 @@ export default class ProjectBlock extends React.Component {
                     height: `${h}px`,
                     transform: `translateX(-50%) translateY(-50%) rotate(${toDeg(transform.r)})`
                 }}
-                // onMouseMove={this.onMouseMove}
-                onWheel={this.onWheel(block.type == BlockTypes.TEXT || block.type == BlockTypes.PORTABLE_TEXT)}
+                onWheel={this.onWheel(block.type)}
+                onMouseEnter={this.onMouseEnter(block.type)}
+                onMouseLeave={this.onMouseLeave(block.type)}
+                onMouseDown={this.onMouseDown(block.type)}
+                onMouseUp={this.onMouseUp(block.type)}
             >
                 { block.type == BlockTypes.IMAGE &&
                   <div className={containerCls}>
@@ -72,3 +97,7 @@ ProjectBlock.defaultProps = {
     block: null,
     transform: null
 }
+
+export default withMainContext((context, props) => ({
+  toggleMouseTracker: context.action.toggleMouseTracker
+}))(ProjectBlock)

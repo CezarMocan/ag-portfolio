@@ -9,13 +9,20 @@ const MainContext = React.createContext()
 export default class MainContextProvider extends React.Component {
     state = {
         isAboutPageOpen: false,
+        isMouseTrackerVisible: true,
         currentProjectId: null,
+
+
         data: null,
 
         action: this
     }
 
     // UI related actions
+    toggleMouseTracker = (isShowing) => {
+      this.setState({ isMouseTrackerVisible: isShowing })
+    }
+
     toggleAboutPage = (isOpen) => {
         this.setState({ isAboutPageOpen: isOpen })
     }

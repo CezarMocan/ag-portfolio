@@ -12,3 +12,20 @@ export const randIntervalInt = (l, u) => {
 }
 
 export const mipmap = (x) => Math.pow(2, Math.ceil(Math.log2(x)))
+
+export const measureText = (el, cls, txt, width) => {
+  if (!el || !document) return 0
+  let p = document.createElement(el)
+  if (cls) p.classList.add(cls)
+  let text = document.createTextNode(txt)
+  p.appendChild(text)
+  if (width) p.style.width = `${width}px`
+  p.style.visibility = 'hidden'
+
+  document.body.appendChild(p)
+  const w = p.clientWidth
+  const h = p.clientHeight
+  document.body.removeChild(p)
+
+  return {w, h}
+}

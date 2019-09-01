@@ -15,8 +15,8 @@ export class PortableTextBlock {
   constructor(o) {
     this.type = BlockTypes.PORTABLE_TEXT
     this.o = o
-    this.minScale = 0.25
-    this.maxScale = 0.25
+    this.minScale = 0.3
+    this.maxScale = 0.4
   }
 }
 
@@ -25,8 +25,8 @@ export class TextBlock {
       this.type = BlockTypes.TEXT
       this.text = text
       this.options = options
-      this.minScale = 0.25
-      this.maxScale = 0.25
+      this.minScale = 0.3
+      this.maxScale = 0.4
     }
 }
 
