@@ -1,5 +1,6 @@
 import React from 'react'
 import classnames from 'classnames'
+import clamp from 'lodash.clamp'
 import { CSSTransitionGroup } from 'react-transition-group'
 import { withMainContext } from '../context/MainContext'
 import ProjectBlock from './ProjectBlock'
@@ -19,16 +20,18 @@ class ProjectView extends React.Component {
             y: 0,
             width: 0,
             height: 0,
-            rotation: 0
+            rotation: 0,
+            color: '#000000'
         }
     }
-    updateMarkerDOM = ({ x = null, y = null, width = null, height = null, rotation = null, visible = null }) => {
+    updateMarkerDOM = ({ x = null, y = null, width = null, height = null, rotation = null, visible = null, color = null }) => {
         if (visible !== null) this.markerAttributes.visible = visible
         if (x !== null) this.markerAttributes.x = x
         if (y !== null) this.markerAttributes.y = y
         if (width !== null) this.markerAttributes.width = width
         if (height !== null) this.markerAttributes.height = height
-        if (rotation !== null) this.markerAttributes.rotation = rotation
+        if (rotation !== null) this.markerAttributes.rotation = clamp(rotation, -Math.PI / 2, Math.PI / 2)
+        if (color !== null) this.markerAttributes.color = color
 
         if (!this._mT) return
         this._mT.style.visibility = this.markerAttributes.visible ? 'visible' : 'hidden'
@@ -36,26 +39,36 @@ class ProjectView extends React.Component {
         this._mT.style.top = `${this.markerAttributes.y}px`
         this._mT.style.width = `${this.markerAttributes.width}px`
         this._mT.style.height = `${this.markerAttributes.height}px`
-        this._mT.style.transform = `translateX(-50%) translateY(-50%) rotate(${toDeg(this.markerAttributes.rotation)})`;
+        this._mT.style.transform = `translateX(-50%) translateY(-50%) rotate(${toDeg(this.markerAttributes.rotation)})`;        
+        this._mT.style.borderColor = this.markerAttributes.color;
     }
     updateMarkerForNextBlock = () => {
         const { currentProjectBlocks, placedBlocks } = this.state
-        const index = placedBlocks.length % currentProjectBlocks.length
-        const block = currentProjectBlocks[index]
 
-        // const newWidth = 100 + 200 * Math.random()
-        const newWidth = randInterval(block.minScale, block.maxScale) * window.innerWidth
-        let newHeight
-
-        if (block.width) {
-          newHeight = newWidth / block.width * block.height
-        } else if (block.text) {
-          newHeight = measureText('p', '', block.text, newWidth).h
+        if (placedBlocks.length < currentProjectBlocks.length) { 
+            const index = placedBlocks.length % currentProjectBlocks.length
+            const block = currentProjectBlocks[index]
+    
+            // const newWidth = 100 + 200 * Math.random()
+            const newWidth = randInterval(block.minScale, block.maxScale) * window.innerWidth
+            let newHeight
+    
+            if (block.width) {
+              newHeight = newWidth / block.width * block.height
+            } else if (block.text) {
+              newHeight = measureText('p', '', block.text, newWidth).h
+            } else {
+              newHeight = newWidth
+            }
+    
+            this.updateMarkerDOM({ width: newWidth, height: newHeight })    
         } else {
-          newHeight = newWidth
+            const { isProjectHighlightMode, setIsProjectHighlightMode } = this.props
+            if (!isProjectHighlightMode) {
+                setIsProjectHighlightMode(true) 
+            }
         }
 
-        this.updateMarkerDOM({ width: newWidth, height: newHeight })
     }
     onMouseMove = (e) => {
         this.updateMarkerDOM({
@@ -68,17 +81,22 @@ class ProjectView extends React.Component {
         const { currentProjectBlocks } = this.state
         let placedBlocks = this.state.placedBlocks.slice(0)
 
-        const index = placedBlocks.length % currentProjectBlocks.length
-        const block = currentProjectBlocks[index]
+        if (placedBlocks.length < currentProjectBlocks.length) {
+            const index = placedBlocks.length % currentProjectBlocks.length
+            const block = currentProjectBlocks[index]
+    
+            const x = e.clientX, y = e.clientY, r = this.markerAttributes.rotation
+            const w = this.markerAttributes.width, h = this.markerAttributes.height
+    
+            placedBlocks.push({
+                transform: { x, y, w, r, h },
+                block
+            })
+            this.setState({ placedBlocks })    
+        } else {
+            
+        }
 
-        const x = e.clientX, y = e.clientY, r = this.markerAttributes.rotation
-        const w = this.markerAttributes.width, h = this.markerAttributes.height
-
-        placedBlocks.push({
-            transform: { x, y, w, r, h },
-            block
-        })
-        this.setState({ placedBlocks })
     }
     onMouseUp = (e) => {
       this.updateMarkerForNextBlock()
@@ -96,6 +114,10 @@ class ProjectView extends React.Component {
 
         // Current project has been updated
         if (currentProjectId != oldProps.currentProjectId) {
+            const { getCurrentProjectMetadata } = this.props
+            const { color } = getCurrentProjectMetadata()
+            this.updateMarkerDOM({ color })
+
             this.setState({
                 currentProjectBlocks: this.props.data.blocks[currentProjectId],
                 placedBlocks: []
@@ -104,7 +126,7 @@ class ProjectView extends React.Component {
 
     }
     render() {
-        const { isAboutPageOpen, isMouseTrackerVisible, data } = this.props
+        const { isAboutPageOpen, isMouseTrackerVisible, isProjectHighlightMode, data } = this.props
 
         if (isAboutPageOpen) return null
         if (!data) { return null }
@@ -115,7 +137,7 @@ class ProjectView extends React.Component {
 
         const mouseTrackerCls = classnames({
           'mouse-tracker': true,
-          hidden: !isMouseTrackerVisible
+          hidden: (!isMouseTrackerVisible || isProjectHighlightMode)
         })
 
         return (
@@ -130,18 +152,30 @@ class ProjectView extends React.Component {
                   transitionEnterTimeout={500}
                   transitionLeaveTimeout={300}>
                   { imageBlocks.map((i, index) => (
-                      <ProjectBlock key={`block-image-${index}`} block={i.block} transform={i.transform}/>
+                      <ProjectBlock 
+                        key={`block-image-${index}`} 
+                        block={i.block} 
+                        transform={i.transform}
+                        highlightShadowColor={this.markerAttributes.color}
+                        isProjectHighlightMode={isProjectHighlightMode}
+                      />
                   ))}
                 </CSSTransitionGroup>
 
-                <div className={mouseTrackerCls} ref={ m => this._mT = m }></div>
+                  { !isProjectHighlightMode && <div className={mouseTrackerCls} ref={ m => this._mT = m }></div> }
 
                 <CSSTransitionGroup
                   transitionName="project-item-transition"
                   transitionEnterTimeout={500}
                   transitionLeaveTimeout={300}>
                   { textBlocks.map((i, index) => (
-                      <ProjectBlock key={`block-text-${index}`} block={i.block} transform={i.transform}/>
+                      <ProjectBlock 
+                        key={`block-text-${index}`} 
+                        block={i.block} 
+                        transform={i.transform}
+                        highlightShadowColor={this.markerAttributes.color}
+                        isProjectHighlightMode={isProjectHighlightMode}
+                      />
                   ))}
                 </CSSTransitionGroup>
 
@@ -154,7 +188,10 @@ export default withMainContext((context, props) => ({
     isAboutPageOpen: context.isAboutPageOpen,
     isMouseTrackerVisible: context.isMouseTrackerVisible,
     currentProjectId: context.currentProjectId,
+    isProjectHighlightMode: context.isProjectHighlightMode,    
     data: context.data,
 
-    fetchProjects: context.action.fetchProjects
+    fetchProjects: context.action.fetchProjects,
+    setIsProjectHighlightMode: context.action.setIsProjectHighlightMode,
+    getCurrentProjectMetadata: context.action.getCurrentProjectMetadata
 }))(ProjectView)

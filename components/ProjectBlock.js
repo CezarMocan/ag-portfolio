@@ -7,6 +7,9 @@ import { toDeg } from '../modules/utils'
 
 class ProjectBlock extends React.Component {
     isMouseDown = false
+    state = {
+      hovered: false
+    }
 
     isTextBlockType = (blockType) => {
       return (blockType == BlockTypes.TEXT || blockType == BlockTypes.PORTABLE_TEXT)
@@ -26,15 +29,28 @@ class ProjectBlock extends React.Component {
       this.isMouseDown = false
     }
     onMouseEnter = (blockType) => (e) => {
+      const { onMouseEnter, isProjectHighlightMode } = this.props      
+      console.log('onMouseEnter')
       if (this.isTextBlockType(blockType)) {
         const { toggleMouseTracker } = this.props
         toggleMouseTracker(false)
       }
+      if (onMouseEnter) onMouseEnter()
+      if (isProjectHighlightMode) {
+        console.log('----in highlight mode')
+        this.setState({ hovered: true })
+      }
     }
     onMouseLeave = (blockType) => (e) => {
+      const { onMouseLeave, isProjectHighlightMode } = this.props      
       if (this.isTextBlockType(blockType)) {
         const { toggleMouseTracker } = this.props
         toggleMouseTracker(true)
+      }
+      if (onMouseLeave) onMouseLeave()
+
+      if (isProjectHighlightMode) {
+        this.setState({ hovered: false })
       }
     }
     render() {
@@ -55,6 +71,10 @@ class ProjectBlock extends React.Component {
 
         const { x, y, w, h } = transform
 
+        const { hovered } = this.state
+        const { regularShadowColor, highlightShadowColor } = this.props
+        const shadowColor = hovered ? highlightShadowColor : regularShadowColor
+
         return (
             <div
                 className={wrapperCls}
@@ -64,7 +84,8 @@ class ProjectBlock extends React.Component {
                     top: `${y}px`,
                     width: `${w}px`,
                     height: `${h}px`,
-                    transform: `translateX(-50%) translateY(-50%) rotate(${toDeg(transform.r)})`
+                    transform: `translateX(-50%) translateY(-50%) rotate(${toDeg(transform.r)})`,
+                    boxShadow: `0px 0px 10px ${shadowColor}`
                 }}
                 onWheel={this.onWheel(block.type)}
                 onMouseEnter={this.onMouseEnter(block.type)}
@@ -97,7 +118,11 @@ class ProjectBlock extends React.Component {
 
 ProjectBlock.defaultProps = {
     block: null,
-    transform: null
+    transform: null,
+    regularShadowColor: 'rgba(0, 0, 0, 0.5)',
+    highlightShadowColor: 'rgba(0, 0, 0, 0.5)',
+    hovered: false,
+    isProjectHighlightMode: false
 }
 
 export default withMainContext((context, props) => ({

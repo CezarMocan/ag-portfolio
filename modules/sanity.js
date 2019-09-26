@@ -15,6 +15,7 @@ export const queries = {
       collaborators,
       client,
       description,
+      color,
       "images": images[]{
         asset->{
           "originalWidth": metadata.dimensions.width,

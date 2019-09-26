@@ -11,6 +11,7 @@ export default class MainContextProvider extends React.Component {
         isAboutPageOpen: false,
         isMouseTrackerVisible: true,
         currentProjectId: null,
+        isProjectHighlightMode: false,
 
         data: null,
 
@@ -27,10 +28,11 @@ export default class MainContextProvider extends React.Component {
                 title: project.title,
                 year: project.year,
                 client: project.client,
-                collaborators: project.collaborators
+                collaborators: project.collaborators,
+                color: project.color.hex
             }    
         } else {
-            return { title: null, year: null, client: null, collaborators: null}
+            return { title: null, year: null, client: null, collaborators: null, color: null }
         }
     }
 
@@ -43,13 +45,17 @@ export default class MainContextProvider extends React.Component {
         this.setState({ isAboutPageOpen: isOpen })
     }
 
+    setIsProjectHighlightMode = (isProjectHighlightMode) => {
+        this.setState({ isProjectHighlightMode })
+    }
+
     navigateNextProject = () => {
         const { currentProjectId, data } = this.state
-        console.log('Data: ', data)
         let currentIndex = data.projectList.indexOf(currentProjectId)
         currentIndex = (currentIndex + 1) % data.projectList.length
         this.setState({
-            currentProjectId: data.projectList[currentIndex]
+            currentProjectId: data.projectList[currentIndex],
+            isProjectHighlightMode: false,
         })
     }
 
