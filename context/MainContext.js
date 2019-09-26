@@ -17,6 +17,23 @@ export default class MainContextProvider extends React.Component {
         action: this
     }
 
+    // Helpers
+    getCurrentProjectMetadata = () => {        
+        const { data, currentProjectId } = this.state
+        console.log('Data: ', data)
+        if (data && data.raw) {
+            const project = Object.values(data.raw).find(p => p.id == currentProjectId)
+            return {
+                title: project.title,
+                year: project.year,
+                client: project.client,
+                collaborators: project.collaborators
+            }    
+        } else {
+            return { title: null, year: null, client: null, collaborators: null}
+        }
+    }
+
     // UI related actions
     toggleMouseTracker = (isShowing) => {
       this.setState({ isMouseTrackerVisible: isShowing })
@@ -28,6 +45,7 @@ export default class MainContextProvider extends React.Component {
 
     navigateNextProject = () => {
         const { currentProjectId, data } = this.state
+        console.log('Data: ', data)
         let currentIndex = data.projectList.indexOf(currentProjectId)
         currentIndex = (currentIndex + 1) % data.projectList.length
         this.setState({

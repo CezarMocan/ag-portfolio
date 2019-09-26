@@ -29,41 +29,48 @@ class Navigation extends React.Component {
     renderAboutPageNav() {
         return (
             <>
-                <div className="nav-container nav-exit interactive" onClick={this.onAboutCloseClick}>
+                <div className="nav-container nav-top-right interactive" onClick={this.onAboutCloseClick}>
                     <img src="static/icons/nav_X.svg"/>
                 </div>
             </>
         )
     }
     renderMainPageNav() {
+        const { currentProjectId, getCurrentProjectMetadata } = this.props
+        const { title, year } = getCurrentProjectMetadata()
         return (
             <>
-                <div className="nav-container nav-next interactive"
+                <div className="nav-container nav-bottom-right interactive"
                   onClick={this.onNavigateNextClick}
                   onMouseEnter={this.onNavigationMouseEnter}
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
-                    <img src="static/icons/nav_V.svg"/>
+                    <img src="static/icons/2_nav_V.svg"/>
                 </div>
-                <div className="nav-container nav-prev interactive"
+                <div className="nav-container nav-bottom-left interactive"
                   onClick={this.onNavigatePrevClick}
                   onMouseEnter={this.onNavigationMouseEnter}
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
-                    <img src="static/icons/nav_A.svg"/>
+                    <img src="static/icons/2_nav_A.svg"/>
                 </div>
-                <div className="nav-container nav-about interactive"
+                <div className="nav-container nav-top-right interactive"
                   onClick={this.onAboutClick}
                   onMouseEnter={this.onNavigationMouseEnter}
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
-                    <img src="static/icons/nav_G.svg"/>
+                    <img src="static/icons/2_nav_G.svg"/>
                 </div>
-                <div className="nav-container nav-contact interactive"
+                <div className="nav-container nav-top-left interactive"
                   onMouseEnter={this.onNavigationMouseEnter}
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
-                    <img src="static/icons/nav_AT.svg"/>
+                    { title && year && <h3>{title}, {year}</h3> }
+                    { (!title || !year) && <h3></h3> }
+                </div>
+
+                <div className="nav-container nav-bottom-center">
+                    <h4>Copyright Anthony Gagliardi, 2019.</h4>
                 </div>
             </>
         )
@@ -83,9 +90,12 @@ Navigation.defaultProps = {
 
 export default withMainContext((context, props) => ({
     isAboutPageOpen: context.isAboutPageOpen,
+    currentProjectId: context.currentProjectId,
 
     toggleAboutPage: context.action.toggleAboutPage,
     toggleMouseTracker: context.action.toggleMouseTracker,
     navigateNextProject: context.action.navigateNextProject,
     navigatePreviousProject: context.action.navigatePreviousProject,
+
+    getCurrentProjectMetadata: context.action.getCurrentProjectMetadata
   }))(Navigation)

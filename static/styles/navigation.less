@@ -1,5 +1,5 @@
-@nav-margin: 15px; 
-@nav-icon-size: 25px;
+@nav-margin: 10px; 
+@nav-icon-size: 16px;
 
 .nav-container {
     position: fixed;
@@ -7,24 +7,25 @@
         width: @nav-icon-size;
         height: @nav-icon-size;
     }
-    &.nav-prev {
-        left: @nav-margin;
-        top: @nav-margin;    
-    }
-    &.nav-next {
+    &.nav-bottom-left {
         left: @nav-margin;
         bottom: @nav-margin;    
     }
-    &.nav-contact {
-        right: @nav-margin;
-        top: @nav-margin;    
-    }
-    &.nav-about {
+    &.nav-bottom-right {
         right: @nav-margin;
         bottom: @nav-margin;    
     }
-    &.nav-exit {
+    &.nav-top-left {
+        left: @nav-margin;
+        top: @nav-margin;    
+    }
+    &.nav-top-right {
         right: @nav-margin;
         top: @nav-margin;    
+    }
+    &.nav-bottom-center {
+        bottom: @nav-margin;
+        left: 50%;
+        transform: translateX(-50%);
     }
 }

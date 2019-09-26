@@ -4,7 +4,8 @@ const processProjectData = (projectData) => {
     const blocks = []
 
     // First element that gets placed on the page is always the project title
-    blocks.push(new TextBlock(projectData.title))
+    // Actually, no title block for now.    
+    // blocks.push(new TextBlock(projectData.title))
 
     // Then we place all images
     const noImages = projectData.images.length
@@ -16,10 +17,9 @@ const processProjectData = (projectData) => {
     // Then we place the description
     blocks.push(new PortableTextBlock(projectData.description))
 
-    // At the end, we place the year, collaborators and context
+    // At the end, we place the collaborators and context
     if (projectData.client) blocks.push(new TextBlock('Built for ' + projectData.client))
     if (projectData.collaborators) blocks.push(new TextBlock('In collaboration with ' + projectData.collaborators))
-    if (projectData.year) blocks.push(new TextBlock(projectData.year))
 
     return blocks
 }
