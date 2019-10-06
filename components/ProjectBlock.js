@@ -21,7 +21,15 @@ class ProjectBlock extends React.Component {
     onMouseDown = (blockType) => (e) => {
       this.isMouseDown = true
       if (this.isTextBlockType(blockType))
-        e.stopPropagation()
+        e.stopPropagation()      
+    }
+    onClick = (blockType) => (e) => {
+      const { onHighlightClick, isProjectHighlightMode, block, visible } = this.props
+      if (!isProjectHighlightMode) return
+      if (!visible) return
+      e.stopPropagation()
+      if (onHighlightClick) onHighlightClick()
+      console.log('Block onclick: ', block.id)
     }
     onMouseUp = (blockType) => (e) => {
       if (this.isTextBlockType(blockType) && this.isMouseDown)
@@ -29,7 +37,8 @@ class ProjectBlock extends React.Component {
       this.isMouseDown = false
     }
     onMouseEnter = (blockType) => (e) => {
-      const { onMouseEnter, isProjectHighlightMode } = this.props      
+      const { onMouseEnter, isProjectHighlightMode, visible } = this.props
+      if (!visible) return
       console.log('onMouseEnter')
       if (this.isTextBlockType(blockType)) {
         const { toggleMouseTracker } = this.props
@@ -54,14 +63,15 @@ class ProjectBlock extends React.Component {
       }
     }
     render() {
-        const { block, transform } = this.props
+        const { block, transform, visible } = this.props
         if (!block || !transform) return null
 
         const wrapperCls = classnames({
           "project-block-container": true,
           "text-block-container": block.type == BlockTypes.TEXT || block.type == BlockTypes.PORTABLE_TEXT,
           "image-block-container": block.type == BlockTypes.IMAGE,
-          "with-overflow": block.type == BlockTypes.TEXT || block.type == BlockTypes.PORTABLE_TEXT
+          "with-overflow": block.type == BlockTypes.TEXT || block.type == BlockTypes.PORTABLE_TEXT,
+          "hidden": !visible
         })
 
         const containerCls = classnames({
@@ -92,6 +102,7 @@ class ProjectBlock extends React.Component {
                 onMouseLeave={this.onMouseLeave(block.type)}
                 onMouseDown={this.onMouseDown(block.type)}
                 onMouseUp={this.onMouseUp(block.type)}
+                onClick={this.onClick(block.type)}
             >
                 { block.type == BlockTypes.IMAGE &&
                   <div className={containerCls}>
@@ -119,10 +130,12 @@ class ProjectBlock extends React.Component {
 ProjectBlock.defaultProps = {
     block: null,
     transform: null,
+    visible: true,
     regularShadowColor: 'rgba(0, 0, 0, 0.5)',
     highlightShadowColor: 'rgba(0, 0, 0, 0.5)',
     hovered: false,
-    isProjectHighlightMode: false
+    isProjectHighlightMode: false,
+    onHighlightClick: () => {}
 }
 
 export default withMainContext((context, props) => ({

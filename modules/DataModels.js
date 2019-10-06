@@ -4,6 +4,7 @@ import { mipmap } from './utils'
 
 const imageBuilder = imageUrlBuilder(sanityClient)
 const imageUrlFor = (source) => imageBuilder.image(source)
+let UID = 0
 
 export const BlockTypes = {
     TEXT: 'TEXT',
@@ -14,6 +15,7 @@ export const BlockTypes = {
 export class PortableTextBlock {
   constructor(o) {
     this.type = BlockTypes.PORTABLE_TEXT
+    this.id = UID++
     this.o = o
     this.minScale = 0.3
     this.maxScale = 0.4
@@ -23,6 +25,7 @@ export class PortableTextBlock {
 export class TextBlock {
     constructor(text, options = {}) {
       this.type = BlockTypes.TEXT
+      this.id = UID++
       this.text = text
       this.options = options
       this.minScale = 0.3
@@ -33,6 +36,7 @@ export class TextBlock {
 export class ImageBlock {
     constructor(o) {
       this.type = BlockTypes.IMAGE
+      this.id = UID++
 
       this.width = o.asset.originalWidth
       this.height = o.asset.originalHeight

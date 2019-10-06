@@ -10,7 +10,8 @@ import { BlockTypes } from '../modules/DataModels'
 class ProjectView extends React.Component {
     state = {
         currentProjectBlocks: [],
-        placedBlocks: []
+        placedBlocks: [],
+        selectedBlockId: null
     }
     constructor(props) {
         super(props)
@@ -93,10 +94,17 @@ class ProjectView extends React.Component {
                 block
             })
             this.setState({ placedBlocks })    
-        } else {
-            
         }
-
+    }
+    onClick = (e) => {
+        const { isProjectHighlightMode } = this.props
+        if (isProjectHighlightMode) {
+            const { selectedBlockId } = this.state
+            console.log('onClick: ', selectedBlockId)
+            if (selectedBlockId != null) {
+                this.setState({ selectedBlockId: null })
+            }
+        }
     }
     onMouseUp = (e) => {
       this.updateMarkerForNextBlock()
@@ -104,6 +112,21 @@ class ProjectView extends React.Component {
     onScroll = (e) => {
         const angleDelta = e.deltaY / 200
         this.updateMarkerDOM({ rotation: this.markerAttributes.rotation + angleDelta })
+    }
+    onBlockHighlightClick = (blockId) => (e) => {
+        const { isProjectHighlightMode } = this.props
+        if (!isProjectHighlightMode) return
+        const { selectedBlockId } = this.state
+
+        console.log('ProjectView block onClick callback: ', blockId, selectedBlockId)
+
+        if (selectedBlockId == null) {
+            this.setState({ selectedBlockId: blockId })
+        } else if (selectedBlockId == blockId) {
+            this.setState({ selectedBlockId: null })
+        } else {
+            this.setState({ selectedBlockId: null })
+        }
     }
     componentDidMount() {
         const { fetchProjects } = this.props
@@ -127,6 +150,7 @@ class ProjectView extends React.Component {
     }
     render() {
         const { isAboutPageOpen, isMouseTrackerVisible, isProjectHighlightMode, data } = this.props
+        const { selectedBlockId } = this.state
 
         if (isAboutPageOpen) return null
         if (!data) { return null }
@@ -146,6 +170,7 @@ class ProjectView extends React.Component {
                 onMouseDown={this.onMouseDown}
                 onMouseUp={this.onMouseUp}
                 onWheel={this.onScroll}
+                onClick={this.onClick}
             >
                 <CSSTransitionGroup
                   transitionName="project-item-transition"
@@ -153,11 +178,13 @@ class ProjectView extends React.Component {
                   transitionLeaveTimeout={300}>
                   { imageBlocks.map((i, index) => (
                       <ProjectBlock 
-                        key={`block-image-${index}`} 
+                        key={`block-image-${i.block.id}`} 
                         block={i.block} 
                         transform={i.transform}
                         highlightShadowColor={this.markerAttributes.color}
                         isProjectHighlightMode={isProjectHighlightMode}
+                        onHighlightClick={this.onBlockHighlightClick(i.block.id)}
+                        visible={!isProjectHighlightMode || selectedBlockId == null || (selectedBlockId == i.block.id)}
                       />
                   ))}
                 </CSSTransitionGroup>
@@ -170,11 +197,13 @@ class ProjectView extends React.Component {
                   transitionLeaveTimeout={300}>
                   { textBlocks.map((i, index) => (
                       <ProjectBlock 
-                        key={`block-text-${index}`} 
+                        key={`block-text-${i.block.id}`}
                         block={i.block} 
                         transform={i.transform}
                         highlightShadowColor={this.markerAttributes.color}
                         isProjectHighlightMode={isProjectHighlightMode}
+                        onHighlightClick={this.onBlockHighlightClick(i.block.id)}
+                        visible={!isProjectHighlightMode || selectedBlockId == null || (selectedBlockId == i.block.id)}
                       />
                   ))}
                 </CSSTransitionGroup>
