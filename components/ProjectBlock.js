@@ -1,6 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
 import PortableBlockContent from '@sanity/block-content-to-react'
+import ProgressiveImage from 'react-progressive-image'
 import { withMainContext } from '../context/MainContext'
 import { BlockTypes } from '../modules/DataModels'
 import { toDeg } from '../modules/utils'
@@ -63,7 +64,7 @@ class ProjectBlock extends React.Component {
       }
     }
     render() {
-        const { block, transform, visible } = this.props
+        const { block, transform, visible, clicked } = this.props
         if (!block || !transform) return null
 
         const wrapperCls = classnames({
@@ -79,7 +80,9 @@ class ProjectBlock extends React.Component {
             "text": block.type == BlockTypes.TEXT || block.type == BlockTypes.PORTABLE_TEXT
         })
 
-        const { x, y, w, h } = transform
+        let { x, y, w, h } = transform
+        w = parseInt(w)
+        h = parseInt(h)
 
         const { hovered } = this.state
         const { regularShadowColor, highlightShadowColor } = this.props
@@ -95,7 +98,7 @@ class ProjectBlock extends React.Component {
                     width: `${w}px`,
                     height: `${h}px`,
                     transform: `translateX(-50%) translateY(-50%) rotate(${toDeg(transform.r)})`,
-                    boxShadow: `0px 0px 10px ${shadowColor}`
+                    boxShadow: clicked ? '' : `0px 0px 10px ${shadowColor}`
                 }}
                 onWheel={this.onWheel(block.type)}
                 onMouseEnter={this.onMouseEnter(block.type)}
@@ -106,7 +109,26 @@ class ProjectBlock extends React.Component {
             >
                 { block.type == BlockTypes.IMAGE &&
                   <div className={containerCls}>
-                    <img src={block.getUrl(w)} className="project-image"/>
+                    <ProgressiveImage 
+                      delay={100}
+                      src={block.getUrl(w)}
+                      placeholder={block.getLQUrl()}
+                    >
+                      { (src, loading) => {
+                        const cls = classnames({
+                          "project-image-placeholder": true,
+                          "fadeout-after": !loading,
+                          //"blurred": true
+                        })
+                        return (
+                          <div className="project-image-container">
+                            {/* <img src={src} className={cls}/> */}
+                            <img src={block.getLQUrl()} className={cls} width={w} height={h}/>
+                            { !loading && <img src={src} width={w} height={h} className="project-image fadein"/>}
+                          </div>
+                        )
+                      }}
+                    </ProgressiveImage>
                   </div>
                 }
                 { block.type == BlockTypes.TEXT &&

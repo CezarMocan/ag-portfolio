@@ -34,6 +34,12 @@
 
     &.with-overflow {
       overflow-y: scroll;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE 10+ */
+      &::-webkit-scrollbar { /* WebKit */
+        width: 0;
+        height: 0;
+      }
     }
     &.text-block-container {
       cursor: crosshair;
@@ -46,12 +52,36 @@
         }
     }
 
+    .project-image-container {
+      position: relative;
+      width: 100%;
+    }
     .project-image {
         width: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
     }
+    .project-image-placeholder {
+      width: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      &.blurred {
+        -webkit-backface-visibility: hidden;
+        -webkit-perspective: 1000;
+        -webkit-transform: translate3d(0,0,0);
+        -webkit-transform: translateZ(0);
+        backface-visibility: hidden;
+        perspective: 1000;
+        transform: translate3d(0,0,0);
+        transform: translateZ(0);
+        filter: blur(25px); 
+      }
+  }
 
     opacity: 1;
-    transition: opacity 1s ease-in-out;
+    transition: opacity 1s ease-in-out, box-shadow 0.5s ease-in-out;
     
     &.hidden {
       opacity: 0;
@@ -72,4 +102,59 @@
     opacity: 0.01;
     transition: opacity 300ms ease-out;
   }
+}
+
+.fadein {
+  animation: fadein 0.5s;
+  -moz-animation: fadein 0.5s;
+  -webkit-animation: fadein 0.5s;
+  -o-animation: fadein 0.5s;
+}
+
+.fadeout-after {
+  animation: fadeoutDelayed 0.5s forwards;
+  -moz-animation: fadeoutDelayed 0.5s forwards;
+  -webkit-animation: fadeoutDelayed 0.5s forwards;
+  -o-animation: fadeoutDelayed 0.5s forwards;
+}
+
+@keyframes fadein {
+  from { opacity:0; }
+  to { opacity: 1; }
+}
+@-moz-keyframes fadein {
+  from { opacity:0; }
+  to { opacity: 1; }
+}
+@-webkit-keyframes fadein {
+  from { opacity:0; }
+  to { opacity: 1; }
+}
+@-o-keyframes fadein {
+  from { opacity:0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeoutDelayed {
+  0% { opacity:1; }
+  66% { opacity:1; }
+  100% { opacity: 0;}
+}
+
+@-moz-keyframes fadeoutDelayed {
+  0% { opacity:1; }
+  66% { opacity:1; }
+  100% { opacity: 0;}
+}
+
+@-webkit-keyframes fadeoutDelayed {
+  0% { opacity:1; }
+  66% { opacity:1; }
+  100% { opacity: 0;}
+}
+
+@-o-keyframes fadeoutDelayed {
+  0% { opacity:1; }
+  66% { opacity:1; }
+  100% { opacity: 0;}
 }

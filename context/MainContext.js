@@ -69,14 +69,16 @@ export default class MainContextProvider extends React.Component {
         let currentIndex = data.projectList.indexOf(currentProjectId)
         currentIndex = (currentIndex - 1 + data.projectList.length) % data.projectList.length
         this.setState({
-            currentProjectId: data.projectList[currentIndex]
+            currentProjectId: data.projectList[currentIndex],
+            isProjectHighlightMode: false
         })
     }
 
     navigateToProjectId = (id) => {
         this.setState({
             currentProjectId: id,
-            isAboutPageOpen: false
+            isAboutPageOpen: false,
+            isProjectHighlightMode: false
         })
     }
 

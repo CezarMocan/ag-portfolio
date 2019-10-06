@@ -53,4 +53,8 @@ export class ImageBlock {
       const mmWidth = mipmap(width)
       return imageUrlFor(this.o).width(mmWidth).url()
     }
+
+    getLQUrl() {
+      return this.lqip
+    }
 }

@@ -15,7 +15,8 @@ class About extends React.Component {
             this.setState({ currentHoverId: null })        
     }
     onProjectClick = (projectId) => (e) => {
-        const { navigateToProjectId } = this.props
+        const { navigateToProjectId, toggleMouseTracker } = this.props
+        toggleMouseTracker(true)
         navigateToProjectId(projectId)
     }
     render() {        
@@ -73,5 +74,6 @@ export default withMainContext((context, props) => ({
     about: context.about,
     projects: context.projects,
 
+    toggleMouseTracker: context.action.toggleMouseTracker,
     navigateToProjectId: context.action.navigateToProjectId
 }))(About)

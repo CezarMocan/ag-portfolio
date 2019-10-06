@@ -139,7 +139,7 @@ class ProjectView extends React.Component {
         if (currentProjectId != oldProps.currentProjectId) {
             const { getCurrentProjectMetadata } = this.props
             const { color } = getCurrentProjectMetadata()
-            this.updateMarkerDOM({ color })
+            this.updateMarkerDOM({ color, rotation: 0 })
 
             this.setState({
                 currentProjectBlocks: this.props.data.blocks[currentProjectId],
@@ -185,6 +185,7 @@ class ProjectView extends React.Component {
                         isProjectHighlightMode={isProjectHighlightMode}
                         onHighlightClick={this.onBlockHighlightClick(i.block.id)}
                         visible={!isProjectHighlightMode || selectedBlockId == null || (selectedBlockId == i.block.id)}
+                        clicked={isProjectHighlightMode && selectedBlockId == i.block.id}
                       />
                   ))}
                 </CSSTransitionGroup>
@@ -204,6 +205,7 @@ class ProjectView extends React.Component {
                         isProjectHighlightMode={isProjectHighlightMode}
                         onHighlightClick={this.onBlockHighlightClick(i.block.id)}
                         visible={!isProjectHighlightMode || selectedBlockId == null || (selectedBlockId == i.block.id)}
+                        clicked={isProjectHighlightMode && selectedBlockId == i.block.id}
                       />
                   ))}
                 </CSSTransitionGroup>
