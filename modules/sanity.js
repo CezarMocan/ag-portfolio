@@ -29,5 +29,18 @@ export const queries = {
         ...
       }
     }
+  `,
+  about: `
+    *[_type=='about']{
+      "id": _id,
+      description,
+    }
+  `,
+  news: `
+    *[_type=='news']{
+      "id": _id,
+      displayTitle,
+      items
+    }
   `
 }

@@ -14,6 +14,9 @@ export default class MainContextProvider extends React.Component {
         isProjectHighlightMode: false,
 
         data: null,
+        about: null,
+        news: null,
+        projects: null,
 
         action: this
     }
@@ -24,12 +27,14 @@ export default class MainContextProvider extends React.Component {
         console.log('Data: ', data)
         if (data && data.raw) {
             const project = Object.values(data.raw).find(p => p.id == currentProjectId)
+            console.log('Metadata: ', project.color)
+            const rgba = project.color.rgb
             return {
                 title: project.title,
                 year: project.year,
                 client: project.client,
                 collaborators: project.collaborators,
-                color: project.color.hex
+                color: `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`//project.color.hex
             }    
         } else {
             return { title: null, year: null, client: null, collaborators: null, color: null }
@@ -71,15 +76,30 @@ export default class MainContextProvider extends React.Component {
     // Data related actions
     fetchProjects = async () => {
         const projects = await this.fetchProjectsSanity()
+        const about = await this.fetchAboutSanity()
+        const news = await this.fetchNewsSanity()
+
+        console.log('Pula pizda coaele: ', about, news)
+
         const data = processData(projects)
 
         this.setState({
             data,
+            about,
+            news,
+            projects,
             currentProjectId: data.projectList[0]
         })
     }
-
-    fetchProjectsSanity = async () => {
+    fetchNewsSanity = async () => {
+        const news = await sanityClient.fetch(queries.news)
+        return news[0]
+    }
+    fetchAboutSanity = async () => {
+        const about = await sanityClient.fetch(queries.about)
+        return about[0]
+    }
+    fetchProjectsSanity = async () => {    
       const projects = await sanityClient.fetch(queries.allProjects)
       return projects
     }

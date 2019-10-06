@@ -16,4 +16,31 @@
     &.visible {
         display: block;
     }
+
+    .nav-about-top-left {
+        margin-left: 5px;
+        margin-top: 5px;
+        margin-bottom: 20px;
+    }
+
+    .project-link-container {
+        cursor: pointer;
+        position: relative;
+    }
+    .project-link {
+        color: black;
+        display: inline-block;
+        position: absolute;
+    }
+    .project-link-hover {
+        color: transparent;
+        border-bottom: 2px solid blue;  
+        transform: translateY(-43%);        
+        display: inline-block;
+        opacity: 0;
+        transition: opacity 0.25s ease-in-out;
+        &.visible {
+            opacity: 1;
+        }
+    }
 }

@@ -1,27 +1,63 @@
 import React from 'react'
 import classnames from 'classnames'
+import PortableBlockContent from '@sanity/block-content-to-react'
 import { withMainContext } from '../context/MainContext'
 
 class About extends React.Component {
-    render() {
-        const { isAboutPageOpen } = this.props
+    state = {
+        currentHoverId: null
+    }
+    onMouseEnter = (projectId) => (e) => {
+        this.setState({ currentHoverId: projectId })        
+    }
+    onMouseLeave = (projectId) => (e) => {
+        if (this.state.currentHoverId == projectId)
+            this.setState({ currentHoverId: null })        
+    }
+    render() {        
+        const { isAboutPageOpen, about, projects } = this.props
         const cls = classnames({
             'about-container': true,
             'visible': isAboutPageOpen 
         })
+        const { currentHoverId } = this.state
         return (
             <div className={cls}>
+                <div className="nav-about-top-left">
+                    <h3>Anthony V. Gagliardi, architect</h3>
+                </div>
+                
                 <p>
-                    &emsp;1. CAN Triennial<br/>
-                    &emsp;2. Kitchen for a Musician<br/>
-                    &emsp;3. Bridgeport<br/>
-                    &emsp;4. North Canton Ohio Assisted Living<br/>
-                    &emsp;5. HR Chair<br/>
+                    { projects && projects.map((p, index) => {
+                        const rgba = p.color.rgb
+                        const hoverCls = classnames({
+                            "project-link-hover": true,
+                            "visible": currentHoverId == p.id
+                        })
+                        return (
+                            <div className="project-link-container"
+                                onMouseEnter={this.onMouseEnter(p.id)}
+                                onMouseLeave={this.onMouseLeave(p.id)}
+                            >
+                                <span className="project-link">
+                                    &emsp;{index + 1}. {p.title}&emsp;<br/>
+                                </span>
+                                <span 
+                                    className={hoverCls}
+                                    style={{borderBottom: `2px solid rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`}} 
+                                >
+                                    &emsp;{index + 1}. {p.title}&emsp;<br/>
+                                </span>
+                            </div>
+                        )
+                    })}
                 </p>
                 <br/>
-                <p>
-                    Anthony Gagliardi is a co-founder of Almost Studio. He is currently a critic at the Yale School of Architecture where he teaches a graduate advanced studio and first-year required course with Peter Eisenman. Anthony has previously worked for Steven Harris Architects and Eisenman Architects in New York City. He received a M.Arch from the Yale School of Architecture, where he was the Yansong Ma Scholar and selected for the James Gamble Rogers Memorial Fellowship, and a B.S. in Architecture with Distinction from The Ohio State University.  
-                </p>
+                <PortableBlockContent
+                    blocks={about ? about.description : []}
+                    className={""}
+                    renderContainerOnSingleChild={true}
+                />
             </div>
         )
     }    
@@ -29,4 +65,6 @@ class About extends React.Component {
 
 export default withMainContext((context, props) => ({
     isAboutPageOpen: context.isAboutPageOpen,
+    about: context.about,
+    projects: context.projects,
 }))(About)

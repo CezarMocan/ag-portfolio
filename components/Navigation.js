@@ -70,7 +70,7 @@ class Navigation extends React.Component {
                 </div>
 
                 <div className="nav-container nav-bottom-center">
-                    <h4>Copyright Anthony Gagliardi, 2019.</h4>
+                    <h4>© Anthony Gagliardi, 2019.</h4>
                 </div>
             </>
         )
