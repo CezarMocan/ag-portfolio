@@ -14,6 +14,10 @@ class About extends React.Component {
         if (this.state.currentHoverId == projectId)
             this.setState({ currentHoverId: null })        
     }
+    onProjectClick = (projectId) => (e) => {
+        const { navigateToProjectId } = this.props
+        navigateToProjectId(projectId)
+    }
     render() {        
         const { isAboutPageOpen, about, projects } = this.props
         const cls = classnames({
@@ -38,6 +42,7 @@ class About extends React.Component {
                             <div className="project-link-container"
                                 onMouseEnter={this.onMouseEnter(p.id)}
                                 onMouseLeave={this.onMouseLeave(p.id)}
+                                onClick={this.onProjectClick(p.id)}
                             >
                                 <span className="project-link">
                                     &emsp;{index + 1}. {p.title}&emsp;<br/>
@@ -67,4 +72,6 @@ export default withMainContext((context, props) => ({
     isAboutPageOpen: context.isAboutPageOpen,
     about: context.about,
     projects: context.projects,
+
+    navigateToProjectId: context.action.navigateToProjectId
 }))(About)

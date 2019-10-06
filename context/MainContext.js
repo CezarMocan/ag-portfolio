@@ -73,6 +73,13 @@ export default class MainContextProvider extends React.Component {
         })
     }
 
+    navigateToProjectId = (id) => {
+        this.setState({
+            currentProjectId: id,
+            isAboutPageOpen: false
+        })
+    }
+
     // Data related actions
     fetchProjects = async () => {
         const projects = await this.fetchProjectsSanity()
