@@ -8,7 +8,7 @@ export default sanityClient({
 
 export const queries = {
   allProjects: `
-    *[_type=='project']{
+    *[_type=='project'] | order(orderNumber){
       "id": _id,
       title,
       year,
@@ -18,6 +18,7 @@ export const queries = {
       color,
       textMinScale,
       textMaxScale,
+      orderNumber,
       "images": images[]{
         asset->{
           "originalWidth": metadata.dimensions.width,
