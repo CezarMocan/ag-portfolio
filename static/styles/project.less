@@ -5,14 +5,21 @@
     cursor: crosshair;
     width: 100vw;
     height: 100vh;
+    opacity: 0;
+    transition: opacity 0.5s linear;
+
+    &.visible {
+      opacity: 1;
+    }
 
     .mouse-tracker {
         // border: 1px dashed rgba(0, 0, 0, 0.4);
-        border: 3px solid #39ff14;
-        border-color: black;
+        // border: 3px solid #39ff14;
+        // border-color: black;
         // background-color: rgba(235, 225, 64, 0.05);
         // background-image: linear-gradient(45deg, @dark-stripe-color 4.55%, @light-stripe-color 4.55%, @light-stripe-color 50%, @dark-stripe-color 50%, @dark-stripe-color 54.55%, @light-stripe-color 54.55%, @light-stripe-color 100%);
         // background-size: 31.11px 31.11px;
+        box-shadow: 0 0 10px black;
         transform: translateX(-50%) translateY(-50%);
         width: 100px;
         height: 100px;

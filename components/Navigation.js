@@ -1,4 +1,5 @@
 import React from 'react'
+import classnames from 'classnames'
 import { withMainContext } from '../context/MainContext'
 
 class Navigation extends React.Component {
@@ -31,6 +32,12 @@ class Navigation extends React.Component {
             <>
                 <div className="nav-container nav-top-right interactive" onClick={this.onAboutCloseClick}>
                     <img src="static/icons/nav_X.svg"/>
+                </div>
+                <div className="nav-container nav-bottom-right interactive fadeout-after">
+                    <img src="static/icons/2_nav_V.svg"/>
+                </div>
+                <div className="nav-container nav-bottom-center">
+                    <h4>© Anthony Gagliardi, 2019.</h4>
                 </div>
             </>
         )
@@ -78,8 +85,57 @@ class Navigation extends React.Component {
     }
     render() {
         const { isAboutPageOpen } = this.props
-        if (!isAboutPageOpen) return this.renderMainPageNav()
-        else return this.renderAboutPageNav()
+        const { currentProjectId, getCurrentProjectMetadata } = this.props
+        const { title, year } = getCurrentProjectMetadata()
+        const brClassnames = classnames({'nav-container': true, 'nav-bottom-right': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
+        const blClassnames = classnames({'nav-container': true, 'nav-bottom-left': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
+        const trClassnames = classnames({'nav-container': true, 'nav-top-right': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
+        const trAboutClassnames = classnames({'nav-container': true, 'nav-top-right': true, 'interactive': isAboutPageOpen, visible: isAboutPageOpen })
+        const tlClassnames = classnames({'nav-container': true, 'nav-top-left': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
+        return (
+            <>
+                <div className={brClassnames}
+                  onClick={this.onNavigateNextClick}
+                  onMouseEnter={this.onNavigationMouseEnter}
+                  onMouseLeave={this.onNavigationMouseLeave}
+                >
+                    <img src="static/icons/2_nav_V.svg"/>
+                </div>
+                <div className={blClassnames}
+                  onClick={this.onNavigatePrevClick}
+                  onMouseEnter={this.onNavigationMouseEnter}
+                  onMouseLeave={this.onNavigationMouseLeave}
+                >
+                    <img src="static/icons/2_nav_A.svg"/>
+                </div>
+                <div className={trClassnames}
+                  onClick={this.onAboutClick}
+                  onMouseEnter={this.onNavigationMouseEnter}
+                  onMouseLeave={this.onNavigationMouseLeave}
+                >
+                    <img src="static/icons/2_nav_G.svg"/>
+                </div>
+                <div className={tlClassnames}
+                  onMouseEnter={this.onNavigationMouseEnter}
+                  onMouseLeave={this.onNavigationMouseLeave}
+                >
+                    { title && year && <h3>{title}, {year}</h3> }
+                    { title && !year && <h3>{title} </h3> }
+                    { !title && <h3></h3> }
+                </div>
+                { isAboutPageOpen && 
+                    <div className={trAboutClassnames} onClick={this.onAboutCloseClick}>
+                        <img src="static/icons/nav_X.svg"/>
+                    </div>
+                }
+
+                <div className="nav-container nav-bottom-center">
+                    <h4>© Anthony Gagliardi, 2019.</h4>
+                </div>
+            </>
+        )
+        // if (!isAboutPageOpen) return this.renderMainPageNav()
+        // else return this.renderAboutPageNav()
     }
 }
 

@@ -41,7 +41,8 @@ class ProjectView extends React.Component {
         this._mT.style.width = `${this.markerAttributes.width}px`
         this._mT.style.height = `${this.markerAttributes.height}px`
         this._mT.style.transform = `translateX(-50%) translateY(-50%) rotate(${toDeg(this.markerAttributes.rotation)})`;        
-        this._mT.style.borderColor = this.markerAttributes.color;
+        // this._mT.style.borderColor = this.markerAttributes.color;
+        this._mT.style.boxShadow = `0 0 10px ${this.markerAttributes.color}`
     }
     updateMarkerForNextBlock = () => {
         const { currentProjectBlocks, placedBlocks } = this.state
@@ -156,7 +157,6 @@ class ProjectView extends React.Component {
         const { isAboutPageOpen, isMouseTrackerVisible, isProjectHighlightMode, data } = this.props
         const { selectedBlockId } = this.state
 
-        if (isAboutPageOpen) return null
         if (!data) { return null }
 
         const { placedBlocks } = this.state
@@ -168,52 +168,56 @@ class ProjectView extends React.Component {
           hidden: (!isMouseTrackerVisible || isProjectHighlightMode)
         })
 
+        const containerClassnames = classnames({
+            "project-view-container": true,
+            visible: !isAboutPageOpen
+        })
+
         return (
-            <div className="project-view-container"
+            <div className={containerClassnames}
                 onMouseMove={this.onMouseMove}
                 onMouseDown={this.onMouseDown}
                 onMouseUp={this.onMouseUp}
                 onWheel={this.onScroll}
                 onClick={this.onClick}
             >
-                <CSSTransitionGroup
-                  transitionName="project-item-transition"
-                  transitionEnterTimeout={500}
-                  transitionLeaveTimeout={300}>
-                  { imageBlocks.map((i, index) => (
-                      <ProjectBlock 
-                        key={`block-image-${i.block.id}`} 
-                        block={i.block} 
-                        transform={i.transform}
-                        highlightShadowColor={this.markerAttributes.color}
-                        isProjectHighlightMode={isProjectHighlightMode}
-                        onHighlightClick={this.onBlockHighlightClick(i.block.id)}
-                        visible={!isProjectHighlightMode || selectedBlockId == null || (selectedBlockId == i.block.id)}
-                        clicked={isProjectHighlightMode && selectedBlockId == i.block.id}
-                      />
-                  ))}
-                </CSSTransitionGroup>
+                    <CSSTransitionGroup
+                        transitionName="project-item-transition"
+                        transitionEnterTimeout={500}
+                        transitionLeaveTimeout={300}>
+                        { imageBlocks.map((i, index) => (
+                            <ProjectBlock 
+                            key={`block-image-${i.block.id}`} 
+                            block={i.block} 
+                            transform={i.transform}
+                            highlightShadowColor={this.markerAttributes.color}
+                            isProjectHighlightMode={isProjectHighlightMode}
+                            onHighlightClick={this.onBlockHighlightClick(i.block.id)}
+                            visible={!isProjectHighlightMode || selectedBlockId == null || (selectedBlockId == i.block.id)}
+                            clicked={isProjectHighlightMode && selectedBlockId == i.block.id}
+                            />
+                        ))}
+                    </CSSTransitionGroup>
 
-                  { !isProjectHighlightMode && <div className={mouseTrackerCls} ref={ m => this._mT = m }></div> }
+                  { !isProjectHighlightMode && !isAboutPageOpen && <div className={mouseTrackerCls} ref={ m => this._mT = m }></div> }
 
-                <CSSTransitionGroup
-                  transitionName="project-item-transition"
-                  transitionEnterTimeout={500}
-                  transitionLeaveTimeout={300}>
-                  { textBlocks.map((i, index) => (
-                      <ProjectBlock 
-                        key={`block-text-${i.block.id}`}
-                        block={i.block} 
-                        transform={i.transform}
-                        highlightShadowColor={this.markerAttributes.color}
-                        isProjectHighlightMode={isProjectHighlightMode}
-                        onHighlightClick={this.onBlockHighlightClick(i.block.id)}
-                        visible={!isProjectHighlightMode || selectedBlockId == null || (selectedBlockId == i.block.id)}
-                        clicked={isProjectHighlightMode && selectedBlockId == i.block.id}
-                      />
-                  ))}
-                </CSSTransitionGroup>
-
+                    <CSSTransitionGroup
+                    transitionName="project-item-transition"
+                    transitionEnterTimeout={500}
+                    transitionLeaveTimeout={300}>
+                    { textBlocks.map((i, index) => (
+                        <ProjectBlock 
+                            key={`block-text-${i.block.id}`}
+                            block={i.block} 
+                            transform={i.transform}
+                            highlightShadowColor={this.markerAttributes.color}
+                            isProjectHighlightMode={isProjectHighlightMode}
+                            onHighlightClick={this.onBlockHighlightClick(i.block.id)}
+                            visible={!isProjectHighlightMode || selectedBlockId == null || (selectedBlockId == i.block.id)}
+                            clicked={isProjectHighlightMode && selectedBlockId == i.block.id}
+                        />
+                    ))}
+                    </CSSTransitionGroup>
             </div>
         )
     }
