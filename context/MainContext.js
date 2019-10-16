@@ -25,15 +25,19 @@ export default class MainContextProvider extends React.Component {
 
     // Helpers
     getCurrentProjectMetadata = () => {        
-        const { data, currentProjectId } = this.state
+        const { data, news, currentProjectId } = this.state
         if (data && data.raw) {
             const project = Object.values(data.raw).find(p => p.id == currentProjectId)
-
+            console.log('News color: ', news)
             if (!project && currentProjectId == PID_NEWS) {
-                return { title: this.state.news.displayTitle }
+                const rgba = news.color ? news.color.rgb : { r: 0, g: 0, b: 0, a: 0.5 }
+                return { 
+                    title: news.displayTitle,
+                    color: `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`//project.color.hex
+                }
             }
 
-            const rgba = project.color.rgb
+            const rgba = project.color ? project.color.rgb : { r: 0, g: 0, b: 0, a: 0.5 }
             return {
                 title: project.title,
                 year: project.year,

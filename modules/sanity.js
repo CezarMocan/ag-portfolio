@@ -40,6 +40,7 @@ export const queries = {
     *[_type=='news']{
       "id": _id,
       displayTitle,
+      color,
       "items": items[]{
         asset->{
           "originalWidth": metadata.dimensions.width,

@@ -50,7 +50,7 @@ export const processNewsData = (newsData) => {
         if (item._type == 'projectImage') {
             blocks.push(new ImageBlock(item))
         } else {
-            blocks.push(new PortableTextBlock(item.text))
+            blocks.push(new TextBlock(item.text))
         }
     }
 
