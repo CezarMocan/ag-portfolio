@@ -44,6 +44,11 @@ class ProjectView extends React.Component {
         this._mT.style.transform = `translateX(-50%) translateY(-50%) rotate(${toDeg(this.markerAttributes.rotation)})`;        
         // this._mT.style.borderColor = this.markerAttributes.color;
         this._mT.style.boxShadow = `0 0 10px ${this.markerAttributes.color}`
+
+        if (this._mTIndicator) {
+            this._mTIndicator.style.border = `solid ${this.markerAttributes.color}`
+            this._mTIndicator.style.borderWidth = `0px 1px 0px 1px`
+        }
     }
     updateMarkerForNextBlock = (currentProjectBlocks, placedBlocks) => {
         // const { currentProjectBlocks, placedBlocks } = this.state
@@ -208,7 +213,11 @@ class ProjectView extends React.Component {
                         ))}
                     </CSSTransitionGroup>
 
-                  { !isProjectHighlightMode && !isAboutPageOpen && <div className={mouseTrackerCls} ref={ m => this._mT = m }></div> }
+                  { !isProjectHighlightMode && !isAboutPageOpen && 
+                    <div className={mouseTrackerCls} ref={ m => this._mT = m }>
+                        <div className="direction-indicator" ref={m => this._mTIndicator = m}></div>
+                    </div> 
+                  }
 
                     <CSSTransitionGroup
                     transitionName="project-item-transition"
