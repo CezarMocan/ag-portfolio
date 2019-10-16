@@ -66,7 +66,8 @@ class Navigation extends React.Component {
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
                     { title && year && <h3>{title}, {year}</h3> }
-                    { (!title || !year) && <h3></h3> }
+                    { title && !year && <h3>{title} </h3> }
+                    { !title && <h3></h3> }
                 </div>
 
                 <div className="nav-container nav-bottom-center">

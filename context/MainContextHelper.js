@@ -18,13 +18,13 @@ const processProjectData = (projectData) => {
     blocks.push(new PortableTextBlock(projectData.description))
 
     // At the end, we place the collaborators and context
-    if (projectData.client) blocks.push(new TextBlock('Built for ' + projectData.client))
-    if (projectData.collaborators) blocks.push(new TextBlock('In collaboration with ' + projectData.collaborators))
+    if (projectData.client && projectData.client != '') blocks.push(new TextBlock(projectData.client))
+    if (projectData.collaborators && projectData.collaborators != '') blocks.push(new TextBlock(projectData.collaborators))
 
     return blocks
 }
 
-export const processData = (data) => {
+export const processProjectsData = (data) => {
     const blocks = data.reduce((acc, project) => {
         acc[project.id] = processProjectData(project)
         return acc
@@ -40,4 +40,19 @@ export const processData = (data) => {
         projectList,
         raw: { ...data }
     }
+}
+
+export const processNewsData = (newsData) => {
+    const blocks = []
+
+    for (let i = 0; i < newsData.items.length; i++) {
+        const item = newsData.items[i]
+        if (item._type == 'projectImage') {
+            blocks.push(new ImageBlock(item))
+        } else {
+            blocks.push(new PortableTextBlock(item.text))
+        }
+    }
+
+    return blocks
 }

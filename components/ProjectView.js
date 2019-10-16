@@ -51,13 +51,17 @@ class ProjectView extends React.Component {
             const block = currentProjectBlocks[index]
     
             // const newWidth = 100 + 200 * Math.random()
-            const newWidth = randInterval(block.minScale, block.maxScale) * window.innerWidth
+            let newWidth = randInterval(block.minScale, block.maxScale) * window.innerWidth
             let newHeight
-    
+
             if (block.width) {
               newHeight = newWidth / block.width * block.height
             } else if (block.text) {
-              newHeight = measureText('p', '', block.text, newWidth).h
+              let measurement = measureText('p', '', block.text, newWidth)
+              let measurementNoWidth = measureText('p', '', block.text)
+              console.log('Measurement: ', measurement, measurementNoWidth, block.text)
+              newHeight = measurement.h
+              newWidth = Math.min(measurementNoWidth.w, newWidth)
             } else {
               newHeight = newWidth
             }
@@ -133,7 +137,7 @@ class ProjectView extends React.Component {
         fetchProjects()
     }
     componentDidUpdate(oldProps) {
-        const { currentProjectId, data } = this.props
+        const { currentProjectId, getCurrentProjectBlocks } = this.props
 
         // Current project has been updated
         if (currentProjectId != oldProps.currentProjectId) {
@@ -142,7 +146,7 @@ class ProjectView extends React.Component {
             this.updateMarkerDOM({ color, rotation: 0 })
 
             this.setState({
-                currentProjectBlocks: this.props.data.blocks[currentProjectId],
+                currentProjectBlocks: getCurrentProjectBlocks(),
                 placedBlocks: []
             }, this.updateMarkerForNextBlock)
         }
@@ -222,6 +226,7 @@ export default withMainContext((context, props) => ({
     isProjectHighlightMode: context.isProjectHighlightMode,    
     data: context.data,
 
+    getCurrentProjectBlocks: context.action.getCurrentProjectBlocks,
     fetchProjects: context.action.fetchProjects,
     setIsProjectHighlightMode: context.action.setIsProjectHighlightMode,
     getCurrentProjectMetadata: context.action.getCurrentProjectMetadata

@@ -1,8 +1,10 @@
 import React from 'react'
 import sanityClient, { queries } from '../modules/sanity'
-import { processData } from './MainContextHelper'
+import { processProjectsData, processNewsData } from './MainContextHelper'
 
 const sleep = (s) => new Promise((res, rej) => setTimeout(res, s * 1000))
+
+const PID_NEWS = 'PID_NEWS'
 
 const MainContext = React.createContext()
 
@@ -24,10 +26,13 @@ export default class MainContextProvider extends React.Component {
     // Helpers
     getCurrentProjectMetadata = () => {        
         const { data, currentProjectId } = this.state
-        console.log('Data: ', data)
         if (data && data.raw) {
             const project = Object.values(data.raw).find(p => p.id == currentProjectId)
-            console.log('Metadata: ', project.color)
+
+            if (!project && currentProjectId == PID_NEWS) {
+                return { title: this.state.news.displayTitle }
+            }
+
             const rgba = project.color.rgb
             return {
                 title: project.title,
@@ -38,6 +43,15 @@ export default class MainContextProvider extends React.Component {
             }    
         } else {
             return { title: null, year: null, client: null, collaborators: null, color: null }
+        }
+    }
+
+    getCurrentProjectBlocks = () => {
+        const { data, newsData, currentProjectId } = this.state
+        if (currentProjectId == PID_NEWS) {
+            return newsData
+        } else {
+            return data.blocks[currentProjectId]
         }
     }
 
@@ -56,8 +70,15 @@ export default class MainContextProvider extends React.Component {
 
     navigateNextProject = () => {
         const { currentProjectId, data } = this.state
-        let currentIndex = data.projectList.indexOf(currentProjectId)
-        currentIndex = (currentIndex + 1) % data.projectList.length
+        let currentIndex
+
+        if (currentProjectId == PID_NEWS) {
+            currentIndex = 0
+        } else {
+            currentIndex = data.projectList.indexOf(currentProjectId)        
+            currentIndex = (currentIndex + 1) % data.projectList.length    
+        }
+
         this.setState({
             currentProjectId: data.projectList[currentIndex],
             isProjectHighlightMode: false,
@@ -66,8 +87,15 @@ export default class MainContextProvider extends React.Component {
 
     navigatePreviousProject = () => {
         const { currentProjectId, data } = this.state
-        let currentIndex = data.projectList.indexOf(currentProjectId)
-        currentIndex = (currentIndex - 1 + data.projectList.length) % data.projectList.length
+        let currentIndex
+
+        if (currentProjectId == PID_NEWS) {
+            currentIndex = data.projectList.length - 1
+        } else {
+            currentIndex = data.projectList.indexOf(currentProjectId)        
+            currentIndex = (currentIndex + 1) % data.projectList.length    
+        }
+
         this.setState({
             currentProjectId: data.projectList[currentIndex],
             isProjectHighlightMode: false
@@ -88,16 +116,16 @@ export default class MainContextProvider extends React.Component {
         const about = await this.fetchAboutSanity()
         const news = await this.fetchNewsSanity()
 
-        console.log('Pula pizda coaele: ', about, news)
-
-        const data = processData(projects)
+        const data = processProjectsData(projects)
+        const newsData = processNewsData(news)
 
         this.setState({
-            data,
             about,
             news,
+            newsData,
             projects,
-            currentProjectId: data.projectList[0]
+            data,
+            currentProjectId: PID_NEWS
         })
     }
     fetchNewsSanity = async () => {

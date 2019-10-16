@@ -40,7 +40,18 @@ export const queries = {
     *[_type=='news']{
       "id": _id,
       displayTitle,
-      items
+      "items": items[]{
+        asset->{
+          "originalWidth": metadata.dimensions.width,
+          "originalHeight": metadata.dimensions.height,
+          "aspectRatio": metadata.dimensions.aspectRatio,
+          "lqip": metadata.lqip,
+          size,
+          url,
+          metadata
+        },
+        ...
+      }
     }
   `
 }
