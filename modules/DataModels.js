@@ -13,12 +13,13 @@ export const BlockTypes = {
 }
 
 export class PortableTextBlock {
-  constructor(o) {
+  constructor(o, options = {}) {
     this.type = BlockTypes.PORTABLE_TEXT
     this.id = UID++
     this.o = o
-    this.minScale = 0.3
-    this.maxScale = 0.4
+    this.options = options
+    this.minScale = options.textMinScale ? options.textMinScale : 0.3
+    this.maxScale = options.textMaxScale ? options.textMaxScale : 0.4
   }
 }
 
@@ -28,8 +29,8 @@ export class TextBlock {
       this.id = UID++
       this.text = text
       this.options = options
-      this.minScale = 0.3
-      this.maxScale = 0.4
+      this.minScale = options.textMinScale ? options.textMinScale : 0.3
+      this.maxScale = options.textMaxScale ? options.textMaxScale : 0.4
     }
 }
 

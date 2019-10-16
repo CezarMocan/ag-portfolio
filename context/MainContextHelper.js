@@ -14,12 +14,15 @@ const processProjectData = (projectData) => {
         new ImageBlock(projectData.images[i])
     )
 
+    // Get text min and max scale
+    const { textMinScale, textMaxScale } = projectData
+
     // Then we place the description
-    blocks.push(new PortableTextBlock(projectData.description))
+    blocks.push(new PortableTextBlock(projectData.description, {textMinScale, textMaxScale}))
 
     // At the end, we place the collaborators and context
-    if (projectData.client && projectData.client != '') blocks.push(new TextBlock(projectData.client))
-    if (projectData.collaborators && projectData.collaborators != '') blocks.push(new TextBlock(projectData.collaborators))
+    if (projectData.client && projectData.client != '') blocks.push(new TextBlock(projectData.client, { textMinScale, textMaxScale }))
+    if (projectData.collaborators && projectData.collaborators != '') blocks.push(new TextBlock(projectData.collaborators, { textMinScale, textMaxScale }))
 
     return blocks
 }

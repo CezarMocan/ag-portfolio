@@ -16,6 +16,8 @@ export const queries = {
       client,
       description,
       color,
+      textMinScale,
+      textMaxScale,
       "images": images[]{
         asset->{
           "originalWidth": metadata.dimensions.width,
