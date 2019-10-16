@@ -91,7 +91,7 @@ class Navigation extends React.Component {
         const blClassnames = classnames({'nav-container': true, 'nav-bottom-left': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
         const trClassnames = classnames({'nav-container': true, 'nav-top-right': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
         const trAboutClassnames = classnames({'nav-container': true, 'nav-top-right': true, 'interactive': isAboutPageOpen, visible: isAboutPageOpen })
-        const tlClassnames = classnames({'nav-container': true, 'nav-top-left': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
+        const tlClassnames = classnames({'nav-container': true, 'nav-top-left': true, 'interactive': false, visible: !isAboutPageOpen })
         return (
             <>
                 <div className={brClassnames}

@@ -11,7 +11,8 @@ class ProjectView extends React.Component {
     state = {
         currentProjectBlocks: [],
         placedBlocks: [],
-        selectedBlockId: null
+        selectedBlockId: null,
+        transitionState: 'none'
     }
     constructor(props) {
         super(props)
@@ -44,8 +45,8 @@ class ProjectView extends React.Component {
         // this._mT.style.borderColor = this.markerAttributes.color;
         this._mT.style.boxShadow = `0 0 10px ${this.markerAttributes.color}`
     }
-    updateMarkerForNextBlock = () => {
-        const { currentProjectBlocks, placedBlocks } = this.state
+    updateMarkerForNextBlock = (currentProjectBlocks, placedBlocks) => {
+        // const { currentProjectBlocks, placedBlocks } = this.state
 
         if (placedBlocks.length < currentProjectBlocks.length) { 
             const index = placedBlocks.length % currentProjectBlocks.length
@@ -112,7 +113,7 @@ class ProjectView extends React.Component {
         }
     }
     onMouseUp = (e) => {
-      this.updateMarkerForNextBlock()
+      this.updateMarkerForNextBlock(this.state.currentProjectBlocks, this.state.placedBlocks)
     }
     onScroll = (e) => {
         const angleDelta = e.deltaY / 200
@@ -147,15 +148,23 @@ class ProjectView extends React.Component {
             this.updateMarkerDOM({ color, rotation: 0 })
 
             this.setState({
+                transitionState: 'transitioning-out',
                 currentProjectBlocks: getCurrentProjectBlocks(),
-                placedBlocks: []
-            }, this.updateMarkerForNextBlock)
+            }, () => {
+                this.updateMarkerForNextBlock(this.state.currentProjectBlocks, [])
+                setTimeout(() => {
+                    this.setState({ 
+                        placedBlocks: [],
+                        transitionState: 'transitioning-in',
+                    })
+                }, 500)
+            })
         }
 
     }
     render() {
         const { isAboutPageOpen, isMouseTrackerVisible, isProjectHighlightMode, data } = this.props
-        const { selectedBlockId } = this.state
+        const { selectedBlockId, transitionState } = this.state
 
         if (!data) { return null }
 
@@ -170,7 +179,7 @@ class ProjectView extends React.Component {
 
         const containerClassnames = classnames({
             "project-view-container": true,
-            visible: !isAboutPageOpen
+            visible: !isAboutPageOpen && transitionState != 'transitioning-out'
         })
 
         return (
@@ -184,7 +193,7 @@ class ProjectView extends React.Component {
                     <CSSTransitionGroup
                         transitionName="project-item-transition"
                         transitionEnterTimeout={500}
-                        transitionLeaveTimeout={300}>
+                        transitionLeaveTimeout={1}>
                         { imageBlocks.map((i, index) => (
                             <ProjectBlock 
                             key={`block-image-${i.block.id}`} 
@@ -204,7 +213,7 @@ class ProjectView extends React.Component {
                     <CSSTransitionGroup
                     transitionName="project-item-transition"
                     transitionEnterTimeout={500}
-                    transitionLeaveTimeout={300}>
+                    transitionLeaveTimeout={1}>
                     { textBlocks.map((i, index) => (
                         <ProjectBlock 
                             key={`block-text-${i.block.id}`}
