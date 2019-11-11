@@ -29,7 +29,7 @@ class About extends React.Component {
         return (
             <div className={cls}>
                 <div className="nav-about-top-left">
-                    <h3>Anthony V. Gagliardi, architect</h3>
+                    <p style={{margin: 0}}>Anthony V. Gagliardi</p>
                 </div>
                 
                 <p>

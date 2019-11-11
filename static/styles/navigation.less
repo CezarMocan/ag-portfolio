@@ -1,5 +1,7 @@
-@nav-margin: 10px; 
-@nav-icon-size: 16px;
+@nav-margin-ew: 40px; 
+@nav-margin-ns: 30px; 
+@nav-margin: 45px; 
+@nav-icon-size: 40px;
 
 .nav-container {
     position: fixed;
@@ -14,24 +16,35 @@
         height: @nav-icon-size;
     }
     &.nav-bottom-left {
-        left: @nav-margin;
-        bottom: @nav-margin;    
+        left: @nav-margin-ew;
+        bottom: 85px;    
     }
     &.nav-bottom-right {
-        right: @nav-margin;
-        bottom: @nav-margin;    
+        left: @nav-margin-ew;
+        bottom: @nav-margin-ns;    
     }
     &.nav-top-left {
-        left: @nav-margin;
-        top: @nav-margin;    
+        left: @nav-margin-ew;
+        top: @nav-margin-ns;    
     }
     &.nav-top-right {
-        right: @nav-margin;
-        top: @nav-margin;    
+        right: @nav-margin-ew;
+        top: @nav-margin-ns;    
     }
     &.nav-bottom-center {
         bottom: @nav-margin;
-        left: 50%;
-        transform: translateX(-50%);
+        right: @nav-margin-ew;
+        // left: 50%;
+        // transform: translateX(-50%);
+    }
+
+    &.title-corner {
+        padding-bottom: 10px;
+        border-bottom: 1px solid black;
+    }
+
+    &.close-image img {
+        width: 20px;
+        height: 20px;
     }
 }

@@ -153,8 +153,8 @@ ProjectBlock.defaultProps = {
     block: null,
     transform: null,
     visible: true,
-    regularShadowColor: 'rgba(0, 0, 0, 0.3)',
-    highlightShadowColor: 'rgba(0, 0, 0, 0.3)',
+    regularShadowColor: 'rgba(0, 0, 0, 0)',
+    highlightShadowColor: 'rgba(0, 0, 0, 0)',
     hovered: false,
     isProjectHighlightMode: false,
     onHighlightClick: () => {}

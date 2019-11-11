@@ -89,9 +89,9 @@ class Navigation extends React.Component {
         const { title, year } = getCurrentProjectMetadata()
         const brClassnames = classnames({'nav-container': true, 'nav-bottom-right': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
         const blClassnames = classnames({'nav-container': true, 'nav-bottom-left': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
-        const trClassnames = classnames({'nav-container': true, 'nav-top-right': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
-        const trAboutClassnames = classnames({'nav-container': true, 'nav-top-right': true, 'interactive': isAboutPageOpen, visible: isAboutPageOpen })
-        const tlClassnames = classnames({'nav-container': true, 'nav-top-left': true, 'interactive': false, visible: !isAboutPageOpen })
+        const trClassnames = classnames({'nav-container': true, 'nav-top-right': true, 'interactive': false, visible: false })
+        const trAboutClassnames = classnames({'nav-container': true, 'nav-top-right': true, 'interactive': isAboutPageOpen, 'close-image': true, visible: isAboutPageOpen })
+        const tlClassnames = classnames({'nav-container': true, 'nav-top-left': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen, 'title-corner': true })
         return (
             <>
                 <div className={brClassnames}
@@ -99,14 +99,16 @@ class Navigation extends React.Component {
                   onMouseEnter={this.onNavigationMouseEnter}
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
-                    <img src="static/icons/2_nav_V.svg"/>
+                    {/* <img src="static/icons/2_nav_V.svg"/> */}
+                    <img src="static/icons/noun_V.png"/>
                 </div>
                 <div className={blClassnames}
                   onClick={this.onNavigatePrevClick}
                   onMouseEnter={this.onNavigationMouseEnter}
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
-                    <img src="static/icons/2_nav_A.svg"/>
+                    {/* <img src="static/icons/2_nav_A.svg"/> */}
+                    <img src="static/icons/noun_A.png"/>
                 </div>
                 <div className={trClassnames}
                   onClick={this.onAboutClick}
@@ -116,12 +118,13 @@ class Navigation extends React.Component {
                     <img src="static/icons/2_nav_G.svg"/>
                 </div>
                 <div className={tlClassnames}
+                  onClick={this.onAboutClick}
                   onMouseEnter={this.onNavigationMouseEnter}
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
-                    { title && year && <h3>{title}, {year}</h3> }
-                    { title && !year && <h3>{title} </h3> }
-                    { !title && <h3></h3> }
+                    { title && year && <p style={{margin: 0}}>Anthony V. Gagliardi / {title}, {year}</p> }
+                    { title && !year && <p style={{margin: 0}}>{title} </p> }
+                    { !title && <p style={{margin: 0}}></p> }
                 </div>
                 { isAboutPageOpen && 
                     <div className={trAboutClassnames} onClick={this.onAboutCloseClick}>
@@ -129,8 +132,8 @@ class Navigation extends React.Component {
                     </div>
                 }
 
-                <div className="nav-container nav-bottom-center">
-                    <h4>© Anthony Gagliardi, 2019.</h4>
+                <div className="nav-container nav-bottom-center visible">
+                    <h4>© ANTHONY GAGLIARDI 2015—2019, ALL RIGHTS RESERVED.</h4>
                 </div>
             </>
         )

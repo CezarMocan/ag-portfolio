@@ -66,7 +66,6 @@ class ProjectView extends React.Component {
             } else if (block.text) {
               let measurement = measureText('p', '', block.text, newWidth)
               let measurementNoWidth = measureText('p', '', block.text)
-              console.log('Measurement: ', measurement, measurementNoWidth, block.text)
               newHeight = measurement.h
               newWidth = Math.min(measurementNoWidth.w, newWidth)
             } else {
@@ -77,7 +76,7 @@ class ProjectView extends React.Component {
         } else {
             const { isProjectHighlightMode, setIsProjectHighlightMode } = this.props
             if (!isProjectHighlightMode) {
-                setIsProjectHighlightMode(true) 
+                setTimeout(() => { setIsProjectHighlightMode(true) }, 500)
             }
         }
 
@@ -114,6 +113,9 @@ class ProjectView extends React.Component {
             console.log('onClick: ', selectedBlockId)
             if (selectedBlockId != null) {
                 this.setState({ selectedBlockId: null })
+            } else {
+                const { navigateNextProject } = this.props
+                if (navigateNextProject) navigateNextProject()        
             }
         }
     }
@@ -128,8 +130,6 @@ class ProjectView extends React.Component {
         const { isProjectHighlightMode } = this.props
         if (!isProjectHighlightMode) return
         const { selectedBlockId } = this.state
-
-        console.log('ProjectView block onClick callback: ', blockId, selectedBlockId)
 
         if (selectedBlockId == null) {
             this.setState({ selectedBlockId: blockId })
@@ -184,6 +184,8 @@ class ProjectView extends React.Component {
 
         const containerClassnames = classnames({
             "project-view-container": true,
+            "cursor-crosshair": !isProjectHighlightMode || selectedBlockId != null,
+            "cursor-arrow": isProjectHighlightMode && selectedBlockId == null,
             visible: !isAboutPageOpen && transitionState != 'transitioning-out'
         })
 
@@ -251,5 +253,6 @@ export default withMainContext((context, props) => ({
     getCurrentProjectBlocks: context.action.getCurrentProjectBlocks,
     fetchProjects: context.action.fetchProjects,
     setIsProjectHighlightMode: context.action.setIsProjectHighlightMode,
-    getCurrentProjectMetadata: context.action.getCurrentProjectMetadata
+    getCurrentProjectMetadata: context.action.getCurrentProjectMetadata,
+    navigateNextProject: context.action.navigateNextProject
 }))(ProjectView)
