@@ -3,11 +3,18 @@
 @nav-margin: 45px; 
 @nav-icon-size: 40px;
 
+@nav-margin-ew-mobile: 20px;
+@nav-margin-ns-mobile: 15px;
+@nav-margin-mobile: 25px;
+@nav-next-margin-bottom-mobile: 30px;
+
+
 .nav-container {
     position: fixed;
     z-index: 10000;
     opacity: 0;
     transition: opacity 0.5s linear;
+    max-width: ~"calc(100vw - 40px)";
     &.visible {
         opacity: 1;
     }    
@@ -15,25 +22,44 @@
         width: @nav-icon-size;
         height: @nav-icon-size;
     }
-    &.nav-bottom-left {
+    &.nav-previous {
         left: @nav-margin-ew;
+        @media screen and (max-width: 667px) {
+            left: @nav-margin-ew-mobile;
+        }    
         bottom: 85px;    
     }
-    &.nav-bottom-right {
+    &.nav-next {        
         left: @nav-margin-ew;
-        bottom: @nav-margin-ns;    
+        bottom: @nav-margin-ns;
+        @media screen and (max-width: 667px) {
+            left: @nav-margin-ew-mobile;
+            bottom: @nav-next-margin-bottom-mobile;
+        }    
     }
     &.nav-top-left {
         left: @nav-margin-ew;
         top: @nav-margin-ns;    
+        @media screen and (max-width: 667px) {
+            left: @nav-margin-ew-mobile;
+            top: @nav-margin-ns-mobile;        
+        }
     }
     &.nav-top-right {
         right: @nav-margin-ew;
         top: @nav-margin-ns;    
+        @media screen and (max-width: 667px) {
+            right: @nav-margin-ew-mobile;
+            top: @nav-margin-ns-mobile;        
+        }
     }
     &.nav-bottom-center {
         bottom: @nav-margin;
         right: @nav-margin-ew;
+        @media screen and (max-width: 667px) {
+            right: @nav-margin-ew-mobile;
+            bottom: @nav-margin-mobile;        
+        }
         // left: 50%;
         // transform: translateX(-50%);
     }
