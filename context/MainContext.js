@@ -28,12 +28,13 @@ export default class MainContextProvider extends React.Component {
         const { data, news, currentProjectId } = this.state
         if (data && data.raw) {
             const project = Object.values(data.raw).find(p => p.id == currentProjectId)
-            console.log('News color: ', news)
+            // console.log('News color: ', news)
             if (!project && currentProjectId == PID_NEWS) {
                 const rgba = news.color ? news.color.rgb : { r: 0, g: 0, b: 0, a: 0.5 }
                 return { 
                     title: news.displayTitle,
-                    color: `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`//project.color.hex
+                    // color: `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`//project.color.hex
+                    color: 'black'
                 }
             }
 
@@ -43,7 +44,8 @@ export default class MainContextProvider extends React.Component {
                 year: project.year,
                 client: project.client,
                 collaborators: project.collaborators,
-                color: `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`//project.color.hex
+                // color: `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`//project.color.hex
+                color: 'black'
             }    
         } else {
             return { title: null, year: null, client: null, collaborators: null, color: null }

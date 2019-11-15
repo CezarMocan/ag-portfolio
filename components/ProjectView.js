@@ -170,6 +170,7 @@ class ProjectView extends React.Component {
                     this.setState({ 
                         placedBlocks: [],
                         transitionState: 'transitioning-in',
+                        remainingProjects: this.state.currentProjectBlocks.length
                     })
                 }, 500)
             })
