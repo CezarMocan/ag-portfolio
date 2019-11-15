@@ -86,7 +86,7 @@ class ProjectBlock extends React.Component {
 
         const { hovered } = this.state
         const { regularShadowColor, highlightShadowColor } = this.props
-        const shadowColor = hovered ? highlightShadowColor : regularShadowColor
+        const shadowColor = (hovered && !clicked) ? highlightShadowColor : regularShadowColor
 
         return (
             <div
@@ -98,7 +98,8 @@ class ProjectBlock extends React.Component {
                     width: `${w}px`,
                     height: `${h}px`,
                     transform: `translateX(-50%) translateY(-50%) rotate(${toDeg(transform.r)})`,
-                    boxShadow: clicked ? '' : `0px 0px 10px ${shadowColor}`
+                    // boxShadow: clicked ? '' : `0px 0px 10px ${shadowColor}`
+                    border: `1px solid ${shadowColor}`
                 }}
                 onWheel={this.onWheel(block.type)}
                 onMouseEnter={this.onMouseEnter(block.type)}

@@ -12,7 +12,8 @@ class ProjectView extends React.Component {
         currentProjectBlocks: [],
         placedBlocks: [],
         selectedBlockId: null,
-        transitionState: 'none'
+        transitionState: 'none',
+        remainingProjects: 0
     }
     constructor(props) {
         super(props)
@@ -43,11 +44,14 @@ class ProjectView extends React.Component {
         this._mT.style.height = `${this.markerAttributes.height}px`
         this._mT.style.transform = `translateX(-50%) translateY(-50%) rotate(${toDeg(this.markerAttributes.rotation)})`;        
         // this._mT.style.borderColor = this.markerAttributes.color;
-        this._mT.style.boxShadow = `0 0 10px ${this.markerAttributes.color}`
+        // this._mT.style.boxShadow = `0 0 10px ${this.markerAttributes.color}`
 
         if (this._mTIndicator) {
             this._mTIndicator.style.border = `solid ${this.markerAttributes.color}`
             this._mTIndicator.style.borderWidth = `0px 1px 0px 1px`
+        }
+        if (this._pidIndicator) {
+            // this._pidIndicator.style.fontSize = `${this.markerAttributes.height}px`
         }
     }
     updateMarkerForNextBlock = (currentProjectBlocks, placedBlocks) => {
@@ -72,7 +76,12 @@ class ProjectView extends React.Component {
               newHeight = newWidth
             }
     
-            this.updateMarkerDOM({ width: newWidth, height: newHeight })    
+            this.updateMarkerDOM({ width: newWidth, height: newHeight })  
+            
+            const remainingProjects = this.state.currentProjectBlocks.length - this.state.placedBlocks.length
+            setTimeout(() => {
+                this.setState({ remainingProjects })
+            }, 500)
         } else {
             const { isProjectHighlightMode, setIsProjectHighlightMode } = this.props
             if (!isProjectHighlightMode) {
@@ -169,7 +178,7 @@ class ProjectView extends React.Component {
     }
     render() {
         const { isAboutPageOpen, isMouseTrackerVisible, isProjectHighlightMode, data } = this.props
-        const { selectedBlockId, transitionState } = this.state
+        const { selectedBlockId, transitionState, currentProjectBlocks } = this.state
 
         if (!data) { return null }
 
@@ -188,6 +197,8 @@ class ProjectView extends React.Component {
             "cursor-arrow": isProjectHighlightMode && selectedBlockId == null,
             visible: !isAboutPageOpen && transitionState != 'transitioning-out'
         })
+
+        const { remainingProjects } = this.state
 
         return (
             <div className={containerClassnames}
@@ -217,7 +228,8 @@ class ProjectView extends React.Component {
 
                   { !isProjectHighlightMode && !isAboutPageOpen && 
                     <div className={mouseTrackerCls} ref={ m => this._mT = m }>
-                        <div className="direction-indicator" ref={m => this._mTIndicator = m}></div>
+                        {/* <div className="direction-indicator" ref={m => this._mTIndicator = m}></div> */}
+                  <div className="project-id-indicator" ref={m => this._pidIndicator = m}>{remainingProjects}</div>
                     </div> 
                   }
 

@@ -3,6 +3,10 @@ import classnames from 'classnames'
 import { withMainContext } from '../context/MainContext'
 
 class Navigation extends React.Component {
+    onFinGClick = (evt) => {
+        const { navigateLandingPage } = this.props
+        if (navigateLandingPage) navigateLandingPage()        
+    }
     onAboutClick = (evt) => {
         const { toggleAboutPage } = this.props
         if (toggleAboutPage) toggleAboutPage(true)
@@ -33,7 +37,7 @@ class Navigation extends React.Component {
         const { title, year } = getCurrentProjectMetadata()
         const brClassnames = classnames({'nav-container': true, 'nav-next': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
         const blClassnames = classnames({'nav-container': true, 'nav-previous': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
-        const trClassnames = classnames({'nav-container': true, 'nav-top-right': true, 'interactive': false, visible: false })
+        const trClassnames = classnames({'nav-container': true, 'nav-fin-g': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
         const trAboutClassnames = classnames({'nav-container': true, 'nav-top-right': true, 'interactive': isAboutPageOpen, 'close-image': true, visible: isAboutPageOpen })
         const tlClassnames = classnames({'nav-container': true, 'nav-top-left': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen, 'title-corner': true })
         return (
@@ -55,11 +59,11 @@ class Navigation extends React.Component {
                     <img src="static/icons/noun_A.png"/>
                 </div>
                 <div className={trClassnames}
-                  onClick={this.onAboutClick}
+                  onClick={this.onFinGClick}
                   onMouseEnter={this.onNavigationMouseEnter}
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
-                    <img src="static/icons/2_nav_G.svg"/>
+                    <img src="static/icons/noun_G-2.svg"/>
                 </div>
                 <div className={tlClassnames}
                   onClick={this.onAboutClick}
@@ -98,6 +102,7 @@ export default withMainContext((context, props) => ({
     toggleMouseTracker: context.action.toggleMouseTracker,
     navigateNextProject: context.action.navigateNextProject,
     navigatePreviousProject: context.action.navigatePreviousProject,
+    navigateLandingPage: context.action.navigateLandingPage,
 
     getCurrentProjectMetadata: context.action.getCurrentProjectMetadata
   }))(Navigation)

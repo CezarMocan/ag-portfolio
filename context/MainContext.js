@@ -114,6 +114,16 @@ export default class MainContextProvider extends React.Component {
         })
     }
 
+    navigateLandingPage = () => {
+        const { currentProjectId } = this.state
+        if (currentProjectId == PID_NEWS) return
+        this.setState({
+            currentProjectId: PID_NEWS,
+            isAboutPageOpen: false,
+            isProjectHighlightMode: false
+        })
+    }
+
     // Data related actions
     fetchProjects = async () => {
         const projects = await this.fetchProjectsSanity()
