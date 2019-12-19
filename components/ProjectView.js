@@ -24,7 +24,10 @@ class ProjectView extends React.Component {
             width: 0,
             height: 0,
             rotation: 0,
-            color: '#000000'
+            color: '#000000',
+            isSnapMode: false,
+            snapModeDelta: 0,
+            snapAngle: 0.25
         }
     }
     updateMarkerDOM = ({ x = null, y = null, width = null, height = null, rotation = null, visible = null, color = null }) => {
@@ -119,7 +122,6 @@ class ProjectView extends React.Component {
         const { isProjectHighlightMode } = this.props
         if (isProjectHighlightMode) {
             const { selectedBlockId } = this.state
-            console.log('onClick: ', selectedBlockId)
             if (selectedBlockId != null) {
                 this.setState({ selectedBlockId: null })
             } else {
@@ -133,7 +135,30 @@ class ProjectView extends React.Component {
     }
     onScroll = (e) => {
         const angleDelta = e.deltaY / 200
-        this.updateMarkerDOM({ rotation: this.markerAttributes.rotation + angleDelta })
+        if (this.markerAttributes.isSnapMode) {
+            this.markerAttributes.snapModeDelta += angleDelta
+            let { snapModeDelta, snapAngle } = this.markerAttributes
+            if (Math.abs(snapModeDelta) / 3 > snapAngle) {
+                this.markerAttributes.isSnapMode = false
+                this.markerAttributes.snapModeDelta = 0
+
+                if (snapModeDelta > 0) this.updateMarkerDOM({ rotation: snapModeDelta / 3 - snapAngle })
+                else this.updateMarkerDOM({ rotation: snapModeDelta / 3 + snapAngle })
+            } else {
+                this.markerAttributes.snapModeDelta += angleDelta
+            }
+        } else {
+            const oldRotation = this.markerAttributes.rotation
+            const newRotation = oldRotation + angleDelta
+            const { snapAngle } = this.markerAttributes
+            if ((oldRotation < -snapAngle || oldRotation > snapAngle) && (newRotation >= -snapAngle && newRotation <= snapAngle)) {
+                this.markerAttributes.isSnapMode = true
+                this.markerAttributes.snapModeDelta = 0
+                this.updateMarkerDOM({ rotation: 0 })
+            } else {
+                this.updateMarkerDOM({ rotation: newRotation })
+            }
+        }
     }
     onBlockHighlightClick = (blockId) => (e) => {
         const { isProjectHighlightMode } = this.props
