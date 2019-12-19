@@ -160,10 +160,12 @@ class ProjectView extends React.Component {
             const { getCurrentProjectMetadata } = this.props
             const { color } = getCurrentProjectMetadata()
             this.updateMarkerDOM({ color, rotation: 0 })
+            const currentProjectBlocks = getCurrentProjectBlocks()
 
             this.setState({
                 transitionState: 'transitioning-out',
-                currentProjectBlocks: getCurrentProjectBlocks(),
+                currentProjectBlocks,
+                remainingProjects: currentProjectBlocks.length
             }, () => {
                 this.updateMarkerForNextBlock(this.state.currentProjectBlocks, [])
                 setTimeout(() => {
@@ -227,7 +229,7 @@ class ProjectView extends React.Component {
                         ))}
                     </CSSTransitionGroup>
 
-                  { !isProjectHighlightMode && !isAboutPageOpen && 
+                  { !isProjectHighlightMode && !isAboutPageOpen && transitionState != 'transitioning-out' &&
                     <div className={mouseTrackerCls} ref={ m => this._mT = m }>
                         {/* <div className="direction-indicator" ref={m => this._mTIndicator = m}></div> */}
                   <div className="project-id-indicator" ref={m => this._pidIndicator = m}>{remainingProjects}</div>
