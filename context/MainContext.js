@@ -28,6 +28,7 @@ export default class MainContextProvider extends React.Component {
         const { data, news, currentProjectId } = this.state
         if (data && data.raw) {
             const project = Object.values(data.raw).find(p => p.id == currentProjectId)
+            console.log('getCurrentProjectMeta: ', currentProjectId, data.raw, data.projectList)
             // console.log('News color: ', news)
             if (!project && currentProjectId == PID_NEWS) {
                 const rgba = news.color ? news.color.rgb : { r: 0, g: 0, b: 0, a: 0.5 }
@@ -85,6 +86,8 @@ export default class MainContextProvider extends React.Component {
             currentIndex = (currentIndex + 1) % data.projectList.length    
         }
 
+        this.props.router.push(this.props.router.pathname, `/${currentIndex}`, { shallow: true })
+
         this.setState({
             currentProjectId: data.projectList[currentIndex],
             isProjectHighlightMode: false,
@@ -135,13 +138,21 @@ export default class MainContextProvider extends React.Component {
         const data = processProjectsData(projects)
         const newsData = processNewsData(news)
 
+        let currentProjectId = PID_NEWS
+        if (this.props.url) {
+            currentProjectId = data.projectList[parseInt(this.props.url)]
+            if (!currentProjectId) currentProjectId = PID_NEWS
+        }
+
         this.setState({
             about,
             news,
             newsData,
             projects,
             data,
-            currentProjectId: PID_NEWS
+            currentProjectId,
+            isAboutPageOpen: false,
+            isProjectHighlightMode: false
         })
     }
     fetchNewsSanity = async () => {
