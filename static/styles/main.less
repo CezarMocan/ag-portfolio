@@ -7,7 +7,31 @@
 body {
     overflow: hidden;
     cursor: url(/static/icons/cursor-plus.png) 16 16, crosshair;
+    -webkit-user-select: none !important;
+    -khtml-user-select: none !important;
+    -moz-user-select: none !important;
+    -o-user-select: none !important;
+    user-select: none !important;
+    -webkit-touch-callout: none !important;  
 }
+
+img {
+    -khtml-user-select: none;
+    -o-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+  
+img::-moz-selection {
+    background-color: transparent;
+    color: #000;
+}
+
+img::selection {
+    background-color: transparent;
+    color: #000;
+}  
 
 .interactive {
     cursor: pointer;
