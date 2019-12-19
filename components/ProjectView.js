@@ -196,7 +196,8 @@ class ProjectView extends React.Component {
 
         const containerClassnames = classnames({
             "project-view-container": true,
-            "cursor-crosshair": !isProjectHighlightMode || selectedBlockId != null,
+            "cursor-none": !isProjectHighlightMode,
+            "cursor-crosshair": selectedBlockId != null,
             "cursor-arrow": isProjectHighlightMode && selectedBlockId == null,
             visible: !isAboutPageOpen && transitionState != 'transitioning-out'
         })
@@ -211,32 +212,31 @@ class ProjectView extends React.Component {
                 onWheel={this.onScroll}
                 onClick={this.onClick}
             >
-                    <CSSTransitionGroup
-                        transitionName="project-item-transition"
-                        transitionEnterTimeout={500}
-                        transitionLeaveTimeout={1}>
-                        { imageBlocks.map((i, index) => (
-                            <ProjectBlock 
-                            key={`block-image-${i.block.id}`} 
-                            block={i.block} 
-                            transform={i.transform}
-                            highlightShadowColor={this.markerAttributes.color}
-                            isProjectHighlightMode={isProjectHighlightMode}
-                            onHighlightClick={this.onBlockHighlightClick(i.block.id)}
-                            visible={!isProjectHighlightMode || selectedBlockId == null || (selectedBlockId == i.block.id)}
-                            clicked={isProjectHighlightMode && selectedBlockId == i.block.id}
-                            />
-                        ))}
-                    </CSSTransitionGroup>
+                <CSSTransitionGroup
+                    transitionName="project-item-transition"
+                    transitionEnterTimeout={500}
+                    transitionLeaveTimeout={1}>
+                    { imageBlocks.map((i, index) => (
+                        <ProjectBlock 
+                        key={`block-image-${i.block.id}`} 
+                        block={i.block} 
+                        transform={i.transform}
+                        highlightShadowColor={this.markerAttributes.color}
+                        isProjectHighlightMode={isProjectHighlightMode}
+                        onHighlightClick={this.onBlockHighlightClick(i.block.id)}
+                        visible={!isProjectHighlightMode || selectedBlockId == null || (selectedBlockId == i.block.id)}
+                        clicked={isProjectHighlightMode && selectedBlockId == i.block.id}
+                        />
+                    ))}
+                </CSSTransitionGroup>
 
-                  { !isProjectHighlightMode && !isAboutPageOpen && transitionState != 'transitioning-out' &&
-                    <div className={mouseTrackerCls} ref={ m => this._mT = m }>
-                        {/* <div className="direction-indicator" ref={m => this._mTIndicator = m}></div> */}
-                  <div className="project-id-indicator" ref={m => this._pidIndicator = m}>{remainingProjects}</div>
-                    </div> 
-                  }
+                { !isProjectHighlightMode && !isAboutPageOpen && transitionState != 'transitioning-out' &&
+                <div className={mouseTrackerCls} ref={ m => this._mT = m }>
+                    <div className="project-id-indicator" ref={m => this._pidIndicator = m}>{remainingProjects}</div>
+                </div> 
+                }
 
-                    <CSSTransitionGroup
+                <CSSTransitionGroup
                     transitionName="project-item-transition"
                     transitionEnterTimeout={500}
                     transitionLeaveTimeout={1}>
@@ -252,7 +252,7 @@ class ProjectView extends React.Component {
                             clicked={isProjectHighlightMode && selectedBlockId == i.block.id}
                         />
                     ))}
-                    </CSSTransitionGroup>
+                </CSSTransitionGroup>
             </div>
         )
     }

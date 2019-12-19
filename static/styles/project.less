@@ -2,13 +2,10 @@
 @light-stripe-color: transparent;
 
 .project-view-container {
-    &.cursor-crosshair {
-      cursor: none;
-    }
-
-    &.cursor-arrow {
-      cursor: se-resize;
-    }
+    &.cursor-none { cursor: none; }
+    &.cursor-crosshair { cursor: url(/static/icons/cursor-plus.png) 16 16, crosshair; }
+    // &.cursor-arrow { cursor: se-resize; }
+    &.cursor-arrow { cursor: url(/static/icons/cursor-arrow.png) 16 16, se-resize; }
 
     width: 100vw;
     height: 100vh;
@@ -70,7 +67,7 @@
 
 .project-block-container {
     // border-radius: 3px;
-    cursor: crosshair;
+    cursor: url(/static/icons/cursor-plus.png) 16 16, crosshair;
     &.with-overflow {
       overflow-y: scroll;
       scrollbar-width: none; /* Firefox */
