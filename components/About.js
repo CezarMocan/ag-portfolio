@@ -64,6 +64,15 @@ class About extends React.Component {
                     className={""}
                     renderContainerOnSingleChild={true}
                 />
+
+                <div className="out-facing-links">
+                    <div className="link">
+                        <a className="interactive" href="mailto:anthony@almost.studio" target="__blank"><p>email</p></a>
+                    </div>
+                    <div className="link">
+                        <a className="interactive" href="https://www.instagram.com/anthonyvgagliardi/" target="__blank"><p>instagram</p></a>
+                    </div>    
+                </div>
             </div>
         )
     }    
