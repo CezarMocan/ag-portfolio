@@ -30,8 +30,9 @@ class ProjectView extends React.Component {
             snapAngle: 0.25
         }
     }
-    updateMarkerDOM = ({ x = null, y = null, width = null, height = null, rotation = null, visible = null, color = null }) => {
+    updateMarkerDOM = ({ x = null, y = null, width = null, height = null, rotation = null, visible = null, active = null, color = null }) => {
         if (visible !== null) this.markerAttributes.visible = visible
+        if (active !== null) this.markerAttributes.active = active
         if (x !== null) this.markerAttributes.x = x
         if (y !== null) this.markerAttributes.y = y
         if (width !== null) this.markerAttributes.width = width
@@ -46,6 +47,12 @@ class ProjectView extends React.Component {
         this._mT.style.width = `${this.markerAttributes.width}px`
         this._mT.style.height = `${this.markerAttributes.height}px`
         this._mT.style.transform = `translateX(-50%) translateY(-50%) rotate(${toDeg(this.markerAttributes.rotation)})`;        
+
+        // if (this.props.isMouseTrackerVisible && !this.props.isProjectHighlightMode)
+            // this._mT.style.opacity = this.markerAttributes.active ? "1" : "0.2"
+
+        this._mT.style.color = this.markerAttributes.active ? "black" : "lightgray"
+        this._mT.style.borderColor = this.markerAttributes.active ? "black" : "lightgray"
         // this._mT.style.borderColor = this.markerAttributes.color;
         // this._mT.style.boxShadow = `0 0 10px ${this.markerAttributes.color}`
 
@@ -93,14 +100,24 @@ class ProjectView extends React.Component {
         }
 
     }
+    isInBounds() {
+        const { x, y, width, height } = this.markerAttributes
+        if (2 * x <= width) return false
+        if (2 * y <= height) return false
+        if (2 * (window.innerWidth - x) <= width) return false
+        if (2 * (window.innerHeight - y) <= height) return false
+        return true
+    }
     onMouseMove = (e) => {
         this.updateMarkerDOM({
             x: e.clientX,
             y: e.clientY,
-            visible: true
+            visible: true,
+            active: this.isInBounds()
         })
     }
     onMouseDown = (e) => {
+        if (!this.markerAttributes.active) return
         const { currentProjectBlocks } = this.state
         let placedBlocks = this.state.placedBlocks.slice(0)
 
@@ -131,6 +148,7 @@ class ProjectView extends React.Component {
         }
     }
     onMouseUp = (e) => {
+    if (!this.markerAttributes.active) return
       this.updateMarkerForNextBlock(this.state.currentProjectBlocks, this.state.placedBlocks)
     }
     onScroll = (e) => {
