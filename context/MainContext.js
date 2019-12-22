@@ -86,7 +86,7 @@ export default class MainContextProvider extends React.Component {
             currentIndex = (currentIndex + 1) % data.projectList.length    
         }
 
-        this.props.router.push(this.props.router.pathname, `/${currentIndex}`, { shallow: true })
+        //this.props.router.push(this.props.router.pathname, `/${currentIndex}`, { shallow: true })
 
         this.setState({
             currentProjectId: data.projectList[currentIndex],
