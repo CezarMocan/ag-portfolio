@@ -11,6 +11,7 @@ export const queries = {
     *[_type=='project'] | order(orderNumber){
       "id": _id,
       title,
+      url,
       year,
       collaborators,
       client,

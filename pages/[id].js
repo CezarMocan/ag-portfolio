@@ -9,7 +9,6 @@ import ProjectView from '../components/ProjectView'
 
 class Project extends React.Component {
     render() {
-        console.log('pula pizda coaele: ', this.props.router.query.id)
         return (
             <MainContextProvider url={this.props.router.query.id} router={this.props.router}>
                 <Head/>

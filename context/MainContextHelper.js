@@ -33,8 +33,12 @@ export const processProjectsData = (data) => {
         return acc
     }, {})
 
-    const projectList = data.reduce((acc, project) => {
-        acc.push(project.id)
+    const projectList = data.reduce((acc, project, index) => {
+        acc.push({ 
+            id: project.id,
+            url: project.url,
+            index: index
+        })
         return acc
     }, [])
 
