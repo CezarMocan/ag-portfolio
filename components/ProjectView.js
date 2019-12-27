@@ -51,8 +51,8 @@ class ProjectView extends React.Component {
         // if (this.props.isMouseTrackerVisible && !this.props.isProjectHighlightMode)
             // this._mT.style.opacity = this.markerAttributes.active ? "1" : "0.2"
 
-        this._mT.style.color = this.markerAttributes.active ? "black" : "lightgray"
-        this._mT.style.borderColor = this.markerAttributes.active ? "black" : "lightgray"
+        this._mT.style.color = this.markerAttributes.active ? "black" : "#aaaaaa"
+        this._mT.style.borderColor = this.markerAttributes.active ? "black" : "#aaaaaa"
         // this._mT.style.borderColor = this.markerAttributes.color;
         // this._mT.style.boxShadow = `0 0 10px ${this.markerAttributes.color}`
 
