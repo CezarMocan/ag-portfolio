@@ -151,7 +151,7 @@ class ProjectView extends React.Component {
             const index = placedBlocks.length % currentProjectBlocks.length
             const block = currentProjectBlocks[index]
     
-            const x = e.clientX, y = e.clientY, r = this.markerAttributes.rotation
+            const x = e.clientX || e.touches[0].clientX, y = e.clientY || e.touches[0].clientY, r = this.markerAttributes.rotation
             const w = this.markerAttributes.width, h = this.markerAttributes.height
     
             placedBlocks.push({
@@ -214,8 +214,8 @@ class ProjectView extends React.Component {
             this.setState({ movingBlockMode: {
                 ...movingBlockMode,
                 on: true,
-                mouseDownX: e.clientX,
-                mouseDownY: e.clientY,
+                mouseDownX: e.clientX || e.touches[0].clientX,
+                mouseDownY: e.clientY || e.touches[0].clientY,
                 dX: 0,
                 dY: 0, 
                 blockId
@@ -334,7 +334,7 @@ class ProjectView extends React.Component {
                 onMouseMove={this.onMouseMove}
                 onMouseDown={this.onMouseDown}
                 onMouseUp={this.onMouseUp}
-                onTouchMove={this.onMouseMove}
+                // onTouchMove={this.onMouseMove}
                 onTouchStart={this.onMouseDown}
                 onTouchEnd={this.onMouseUp}
                 onWheel={this.onScroll}
