@@ -60,7 +60,7 @@ class ProjectBlock extends React.Component {
     }
     onMouseLeave = (blockType) => (e) => {
       const { onMouseLeave, isProjectHighlightMode, isProjectMoveMode } = this.props      
-      
+
       if (this.isTextBlockType(blockType)) {
         const { toggleMouseTracker } = this.props
         toggleMouseTracker(true)
@@ -130,7 +130,7 @@ class ProjectBlock extends React.Component {
                         const cls = classnames({
                           "project-image-placeholder": true,
                           "fadeout-after": !loading,
-                          //"blurred": true
+                          "blurred": true
                         })
                         return (
                           <div className="project-image-container">

@@ -39,7 +39,7 @@ class ProjectView extends React.Component {
     }
     updateMarkerDOM = ({ x = null, y = null, width = null, height = null, rotation = null, visible = null, active = null, color = null }) => {
         if (visible !== null) this.markerAttributes.visible = visible
-        if (active !== null) { 
+        if (active !== null && active != this.markerAttributes.active) {             
             const { toggleMouseTracker } = this.props
             toggleMouseTracker(active)
             this.markerAttributes.active = active

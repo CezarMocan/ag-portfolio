@@ -18,7 +18,7 @@ class About extends React.Component {
         return (
             <div className={cls}>
                 <div className="nav-about-top-left">
-                    <p style={{margin: 0}}>Anthony V. Gagliardi</p>
+                    <p style={{margin: 0}}>Anthony V. Gagliardi / about</p>
                 </div>
                 
                 <p>
