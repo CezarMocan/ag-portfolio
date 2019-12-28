@@ -17,30 +17,31 @@ class About extends React.Component {
         })
         return (
             <div className={cls}>
-                <div className="nav-about-top-left">
-                    <p style={{margin: 0}}>Anthony V. Gagliardi / about</p>
+                <div className="about-content">
+                    <div className="nav-about-top-left">
+                        <p style={{margin: 0}}>Anthony V. Gagliardi / about</p>
+                    </div>
+                    
+                    <p>
+                        { projects && projects.map((p, index) => {
+                            return (
+                                <div className="project-link-container interactive"
+                                    onClick={this.onProjectClick(p.id)}
+                                >
+                                    <span className="project-link">
+                                        &emsp;{index + 1}. {p.title}&emsp;<br/>
+                                    </span>
+                                </div>
+                            )
+                        })}
+                    </p>
+                    <br/>
+                    <PortableBlockContent
+                        blocks={about ? about.description : []}
+                        className={""}
+                        renderContainerOnSingleChild={true}
+                    />
                 </div>
-                
-                <p>
-                    { projects && projects.map((p, index) => {
-                        return (
-                            <div className="project-link-container interactive"
-                                onClick={this.onProjectClick(p.id)}
-                            >
-                                <span className="project-link">
-                                    &emsp;{index + 1}. {p.title}&emsp;<br/>
-                                </span>
-                            </div>
-                        )
-                    })}
-                </p>
-                <br/>
-                <PortableBlockContent
-                    blocks={about ? about.description : []}
-                    className={"about-content"}
-                    renderContainerOnSingleChild={true}
-                />
-
                 <div className="out-facing-links">
                     <div className="link">
                         <a className="interactive" href="mailto:anthony@almost.studio" target="__blank"><p>email</p></a>
