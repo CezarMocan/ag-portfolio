@@ -21,24 +21,32 @@ class ProjectBlock extends React.Component {
     }
     onMouseDown = (blockType) => (e) => {
       this.isMouseDown = true
-      if (this.isTextBlockType(blockType))
-        e.stopPropagation()      
-    }
-    onClick = (blockType) => (e) => {
-      const { onHighlightClick, isProjectHighlightMode, block, visible } = this.props
-      if (!isProjectHighlightMode) return
-      if (!visible) return
-      e.stopPropagation()
-      if (onHighlightClick) onHighlightClick()
-      console.log('Block onclick: ', block.id)
+      
+      const { onHighlightMouseDown, isProjectHighlightMode, isProjectMoveMode, block, visible } = this.props
+
+      if (this.isTextBlockType(blockType) && !isProjectMoveMode)
+        e.stopPropagation()
+
+      if (isProjectHighlightMode && visible && onHighlightMouseDown) {
+        onHighlightMouseDown(e)
+      }      
     }
     onMouseUp = (blockType) => (e) => {
-      if (this.isTextBlockType(blockType) && this.isMouseDown)
-        e.stopPropagation()
+      const { onHighlightMouseUp, isProjectHighlightMode, isProjectMoveMode, block, visible } = this.props
       this.isMouseDown = false
+
+      console.log('Block onMouseUp: ', this.props.block.id)
+
+      if (!isProjectHighlightMode && this.isTextBlockType(blockType) && this.isMouseDown) {
+        e.stopPropagation()
+      }
+
+      if (isProjectHighlightMode && visible && onHighlightMouseUp) {
+        onHighlightMouseUp(e)
+      }
     }
     onMouseEnter = (blockType) => (e) => {
-      const { onMouseEnter, isProjectHighlightMode, visible } = this.props
+      const { onMouseEnter, isProjectHighlightMode, isProjectMoveMode, visible } = this.props
       if (!visible) return
       console.log('onMouseEnter')
       if (this.isTextBlockType(blockType)) {
@@ -46,25 +54,25 @@ class ProjectBlock extends React.Component {
         toggleMouseTracker(false)
       }
       if (onMouseEnter) onMouseEnter()
-      if (isProjectHighlightMode) {
+      if (isProjectHighlightMode && !isProjectMoveMode) {
         console.log('----in highlight mode')
         this.setState({ hovered: true })
       }
     }
     onMouseLeave = (blockType) => (e) => {
-      const { onMouseLeave, isProjectHighlightMode } = this.props      
+      const { onMouseLeave, isProjectHighlightMode, isProjectMoveMode } = this.props      
       if (this.isTextBlockType(blockType)) {
         const { toggleMouseTracker } = this.props
         toggleMouseTracker(true)
       }
       if (onMouseLeave) onMouseLeave()
 
-      if (isProjectHighlightMode) {
+      if (isProjectHighlightMode && !isProjectMoveMode) {
         this.setState({ hovered: false })
       }
     }
     render() {
-        const { block, transform, visible, clicked } = this.props
+        const { block, transform, additionalTransform, visible, clicked } = this.props
         if (!block || !transform) return null
 
         const wrapperCls = classnames({
@@ -83,6 +91,9 @@ class ProjectBlock extends React.Component {
         let { x, y, w, h } = transform
         w = parseInt(w)
         h = parseInt(h)
+
+        x += (additionalTransform.x || 0)
+        y += (additionalTransform.y || 0)
 
         const { hovered } = this.state
         const { regularShadowColor, highlightShadowColor } = this.props
@@ -106,7 +117,6 @@ class ProjectBlock extends React.Component {
                 onMouseLeave={this.onMouseLeave(block.type)}
                 onMouseDown={this.onMouseDown(block.type)}
                 onMouseUp={this.onMouseUp(block.type)}
-                onClick={this.onClick(block.type)}
             >
                 { block.type == BlockTypes.IMAGE &&
                   <div className={containerCls}>
@@ -124,8 +134,8 @@ class ProjectBlock extends React.Component {
                         return (
                           <div className="project-image-container">
                             {/* <img src={src} className={cls}/> */}
-                            <img src={block.getLQUrl()} className={cls} width={w} height={h}/>
-                            { !loading && <img src={src} width={w} height={h} className="project-image fadein"/>}
+                            <img draggable="false" src={block.getLQUrl()} className={cls} width={w} height={h}/>
+                            { !loading && <img draggable="false" src={src} width={w} height={h} className="project-image fadein"/>}
                           </div>
                         )
                       }}
@@ -158,7 +168,13 @@ ProjectBlock.defaultProps = {
     highlightShadowColor: 'rgba(0, 0, 0, 0)',
     hovered: false,
     isProjectHighlightMode: false,
-    onHighlightClick: () => {}
+    isProjectMoveMode: false,
+    transform: {},
+    additionalTransform: {},
+    onHighlightMouseUp: null,
+    onHighlightMouseDown: null,
+    onMouseEnter: null,
+    onMouseLeave: null
 }
 
 export default withMainContext((context, props) => ({

@@ -13,7 +13,13 @@ class ProjectView extends React.Component {
         placedBlocks: [],
         selectedBlockId: null,
         transitionState: 'none',
-        remainingProjects: 0
+        remainingProjects: 0,
+        movingBlockMode: {
+            on: false,
+            blockId: null,
+            mouseDownX: 0, mouseDownY: 0,
+            dX: 0, dY: 0
+        }
     }
     constructor(props) {
         super(props)
@@ -65,8 +71,6 @@ class ProjectView extends React.Component {
         }
     }
     updateMarkerForNextBlock = (currentProjectBlocks, placedBlocks) => {
-        // const { currentProjectBlocks, placedBlocks } = this.state
-
         if (placedBlocks.length < currentProjectBlocks.length) { 
             const index = placedBlocks.length % currentProjectBlocks.length
             const block = currentProjectBlocks[index]
@@ -109,12 +113,27 @@ class ProjectView extends React.Component {
         return true
     }
     onMouseMove = (e) => {
-        this.updateMarkerDOM({
-            x: e.clientX,
-            y: e.clientY,
-            visible: true,
-            active: this.isInBounds()
-        })
+        const { isProjectHighlightMode } = this.props
+        const { movingBlockMode } = this.state
+        if (isProjectHighlightMode) {
+            if (!movingBlockMode.on) return
+
+            this.setState({
+                movingBlockMode: {
+                    ...movingBlockMode,
+                    dX: e.clientX - movingBlockMode.mouseDownX,
+                    dY: e.clientY - movingBlockMode.mouseDownY
+                }
+            })
+
+        } else {
+            this.updateMarkerDOM({
+                x: e.clientX,
+                y: e.clientY,
+                visible: true,
+                active: this.isInBounds()
+            })    
+        }
     }
     onMouseDown = (e) => {
         if (!this.markerAttributes.active) return
@@ -135,21 +154,21 @@ class ProjectView extends React.Component {
             this.setState({ placedBlocks })    
         }
     }
-    onClick = (e) => {
-        const { isProjectHighlightMode } = this.props
-        if (isProjectHighlightMode) {
-            const { selectedBlockId } = this.state
-            if (selectedBlockId != null) {
-                this.setState({ selectedBlockId: null })
-            } else {
-                const { navigateNextProject } = this.props
-                if (navigateNextProject) navigateNextProject()        
-            }
-        }
-    }
     onMouseUp = (e) => {
-    if (!this.markerAttributes.active) return
-      this.updateMarkerForNextBlock(this.state.currentProjectBlocks, this.state.placedBlocks)
+        const { isProjectHighlightMode, navigateNextProject } = this.props
+        const { movingBlockMode, selectedBlockId } = this.state
+
+        if (this.markerAttributes.active) {
+            this.updateMarkerForNextBlock(this.state.currentProjectBlocks, this.state.placedBlocks)
+        }
+
+        if (isProjectHighlightMode) {
+            if (selectedBlockId != null) {
+                this.setState({ selectedBlockId: null, movingBlockMode: { on: false } })
+            } else if (!movingBlockMode.on && navigateNextProject) {
+                navigateNextProject()        
+            }    
+        }
     }
     onScroll = (e) => {
         const angleDelta = e.deltaY / 200
@@ -178,17 +197,60 @@ class ProjectView extends React.Component {
             }
         }
     }
-    onBlockHighlightClick = (blockId) => (e) => {
+    onBlockHighlightMouseDown = (blockId) => (e) => {
         const { isProjectHighlightMode } = this.props
         if (!isProjectHighlightMode) return
         const { selectedBlockId } = this.state
 
         if (selectedBlockId == null) {
-            this.setState({ selectedBlockId: blockId })
+            const { movingBlockMode } = this.state
+            this.setState({ movingBlockMode: {
+                ...movingBlockMode,
+                on: true,
+                mouseDownX: e.clientX,
+                mouseDownY: e.clientY,
+                dX: 0,
+                dY: 0, 
+                blockId
+            } })
+        }
+    }
+    onBlockHighlightMouseUp = (blockId) => (e) => {
+        const { isProjectHighlightMode } = this.props
+        const { selectedBlockId, movingBlockMode, placedBlocks } = this.state
+
+        if (!isProjectHighlightMode) return
+
+        e.stopPropagation()
+
+        if (selectedBlockId == null) {
+            if (movingBlockMode.on && (Math.abs(movingBlockMode.dX) > 5 || Math.abs(movingBlockMode.dY) > 5)) {
+                let movedBlockIndex = placedBlocks.findIndex(b => b.block.id == movingBlockMode.blockId)
+                if (movedBlockIndex < 0) return
+
+                const newBlock = {
+                    ...placedBlocks[movedBlockIndex],
+                    transform: {
+                        ...placedBlocks[movedBlockIndex].transform,
+                        x: placedBlocks[movedBlockIndex].transform.x + movingBlockMode.dX,
+                        y: placedBlocks[movedBlockIndex].transform.y + movingBlockMode.dY,
+                    }
+                }
+                
+                let newPlacedBlocks = placedBlocks.slice(0)
+                newPlacedBlocks[movedBlockIndex] = newBlock            
+
+                this.setState({
+                    placedBlocks: newPlacedBlocks,
+                    movingBlockMode: { on: false, dX: 0, dY: 0, blockId: null }
+                })
+            } else {
+                this.setState({ selectedBlockId: blockId, movingBlockMode: { on: false, dX: 0, dY: 0 } })
+            }
         } else if (selectedBlockId == blockId) {
-            this.setState({ selectedBlockId: null })
+            this.setState({ selectedBlockId: null, movingBlockMode: { on: false } })
         } else {
-            this.setState({ selectedBlockId: null })
+            this.setState({ selectedBlockId: null, movingBlockMode: { on: false } })
         }
     }
     componentDidMount() {
@@ -215,7 +277,8 @@ class ProjectView extends React.Component {
                     this.setState({ 
                         placedBlocks: [],
                         transitionState: 'transitioning-in',
-                        remainingProjects: this.state.currentProjectBlocks.length
+                        remainingProjects: this.state.currentProjectBlocks.length,
+                        movingBlockMode: { on: false, dX: 0, dY: 0, blockId: null }
                     })
                 }, 500)
             })
@@ -229,6 +292,7 @@ class ProjectView extends React.Component {
         if (!data) { return null }
 
         const { placedBlocks } = this.state
+
         const textBlocks = placedBlocks.filter(b => b.block.type != BlockTypes.IMAGE)
         const imageBlocks = placedBlocks.filter(b => b.block.type == BlockTypes.IMAGE)
 
@@ -246,6 +310,7 @@ class ProjectView extends React.Component {
         })
 
         const { remainingProjects } = this.state
+        const { movingBlockMode } = this.state
 
         return (
             <div className={containerClassnames}
@@ -264,9 +329,12 @@ class ProjectView extends React.Component {
                         key={`block-image-${i.block.id}`} 
                         block={i.block} 
                         transform={i.transform}
+                        additionalTransform={movingBlockMode.on && movingBlockMode.blockId == i.block.id ? { x: movingBlockMode.dX, y: movingBlockMode.dY } : { x: 0, y: 0 }}
                         highlightShadowColor={this.markerAttributes.color}
                         isProjectHighlightMode={isProjectHighlightMode}
-                        onHighlightClick={this.onBlockHighlightClick(i.block.id)}
+                        isProjectMoveMode={movingBlockMode.on}
+                        onHighlightMouseUp={this.onBlockHighlightMouseUp(i.block.id)}
+                        onHighlightMouseDown={this.onBlockHighlightMouseDown(i.block.id)}
                         visible={!isProjectHighlightMode || selectedBlockId == null || (selectedBlockId == i.block.id)}
                         clicked={isProjectHighlightMode && selectedBlockId == i.block.id}
                         />
@@ -288,9 +356,12 @@ class ProjectView extends React.Component {
                             key={`block-text-${i.block.id}`}
                             block={i.block} 
                             transform={i.transform}
+                            additionalTransform={movingBlockMode.on && movingBlockMode.blockId == i.block.id ? { x: movingBlockMode.dX, y: movingBlockMode.dY } : { x: 0, y: 0 }}
                             highlightShadowColor={this.markerAttributes.color}
                             isProjectHighlightMode={isProjectHighlightMode}
-                            onHighlightClick={this.onBlockHighlightClick(i.block.id)}
+                            isProjectMoveMode={movingBlockMode.on}
+                            onHighlightMouseUp={this.onBlockHighlightMouseUp(i.block.id)}
+                            onHighlightMouseDown={this.onBlockHighlightMouseDown(i.block.id)}
                             visible={!isProjectHighlightMode || selectedBlockId == null || (selectedBlockId == i.block.id)}
                             clicked={isProjectHighlightMode && selectedBlockId == i.block.id}
                         />
