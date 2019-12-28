@@ -35,8 +35,6 @@ class ProjectBlock extends React.Component {
       const { onHighlightMouseUp, isProjectHighlightMode, isProjectMoveMode, block, visible } = this.props
       this.isMouseDown = false
 
-      console.log('Block onMouseUp: ', this.props.block.id)
-
       if (!isProjectHighlightMode && this.isTextBlockType(blockType) && this.isMouseDown) {
         e.stopPropagation()
       }
@@ -48,23 +46,26 @@ class ProjectBlock extends React.Component {
     onMouseEnter = (blockType) => (e) => {
       const { onMouseEnter, isProjectHighlightMode, isProjectMoveMode, visible } = this.props
       if (!visible) return
-      console.log('onMouseEnter')
+
       if (this.isTextBlockType(blockType)) {
         const { toggleMouseTracker } = this.props
         toggleMouseTracker(false)
       }
+
       if (onMouseEnter) onMouseEnter()
+
       if (isProjectHighlightMode && !isProjectMoveMode) {
-        console.log('----in highlight mode')
         this.setState({ hovered: true })
       }
     }
     onMouseLeave = (blockType) => (e) => {
       const { onMouseLeave, isProjectHighlightMode, isProjectMoveMode } = this.props      
+      
       if (this.isTextBlockType(blockType)) {
         const { toggleMouseTracker } = this.props
         toggleMouseTracker(true)
       }
+
       if (onMouseLeave) onMouseLeave()
 
       if (isProjectHighlightMode && !isProjectMoveMode) {
