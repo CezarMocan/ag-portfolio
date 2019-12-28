@@ -26,6 +26,7 @@
         left: 40px;
         bottom: 25px;    
         @media screen and (max-width: 667px) {
+            bottom: 40px;
             left: @nav-margin-ew-mobile;
         }    
     }
@@ -33,43 +34,29 @@
         left: 105px;
         bottom: 21px;
         @media screen and (max-width: 667px) {
-            left: @nav-margin-ew-mobile;
-            bottom: @nav-next-margin-bottom-mobile;
+            bottom: 35px;
+            left: 50%;
+            transform: translateX(-50%);
         }    
     }
     &.nav-fin-g {
         left: 50%;
+        right: auto;
         bottom: 25px;
         transform: translateX(-50%);
+
+        @media screen and (max-width: 667px) {
+            bottom: 38px;
+            right: @nav-margin-ew-mobile;
+            left: auto;
+            transform: translateX(0);
+        }    
         // img {
         //     width: 32px;
         //     height: 32px;    
         // }
     }
 
-    // &.nav-previous {
-    //     left: 40px;
-    //     bottom: 80px;    
-    //     @media screen and (max-width: 667px) {
-    //         left: @nav-margin-ew-mobile;
-    //     }    
-    // }
-    // &.nav-next {        
-    //     left: 105px;
-    //     bottom: 104px;
-    //     @media screen and (max-width: 667px) {
-    //         left: @nav-margin-ew-mobile;
-    //         bottom: @nav-next-margin-bottom-mobile;
-    //     }    
-    // }
-    // &.nav-fin-g {
-    //     left: 99px;
-    //     bottom: 40px;
-    //     img {
-    //         width: 32px;
-    //         height: 32px;    
-    //     }
-    // }
     &.nav-top-left {
         left: @nav-margin-ew;
         top: @nav-margin-ns;    
@@ -90,11 +77,9 @@
         bottom: 40px;
         right: @nav-margin-ew;
         @media screen and (max-width: 667px) {
-            right: @nav-margin-ew-mobile;
-            bottom: @nav-margin-mobile;        
+            bottom: 16px;
+            left: @nav-margin-ew-mobile;
         }
-        // left: 50%;
-        // transform: translateX(-50%);
     }
 
     &.title-corner {
