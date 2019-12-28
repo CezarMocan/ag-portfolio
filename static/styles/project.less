@@ -33,11 +33,15 @@
         top: 0;
         visibility: hidden;
         opacity: 1;
+        display: block;
 
         transition: width 0.5s ease-in-out, height 0.5s ease-in-out, opacity 0.2s ease-in, color 0.2s ease-out, border-color 0.2s ease-out;
 
         &.hidden {
-          opacity: 0.01;
+          // opacity: 0;
+          // display: none;
+          // visibility: hidden
+          display: none;
         }
 
         .project-id-indicator {

@@ -33,12 +33,17 @@ class ProjectView extends React.Component {
             color: '#000000',
             isSnapMode: false,
             snapModeDelta: 0,
-            snapAngle: 0.25
+            snapAngle: 0.25,
+            active: false
         }
     }
     updateMarkerDOM = ({ x = null, y = null, width = null, height = null, rotation = null, visible = null, active = null, color = null }) => {
         if (visible !== null) this.markerAttributes.visible = visible
-        if (active !== null) this.markerAttributes.active = active
+        if (active !== null) { 
+            const { toggleMouseTracker } = this.props
+            toggleMouseTracker(active)
+            this.markerAttributes.active = active
+        }
         if (x !== null) this.markerAttributes.x = x
         if (y !== null) this.markerAttributes.y = y
         if (width !== null) this.markerAttributes.width = width
@@ -57,8 +62,8 @@ class ProjectView extends React.Component {
         // if (this.props.isMouseTrackerVisible && !this.props.isProjectHighlightMode)
             // this._mT.style.opacity = this.markerAttributes.active ? "1" : "0.2"
 
-        this._mT.style.color = this.markerAttributes.active ? "black" : "#aaaaaa"
-        this._mT.style.borderColor = this.markerAttributes.active ? "black" : "#aaaaaa"
+        // this._mT.style.color = this.markerAttributes.active ? "black" : "#aaaaaa"
+        // this._mT.style.borderColor = this.markerAttributes.active ? "black" : "#aaaaaa"
         // this._mT.style.borderColor = this.markerAttributes.color;
         // this._mT.style.boxShadow = `0 0 10px ${this.markerAttributes.color}`
 
@@ -106,10 +111,10 @@ class ProjectView extends React.Component {
     }
     isInBounds() {
         const { x, y, width, height } = this.markerAttributes
-        if (2 * x <= width) return false
-        if (2 * y <= height) return false
-        if (2 * (window.innerWidth - x) <= width) return false
-        if (2 * (window.innerHeight - y) <= height) return false
+        if (4 * x <= width) return false
+        if (4 * y <= height) return false
+        if (4 * (window.innerWidth - x) <= width) return false
+        if (4 * (window.innerHeight - y) <= height) return false
         return true
     }
     onMouseMove = (e) => {
@@ -296,15 +301,17 @@ class ProjectView extends React.Component {
         const textBlocks = placedBlocks.filter(b => b.block.type != BlockTypes.IMAGE)
         const imageBlocks = placedBlocks.filter(b => b.block.type == BlockTypes.IMAGE)
 
+        const mouseTrackerHidden = (!isMouseTrackerVisible || isProjectHighlightMode)     
+
         const mouseTrackerCls = classnames({
           'mouse-tracker': true,
-          hidden: (!isMouseTrackerVisible || isProjectHighlightMode)
+          hidden: mouseTrackerHidden
         })
 
         const containerClassnames = classnames({
             "project-view-container": true,
-            "cursor-none": !isProjectHighlightMode,
-            "cursor-crosshair": selectedBlockId != null,
+            "cursor-none": !isProjectHighlightMode && !mouseTrackerHidden,
+            "cursor-crosshair": (isProjectHighlightMode && selectedBlockId != null) || mouseTrackerHidden,
             "cursor-arrow": isProjectHighlightMode && selectedBlockId == null,
             visible: !isAboutPageOpen && transitionState != 'transitioning-out'
         })
@@ -376,12 +383,13 @@ export default withMainContext((context, props) => ({
     isAboutPageOpen: context.isAboutPageOpen,
     isMouseTrackerVisible: context.isMouseTrackerVisible,
     currentProjectId: context.currentProjectId,
-    isProjectHighlightMode: context.isProjectHighlightMode,    
+    isProjectHighlightMode: context.isProjectHighlightMode,        
     data: context.data,
 
     getCurrentProjectBlocks: context.action.getCurrentProjectBlocks,
     fetchProjects: context.action.fetchProjects,
     setIsProjectHighlightMode: context.action.setIsProjectHighlightMode,
     getCurrentProjectMetadata: context.action.getCurrentProjectMetadata,
-    navigateNextProject: context.action.navigateNextProject
+    navigateNextProject: context.action.navigateNextProject,
+    toggleMouseTracker: context.action.toggleMouseTracker
 }))(ProjectView)

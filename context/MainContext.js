@@ -63,7 +63,9 @@ export default class MainContextProvider extends React.Component {
 
     // UI related actions
     toggleMouseTracker = (isShowing) => {
-      this.setState({ isMouseTrackerVisible: isShowing })
+        const { isMouseTrackerVisible } = this.state
+        if (isShowing == isMouseTrackerVisible) return
+        this.setState({ isMouseTrackerVisible: isShowing })
     }
 
     toggleAboutPage = (isOpen) => {
