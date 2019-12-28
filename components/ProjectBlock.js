@@ -116,8 +116,8 @@ class ProjectBlock extends React.Component {
                 onWheel={this.onWheel(block.type)}
                 onMouseEnter={this.onMouseEnter(block.type)}
                 onMouseLeave={this.onMouseLeave(block.type)}
-                onMouseDown={this.onMouseDown(block.type)}
-                onMouseUp={this.onMouseUp(block.type)}
+                onPointerDown={this.onMouseDown(block.type)}
+                onPointerUp={this.onMouseUp(block.type)}
             >
                 { block.type == BlockTypes.IMAGE &&
                   <div className={containerCls}>
