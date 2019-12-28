@@ -331,9 +331,12 @@ class ProjectView extends React.Component {
 
         return (
             <div className={containerClassnames}
-                onPointerMove={this.onMouseMove}
-                onPointerDown={this.onMouseDown}
-                onPointerUp={this.onMouseUp}
+                onMouseMove={this.onMouseMove}
+                onMouseDown={this.onMouseDown}
+                onMouseUp={this.onMouseUp}
+                onTouchMove={this.onMouseMove}
+                onTouchStart={this.onMouseDown}
+                onTouchEnd={this.onMouseUp}
                 onWheel={this.onScroll}
                 onClick={this.onClick}
             >
