@@ -38,7 +38,7 @@
     }
 
     .out-facing-links {
-        position: absolute;
+        position: fixed;
         bottom: 60px;
         display: flex;
         flex-direction: row;
@@ -50,6 +50,17 @@
                 color: black;    
             }
         }
+    }
+
+    .about-content {
+        max-height: 60vh;
+        overflow-y: scroll;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE 10+ */
+        &::-webkit-scrollbar { /* WebKit */
+          width: 0;
+          height: 0;
+        }  
     }
 
     .project-link-container {
