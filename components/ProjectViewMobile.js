@@ -10,6 +10,7 @@ class ProjectView extends React.Component {
     state = {
       currentProjectBlocks: [],
       currentImageIndex: 0,
+      transitioningImage: false
     }
     constructor(props) {
       super(props)
@@ -28,11 +29,15 @@ class ProjectView extends React.Component {
             const { color } = getCurrentProjectMetadata()
             const currentProjectBlocks = getCurrentProjectBlocks()
             const remainingProjects = currentProjectBlocks.length
+            const textBlocks = currentProjectBlocks.filter(b => b.type != BlockTypes.IMAGE)
+            const imageBlocks = currentProjectBlocks.filter(b => b.type == BlockTypes.IMAGE)
 
             this.setState({
                 transitionState: 'transitioning-out',
                 currentProjectBlocks,
-                remainingProjects
+                remainingProjects,
+                textBlocks,
+                imageBlocks
             }, () => {
                 setTimeout(() => {
                     this.setState({
@@ -45,13 +50,7 @@ class ProjectView extends React.Component {
         }
     }
     getImageDimensions(bbox, image) {
-      console.log('getImageDimensions: ', bbox, image)
-      // let bbox = {
-      //   width: givenBbox.width || 0.75 * window.innerWidth,
-      //   height: givenBbox.height || 0.5 * window.innerHeight
-      // }
       let ratio = bbox.width / image.width
-      console.log('--ratio : ', ratio)
       if (image.height * ratio <= bbox.height) {
         return { width: bbox.width, height: image.height * ratio }
       } else {
@@ -64,29 +63,50 @@ class ProjectView extends React.Component {
       let { width, height } = r.getBoundingClientRect()
       this.imageBoundingBox = { width, height }
     }
+    onImageClick = (e) => {
+      const { currentImageIndex, imageBlocks } = this.state
+      const newImageIndex = (currentImageIndex + 1) % imageBlocks.length
+      this.setState({ transitioningImage: true}, () => {
+        setTimeout(() => {
+          this.setState({ currentImageIndex: newImageIndex }, () => {
+            this.setState({ transitioningImage: false })
+          })
+        }, 500)
+      })
+    }
     render() {
         const { isAboutPageOpen, isMouseTrackerVisible, isProjectHighlightMode, data } = this.props
-        const { currentImageIndex, transitionState, currentProjectBlocks } = this.state
+        const { currentImageIndex, transitioningImage, currentProjectBlocks, textBlocks, imageBlocks } = this.state
 
         if (!data) { return null }
 
         console.log('curr: ', currentProjectBlocks)
         if (currentProjectBlocks.length == 0) return null
 
-        const textBlocks = currentProjectBlocks.filter(b => b.type != BlockTypes.IMAGE)
-        const imageBlocks = currentProjectBlocks.filter(b => b.type == BlockTypes.IMAGE)
+        console.log('render: ', currentImageIndex, imageBlocks)
 
         let imageDimensions = this.getImageDimensions(this.imageBoundingBox, imageBlocks[currentImageIndex])
         console.log('image dimensions: ', imageDimensions)
 
+        let imageWrapperCls = classnames({
+          'mobile-image-wrapper': true,
+          hidden: transitioningImage
+        })
+
         return (
             <div className="mobile-projects-container">
-              <div ref={r => this.onImageContainerRef(r)} className="mobile-image-container">
-                <StaticProjectBlock
-                  block={imageBlocks[currentImageIndex]}
-                  w={imageDimensions.width}
-                  h={imageDimensions.height}
-                />
+              <div
+                ref={r => this.onImageContainerRef(r)}
+                className="mobile-image-container"
+                onClick={this.onImageClick}
+              >
+                <div className={imageWrapperCls}>
+                  <StaticProjectBlock
+                    block={imageBlocks[currentImageIndex]}
+                    w={imageDimensions.width}
+                    h={imageDimensions.height}
+                  />
+                </div>
 
               </div>
               <div className="mobile-text-container">
