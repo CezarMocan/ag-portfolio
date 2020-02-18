@@ -2,6 +2,7 @@
 @nav-margin-ns: 30px;
 @nav-margin: 45px;
 @nav-icon-size: 35px;
+@nav-icon-size-mobile: 25px;
 
 @nav-margin-ew-mobile: 20px;
 @nav-margin-ns-mobile: 15px;
@@ -20,12 +21,16 @@
     img {
         width: @nav-icon-size;
         height: @nav-icon-size;
+        @media screen and (max-width: 667px) {
+          width: @nav-icon-size-mobile;
+          height: @nav-icon-size-mobile;
+        }
     }
     &.nav-previous {
         left: 40px;
         bottom: 25px;
         @media screen and (max-width: 667px) {
-            bottom: 15px;
+            bottom: 7px;
             left: @nav-margin-ew-mobile;
         }
     }
@@ -33,7 +38,7 @@
         left: 105px;
         bottom: 21px;
         @media screen and (max-width: 667px) {
-            bottom: 10px;
+            bottom: 2px;
             left: 50%;
             transform: translateX(-50%);
         }
@@ -45,7 +50,7 @@
         transform: translateX(-50%);
 
         @media screen and (max-width: 667px) {
-            bottom: 13px;
+            bottom: 5px;
             right: @nav-margin-ew-mobile;
             left: auto;
             transform: translateX(0);
@@ -79,6 +84,7 @@
         @media screen and (max-width: 667px) {
             right: @nav-margin-ew-mobile;
             top: @nav-margin-ns-mobile;
+            bottom: auto;
         }
         transform: translateY(-3px);
     }

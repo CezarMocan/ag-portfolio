@@ -29,7 +29,7 @@ class About extends React.Component {
                                 <div className="project-link-container interactive"
                                     onClick={this.onProjectClick(p.id)}
                                 >
-                                    &emsp;{index + 1}. <a className="project-link">{p.title}&emsp;<br/></a>
+                                    &emsp;{index + 1}. <span className="project-link link">{p.title}&emsp;<br/></span>
                                 </div>
                             )
                         })}
