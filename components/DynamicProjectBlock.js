@@ -1,10 +1,10 @@
 import React from 'react'
 import classnames from 'classnames'
-import PortableBlockContent from '@sanity/block-content-to-react'
-import ProgressiveImage from 'react-progressive-image'
 import { withMainContext } from '../context/MainContext'
 import { BlockTypes } from '../modules/DataModels'
 import { toDeg } from '../modules/utils'
+import StaticProjectBlock from './StaticProjectBlock'
+
 
 class ProjectBlock extends React.Component {
     isMouseDown = false
@@ -21,7 +21,7 @@ class ProjectBlock extends React.Component {
     }
     onMouseDown = (blockType) => (e) => {
       this.isMouseDown = true
-      
+
       const { onHighlightMouseDown, isProjectHighlightMode, isProjectMoveMode, block, visible } = this.props
 
       if (this.isTextBlockType(blockType) && !isProjectMoveMode)
@@ -29,7 +29,7 @@ class ProjectBlock extends React.Component {
 
       if (isProjectHighlightMode && visible && onHighlightMouseDown) {
         onHighlightMouseDown(e)
-      }      
+      }
     }
     onMouseUp = (blockType) => (e) => {
       const { onHighlightMouseUp, isProjectHighlightMode, isProjectMoveMode, block, visible } = this.props
@@ -59,7 +59,7 @@ class ProjectBlock extends React.Component {
       }
     }
     onMouseLeave = (blockType) => (e) => {
-      const { onMouseLeave, isProjectHighlightMode, isProjectMoveMode } = this.props      
+      const { onMouseLeave, isProjectHighlightMode, isProjectMoveMode } = this.props
 
       if (this.isTextBlockType(blockType)) {
         const { toggleMouseTracker } = this.props
@@ -84,11 +84,6 @@ class ProjectBlock extends React.Component {
           "hidden": !visible
         })
 
-        const containerCls = classnames({
-            "image": block.type == BlockTypes.IMAGE,
-            "text": block.type == BlockTypes.TEXT || block.type == BlockTypes.PORTABLE_TEXT
-        })
-
         let { x, y, w, h } = transform
         w = parseInt(w)
         h = parseInt(h)
@@ -110,7 +105,6 @@ class ProjectBlock extends React.Component {
                     width: `${w}px`,
                     height: `${h}px`,
                     transform: `translateX(-50%) translateY(-50%) rotate(${toDeg(transform.r)})`,
-                    // boxShadow: clicked ? '' : `0px 0px 10px ${shadowColor}`
                     border: `1px solid ${shadowColor}`
                 }}
                 onWheel={this.onWheel(block.type)}
@@ -121,43 +115,7 @@ class ProjectBlock extends React.Component {
                 onTouchStart={this.onMouseDown(block.type)}
                 onTouchEnd={this.onMouseUp(block.type)}
             >
-                { block.type == BlockTypes.IMAGE &&
-                  <div className={containerCls}>
-                    <ProgressiveImage 
-                      delay={100}
-                      src={block.getUrl(w)}
-                      placeholder={block.getLQUrl()}
-                    >
-                      { (src, loading) => {
-                        const cls = classnames({
-                          "project-image-placeholder": true,
-                          "fadeout-after": !loading,
-                          "blurred": true
-                        })
-                        return (
-                          <div className="project-image-container">
-                            {/* <img src={src} className={cls}/> */}
-                            <img draggable="false" src={block.getLQUrl()} className={cls} width={w} height={h}/>
-                            { !loading && <img draggable="false" src={src} width={w} height={h} className="project-image fadein"/>}
-                          </div>
-                        )
-                      }}
-                    </ProgressiveImage>
-                  </div>
-                }
-                { block.type == BlockTypes.TEXT &&
-                  <div className={containerCls}>
-                    <p className="project-text"> { block.text } </p>
-                  </div>
-                }
-                { block.type == BlockTypes.PORTABLE_TEXT &&
-                    <PortableBlockContent
-                      blocks={block.o}
-                      className={containerCls}
-                      renderContainerOnSingleChild={true}
-                    />
-                }
-
+              <StaticProjectBlock block={block} w={w} h={h}/>
             </div>
         )
     }

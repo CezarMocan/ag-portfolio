@@ -3,9 +3,13 @@ import classnames from 'classnames'
 import { withMainContext } from '../context/MainContext'
 
 class Navigation extends React.Component {
+    state = {
+      titleTransitionStyle: '',
+      titleString: ''
+    }
     onFinGClick = (evt) => {
         const { navigateLandingPage } = this.props
-        if (navigateLandingPage) navigateLandingPage()        
+        if (navigateLandingPage) navigateLandingPage()
     }
     onAboutClick = (evt) => {
         const { toggleAboutPage } = this.props
@@ -31,15 +35,37 @@ class Navigation extends React.Component {
       const { toggleMouseTracker } = this.props
       toggleMouseTracker(true)
     }
+    componentWillReceiveProps(nextProps) {
+      const { getCurrentProjectMetadata } = nextProps
+      const { title, year } = getCurrentProjectMetadata()
+
+      let titleString
+      if (title && year) {
+        titleString = `Anthony V. Gagliardi / ${title}, ${year}`
+      } else if (title) {
+        titleString = title
+      } else {
+        titleString = ''
+      }
+
+      if (titleString != this.state.titleString) {
+        this.setState({ titleTransitionStyle: 'transition-hidden' }, () => {
+          setTimeout(() => {
+            this.setState({ titleString, titleTransitionStyle: 'transition-visible' })
+          }, 500)
+        })
+      }
+    }
     render() {
         const { isAboutPageOpen } = this.props
-        const { currentProjectId, getCurrentProjectMetadata } = this.props
-        const { title, year } = getCurrentProjectMetadata()
+        const { titleString, titleTransitionStyle } = this.state
         const brClassnames = classnames({'nav-container': true, 'nav-next': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
         const blClassnames = classnames({'nav-container': true, 'nav-previous': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
         const trClassnames = classnames({'nav-container': true, 'nav-fin-g': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
         const trAboutClassnames = classnames({'nav-container': true, 'nav-top-right': true, 'interactive': isAboutPageOpen, 'close-image': true, visible: isAboutPageOpen })
-        const tlClassnames = classnames({'nav-container': true, 'nav-top-left': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen, 'title-corner': true })
+        const tlClassnames = classnames({'nav-container': true, 'nav-top-left': true, 'interactive': false, visible: (!isAboutPageOpen && titleTransitionStyle == 'transition-visible')})
+        const aboutClassnames = classnames({'nav-container': true, 'nav-top-right': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
+
         return (
             <>
                 <div className={brClassnames}
@@ -47,7 +73,6 @@ class Navigation extends React.Component {
                   onMouseEnter={this.onNavigationMouseEnter}
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
-                    {/* <img src="static/icons/2_nav_V.svg"/> */}
                     <img src="static/icons/noun_V.png"/>
                 </div>
                 <div className={blClassnames}
@@ -55,7 +80,6 @@ class Navigation extends React.Component {
                   onMouseEnter={this.onNavigationMouseEnter}
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
-                    {/* <img src="static/icons/2_nav_A.svg"/> */}
                     <img src="static/icons/noun_A.png"/>
                 </div>
                 <div className={trClassnames}
@@ -65,16 +89,24 @@ class Navigation extends React.Component {
                 >
                     <img src="static/icons/noun_G-2.svg"/>
                 </div>
+
                 <div className={tlClassnames}
+                  onMouseEnter={this.onNavigationMouseEnter}
+                  onMouseLeave={this.onNavigationMouseLeave}
+                >
+                  <p style={{margin: 0}}> { titleString } </p>
+                </div>
+
+
+                <div className={aboutClassnames}
                   onClick={this.onAboutClick}
                   onMouseEnter={this.onNavigationMouseEnter}
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
-                    { title && year && <p style={{margin: 0}}>Anthony V. Gagliardi / {title}, {year}</p> }
-                    { title && !year && <p style={{margin: 0}}>{title} </p> }
-                    { !title && <p style={{margin: 0}}></p> }
+                    <p className="link" style={{margin: 0}}>about</p>
                 </div>
-                { isAboutPageOpen && 
+
+                { isAboutPageOpen &&
                     <div className={trAboutClassnames} onClick={this.onAboutCloseClick}>
                         <img src="static/icons/nav_X.svg"/>
                     </div>
@@ -91,7 +123,9 @@ class Navigation extends React.Component {
 Navigation.defaultProps = {
     onNext: () => {},
     onPrev: () => {},
-    onAbout: () => {}
+    onAbout: () => {},
+    title: null,
+    year: null
 }
 
 export default withMainContext((context, props) => ({

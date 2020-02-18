@@ -1,0 +1,25 @@
+.mobile-projects-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  .mobile-image-container {
+    width: 100%;
+    height: 100%;
+    margin-top: 70px;
+    flex: 2;
+    overflow: hidden;
+  }
+
+  .mobile-text-container {
+    margin: 15px 20px 95px;
+    flex: 1;
+    overflow: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+    &::-webkit-scrollbar { /* WebKit */
+      width: 0;
+      height: 0;
+    }
+  }
+}

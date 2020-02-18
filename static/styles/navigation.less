@@ -1,6 +1,6 @@
-@nav-margin-ew: 40px; 
-@nav-margin-ns: 30px; 
-@nav-margin: 45px; 
+@nav-margin-ew: 40px;
+@nav-margin-ns: 30px;
+@nav-margin: 45px;
 @nav-icon-size: 35px;
 
 @nav-margin-ew-mobile: 20px;
@@ -17,27 +17,27 @@
     max-width: ~"calc(100vw - 40px)";
     &.visible {
         opacity: 1;
-    }    
+    }
     img {
         width: @nav-icon-size;
         height: @nav-icon-size;
     }
     &.nav-previous {
         left: 40px;
-        bottom: 25px;    
+        bottom: 25px;
         @media screen and (max-width: 667px) {
             bottom: 40px;
             left: @nav-margin-ew-mobile;
-        }    
+        }
     }
-    &.nav-next {        
+    &.nav-next {
         left: 105px;
         bottom: 21px;
         @media screen and (max-width: 667px) {
             bottom: 35px;
             left: 50%;
             transform: translateX(-50%);
-        }    
+        }
     }
     &.nav-fin-g {
         left: 50%;
@@ -50,27 +50,28 @@
             right: @nav-margin-ew-mobile;
             left: auto;
             transform: translateX(0);
-        }    
+        }
         // img {
         //     width: 32px;
-        //     height: 32px;    
+        //     height: 32px;
         // }
     }
 
     &.nav-top-left {
         left: @nav-margin-ew;
-        top: @nav-margin-ns;    
+        top: @nav-margin-ns;
         @media screen and (max-width: 667px) {
             left: @nav-margin-ew-mobile;
-            top: @nav-margin-ns-mobile;        
+            top: @nav-margin-ns-mobile;
         }
+        max-width: 65vw;
     }
     &.nav-top-right {
         right: @nav-margin-ew;
-        top: @nav-margin-ns;    
+        top: @nav-margin-ns;
         @media screen and (max-width: 667px) {
             right: @nav-margin-ew-mobile;
-            top: @nav-margin-ns-mobile;        
+            top: @nav-margin-ns-mobile;
         }
     }
     &.nav-bottom-center {
@@ -82,13 +83,29 @@
         }
     }
 
-    &.title-corner {
-        padding-bottom: 10px;
-        border-bottom: 1px solid black;
-    }
-
     &.close-image img {
         width: 20px;
         height: 20px;
     }
 }
+
+.cross-fade-leave {
+  opacity: 0;
+  transition: opacity 0.5s linear;
+}
+.cross-fade-leave.cross-fade-leave-active {
+  opacity: 0;
+  transition: opacity 0.5s linear;
+}
+.cross-fade-enter {
+  opacity: 0;
+  transition: opacity 0.5s linear;
+}
+.cross-fade-enter.cross-fade-enter-active {
+  opacity: 0;
+  transition: opacity 0.5s linear;
+}
+
+// .cross-fade-height {
+//   transition: height 0.5s linear;
+// }

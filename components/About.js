@@ -2,6 +2,7 @@ import React from 'react'
 import classnames from 'classnames'
 import PortableBlockContent from '@sanity/block-content-to-react'
 import { withMainContext } from '../context/MainContext'
+import { portableTextSerializers } from '../modules/sanity'
 
 class About extends React.Component {
     onProjectClick = (projectId) => (e) => {
@@ -9,11 +10,11 @@ class About extends React.Component {
         toggleMouseTracker(true)
         navigateToProjectId(projectId)
     }
-    render() {        
+    render() {
         const { isAboutPageOpen, about, projects } = this.props
         const cls = classnames({
             'about-container': true,
-            'visible': isAboutPageOpen 
+            'visible': isAboutPageOpen
         })
         return (
             <div className={cls}>
@@ -21,7 +22,7 @@ class About extends React.Component {
                     <div className="nav-about-top-left">
                         <p style={{margin: 0}}>Anthony V. Gagliardi / about</p>
                     </div>
-                    
+
                     <p>
                         { projects && projects.map((p, index) => {
                             return (
@@ -39,6 +40,7 @@ class About extends React.Component {
                     <PortableBlockContent
                         blocks={about ? about.description : []}
                         className={""}
+                        serializers={portableTextSerializers}
                         renderContainerOnSingleChild={true}
                     />
                 </div>
@@ -48,11 +50,11 @@ class About extends React.Component {
                     </div>
                     <div className="link">
                         <a className="interactive" href="https://www.instagram.com/anthonyvgagliardi/" target="__blank"><p>instagram</p></a>
-                    </div>    
+                    </div>
                 </div>
             </div>
         )
-    }    
+    }
 }
 
 export default withMainContext((context, props) => ({

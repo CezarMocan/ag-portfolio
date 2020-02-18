@@ -3,6 +3,7 @@
 @import "./navigation.less";
 @import "./about.less";
 @import "./project.less";
+@import "./mobile.less";
 
 body {
     overflow: hidden;
@@ -12,7 +13,8 @@ body {
     -moz-user-select: none !important;
     -o-user-select: none !important;
     user-select: none !important;
-    -webkit-touch-callout: none !important;  
+    -webkit-touch-callout: none !important;
+    background-color: #fafafa;
 }
 
 img {
@@ -23,7 +25,7 @@ img {
     user-select: none;
     pointer-events: none;
 }
-  
+
 img::-moz-selection {
     background-color: transparent;
     color: #000;
@@ -32,7 +34,7 @@ img::-moz-selection {
 img::selection {
     background-color: transparent;
     color: #000;
-}  
+}
 
 .interactive {
     cursor: pointer;
@@ -43,4 +45,15 @@ img::selection {
     }
 
     transition: opacity .2s ease-in-out;
+}
+
+a, .link {
+  text-decoration: none;
+  color: black;
+  padding-bottom: 0;
+  border-bottom: 1px dashed black;
+  &:hover {
+    opacity: 0.5;
+  }
+  transition: opacity .2s ease-in-out;
 }
