@@ -10,7 +10,9 @@ class ProjectView extends React.Component {
     state = {
       currentProjectBlocks: [],
       currentImageIndex: 0,
-      transitioningImage: false
+      transitioningImage: false,
+      imageBlocks: [],
+      textBlocks: []
     }
     constructor(props) {
       super(props)
@@ -28,28 +30,27 @@ class ProjectView extends React.Component {
             const { getCurrentProjectMetadata } = this.props
             const { color } = getCurrentProjectMetadata()
             const currentProjectBlocks = getCurrentProjectBlocks()
-            const remainingProjects = currentProjectBlocks.length
             const textBlocks = currentProjectBlocks.filter(b => b.type != BlockTypes.IMAGE)
             const imageBlocks = currentProjectBlocks.filter(b => b.type == BlockTypes.IMAGE)
 
             this.setState({
                 transitionState: 'transitioning-out',
-                currentProjectBlocks,
-                remainingProjects,
-                textBlocks,
-                imageBlocks
+                currentProjectBlocks
             }, () => {
                 setTimeout(() => {
                     this.setState({
                         placedBlocks: [],
                         transitionState: 'transitioning-in',
-                        remainingProjects,
+                        textBlocks,
+                        imageBlocks,
+                        currentImageIndex: 0
                     })
                 }, 500)
             })
         }
     }
     getImageDimensions(bbox, image) {
+      if (!bbox || !image) return { width: 0, height: 0 }
       let ratio = bbox.width / image.width
       if (image.height * ratio <= bbox.height) {
         return { width: bbox.width, height: image.height * ratio }
@@ -76,7 +77,7 @@ class ProjectView extends React.Component {
     }
     render() {
         const { isAboutPageOpen, isMouseTrackerVisible, isProjectHighlightMode, data } = this.props
-        const { currentImageIndex, transitioningImage, currentProjectBlocks, textBlocks, imageBlocks } = this.state
+        const { transitionState, currentImageIndex, transitioningImage, currentProjectBlocks, textBlocks, imageBlocks } = this.state
 
         if (!data) { return null }
 
@@ -88,13 +89,18 @@ class ProjectView extends React.Component {
         let imageDimensions = this.getImageDimensions(this.imageBoundingBox, imageBlocks[currentImageIndex])
         console.log('image dimensions: ', imageDimensions)
 
-        let imageWrapperCls = classnames({
+        const containerClassnames = classnames({
+          "mobile-projects-container": true,
+          visible: !isAboutPageOpen && transitionState != 'transitioning-out'
+        })
+
+        const imageWrapperCls = classnames({
           'mobile-image-wrapper': true,
           hidden: transitioningImage
         })
 
         return (
-            <div className="mobile-projects-container">
+            <div className={containerClassnames}>
               <div
                 ref={r => this.onImageContainerRef(r)}
                 className="mobile-image-container"

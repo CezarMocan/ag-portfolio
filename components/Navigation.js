@@ -112,9 +112,9 @@ class Navigation extends React.Component {
                     </div>
                 }
 
-                <div className="nav-container nav-bottom-center visible">
+                {/* <div className="nav-container nav-bottom-center visible">
                     <h4>© ANTHONY GAGLIARDI 2015—2019, ALL RIGHTS RESERVED.</h4>
-                </div>
+                </div> */}
             </>
         )
     }

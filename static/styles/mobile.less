@@ -3,15 +3,24 @@
   display: flex;
   flex-direction: column;
 
+  opacity: 0;
+  transition: opacity 0.5s linear;
+
+  &.visible {
+    opacity: 1;
+  }
+
   .mobile-image-container {
     height: 100%;
-    margin: 70px 10px 0;
+    margin: 70px 10px 15px;
+    padding-top: 15px;
     flex: 2;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    border-top: 1px solid black;
 
     .mobile-image-wrapper {
       opacity: 1;
@@ -24,8 +33,10 @@
   }
 
   .mobile-text-container {
-    margin: 15px 10px 95px;
+    margin: 0 10px 95px;
     flex: 1;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
     overflow: scroll;
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE 10+ */
