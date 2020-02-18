@@ -29,9 +29,7 @@ class About extends React.Component {
                                 <div className="project-link-container interactive"
                                     onClick={this.onProjectClick(p.id)}
                                 >
-                                    <span className="project-link">
-                                        &emsp;{index + 1}. {p.title}&emsp;<br/>
-                                    </span>
+                                    &emsp;{index + 1}. <a className="project-link">{p.title}&emsp;<br/></a>
                                 </div>
                             )
                         })}
@@ -44,16 +42,19 @@ class About extends React.Component {
                         renderContainerOnSingleChild={true}
                     />
                 </div>
-                <div className="out-facing-links">
-                    <div className="link">
-                        <a className="interactive" href="mailto:anthony@almost.studio" target="__blank"><p>email</p></a>
-                    </div>
-                    <div className="link">
-                        <a className="interactive" href="https://www.instagram.com/anthonyvgagliardi/" target="__blank"><p>instagram</p></a>
-                    </div>
-                </div>
-                <div className="copyright-notice">
-                    <h4>© ANTHONY GAGLIARDI 2015—2019, ALL RIGHTS RESERVED.</h4>
+                <div className="colophon">
+                  <div className="out-facing-links">
+                      <div className="link">
+                          <a className="interactive" href="mailto:anthony@almost.studio" target="__blank"><p>email</p></a>
+                      </div>
+                      <div className="link">
+                          <a className="interactive" href="https://www.instagram.com/anthonyvgagliardi/" target="__blank"><p>instagram</p></a>
+                      </div>
+                  </div>
+                  <div className="copyright-notice">
+                    Anthony V Gagliardi © 2020. All Rights Reserved.<br/>
+                    Website by <a href="https://cezar.io" target="__blank">Cezar Mocan</a>.
+                  </div>
                 </div>
             </div>
         )

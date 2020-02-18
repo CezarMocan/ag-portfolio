@@ -16,16 +16,16 @@
     padding-top: 15px;
     flex: 2;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     border-top: 1px solid black;
 
     .mobile-image-wrapper {
       opacity: 1;
       transition: opacity 0.5s linear;
-
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
       &.hidden {
         opacity: 0;
       }
@@ -33,7 +33,7 @@
   }
 
   .mobile-text-container {
-    margin: 0 10px 95px;
+    margin: 0 10px 75px;
     flex: 1;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
@@ -43,6 +43,10 @@
     &::-webkit-scrollbar { /* WebKit */
       width: 0;
       height: 0;
+    }
+
+    .text {
+      margin-top: -10px;
     }
   }
 }

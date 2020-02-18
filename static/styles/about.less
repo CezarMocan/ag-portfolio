@@ -35,30 +35,30 @@
         margin-bottom: 20px;
     }
 
-    .out-facing-links {
-        position: fixed;
-        bottom: 35px;
-        @media screen and (max-width: 667px) {
-          bottom: 50px;
-        }
+    .colophon {
+      position: fixed;
+      bottom: 40px;
+      @media screen and (max-width: 667px) {
+        bottom: 20px;
+      }
+      .out-facing-links {
+        margin-left: -5px;
         display: flex;
         flex-direction: row;
 
         .link {
             margin: 5px;
         }
-    }
+      }
 
-    .copyright-notice {
-      position: fixed;
-      bottom: 45px;
-      right: 40px;
-      @media screen and (max-width: 667px) {
-          bottom: 25px;
-          left: 25px;
+      .copyright-notice {
+        margin-top: 25px;
+        font-size: 12pt;
+        @media screen and (max-width: 667px) {
+            font-size: 11pt;
+        }
       }
     }
-
 
     .about-content {
         max-height: 75vh;
@@ -74,6 +74,7 @@
     .project-link-container {
         cursor: pointer;
         position: relative;
+        margin-bottom: 1px;
     }
     .project-link {
         color: black;
