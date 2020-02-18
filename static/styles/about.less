@@ -37,7 +37,10 @@
 
     .out-facing-links {
         position: fixed;
-        bottom: 60px;
+        bottom: 35px;
+        @media screen and (max-width: 667px) {
+          bottom: 50px;
+        }
         display: flex;
         flex-direction: row;
 
@@ -45,6 +48,17 @@
             margin: 5px;
         }
     }
+
+    .copyright-notice {
+      position: fixed;
+      bottom: 45px;
+      right: 40px;
+      @media screen and (max-width: 667px) {
+          bottom: 25px;
+          left: 25px;
+      }
+    }
+
 
     .about-content {
         max-height: 75vh;

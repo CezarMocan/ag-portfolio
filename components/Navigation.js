@@ -20,11 +20,13 @@ class Navigation extends React.Component {
         if (toggleAboutPage) toggleAboutPage(false)
     }
     onNavigateNextClick = () => {
-        const { navigateNextProject } = this.props
+        const { navigateNextProject, isAboutPageOpen } = this.props
+        if (isAboutPageOpen) return
         if (navigateNextProject) navigateNextProject()
     }
     onNavigatePrevClick = () => {
-        const { navigatePreviousProject } = this.props
+        const { navigatePreviousProject, isAboutPageOpen } = this.props
+        if (isAboutPageOpen) return
         if (navigatePreviousProject) navigatePreviousProject()
     }
     onNavigationMouseEnter = (e) => {
@@ -64,7 +66,7 @@ class Navigation extends React.Component {
         const trClassnames = classnames({'nav-container': true, 'nav-fin-g': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
         const trAboutClassnames = classnames({'nav-container': true, 'nav-top-right': true, 'interactive': isAboutPageOpen, 'close-image': true, visible: isAboutPageOpen })
         const tlClassnames = classnames({'nav-container': true, 'nav-top-left': true, 'interactive': false, visible: (!isAboutPageOpen && titleTransitionStyle == 'transition-visible')})
-        const aboutClassnames = classnames({'nav-container': true, 'nav-top-right': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
+        const aboutClassnames = classnames({'nav-container': true, 'nav-bottom-right': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
 
         return (
             <>
@@ -111,10 +113,6 @@ class Navigation extends React.Component {
                         <img src="static/icons/nav_X.svg"/>
                     </div>
                 }
-
-                {/* <div className="nav-container nav-bottom-center visible">
-                    <h4>© ANTHONY GAGLIARDI 2015—2019, ALL RIGHTS RESERVED.</h4>
-                </div> */}
             </>
         )
     }

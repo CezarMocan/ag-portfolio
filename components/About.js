@@ -52,6 +52,9 @@ class About extends React.Component {
                         <a className="interactive" href="https://www.instagram.com/anthonyvgagliardi/" target="__blank"><p>instagram</p></a>
                     </div>
                 </div>
+                <div className="copyright-notice">
+                    <h4>© ANTHONY GAGLIARDI 2015—2019, ALL RIGHTS RESERVED.</h4>
+                </div>
             </div>
         )
     }
