@@ -20,7 +20,7 @@ export default class SanityAssetBlock extends React.Component {
     return (
       <>
         { block.type == BlockTypes.IMAGE &&
-          <div className={containerCls}>
+          <div className={containerCls} style={{width: w, height: h}}>
             <ProgressiveImage
               delay={100}
               src={block.getUrl(w)}
