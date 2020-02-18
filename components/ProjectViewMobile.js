@@ -80,14 +80,9 @@ class ProjectView extends React.Component {
         const { transitionState, currentImageIndex, transitioningImage, currentProjectBlocks, textBlocks, imageBlocks } = this.state
 
         if (!data) { return null }
-
-        console.log('curr: ', currentProjectBlocks)
         if (currentProjectBlocks.length == 0) return null
 
-        console.log('render: ', currentImageIndex, imageBlocks)
-
         let imageDimensions = this.getImageDimensions(this.imageBoundingBox, imageBlocks[currentImageIndex])
-        console.log('image dimensions: ', imageDimensions)
 
         const containerClassnames = classnames({
           "mobile-projects-container": true,
