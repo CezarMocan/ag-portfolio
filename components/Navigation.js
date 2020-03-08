@@ -71,21 +71,24 @@ class Navigation extends React.Component {
         return (
             <>
                 <div className={brClassnames}
-                  onClick={this.onNavigateNextClick}
+                  onMouseUp={this.onNavigateNextClick}
+                  onTouchEnd={this.onNavigateNextClick}
                   onMouseEnter={this.onNavigationMouseEnter}
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
                     <img src="static/icons/noun_V.png"/>
                 </div>
                 <div className={blClassnames}
-                  onClick={this.onNavigatePrevClick}
+                  onMouseUp={this.onNavigatePrevClick}
+                  onTouchEnd={this.onNavigatePrevClick}
                   onMouseEnter={this.onNavigationMouseEnter}
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
                     <img src="static/icons/noun_A.png"/>
                 </div>
                 <div className={trClassnames}
-                  onClick={this.onFinGClick}
+                  onMouseUp={this.onFinGClick}
+                  onTouchEnd={this.onFinGClick}
                   onMouseEnter={this.onNavigationMouseEnter}
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
@@ -101,7 +104,8 @@ class Navigation extends React.Component {
 
 
                 <div className={aboutClassnames}
-                  onClick={this.onAboutClick}
+                  onMouseUp={this.onAboutClick}
+                  onTouchEnd={this.onAboutClick}
                   onMouseEnter={this.onNavigationMouseEnter}
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
