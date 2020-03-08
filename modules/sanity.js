@@ -20,7 +20,7 @@ export const queries = {
       textMinScale,
       textMaxScale,
       orderNumber,
-      "images": images[]{
+      "projectBlocks": projectBlocks[]{
         asset->{
           "originalWidth": metadata.dimensions.width,
           "originalHeight": metadata.dimensions.height,

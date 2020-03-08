@@ -48,8 +48,8 @@ export class ImageBlock {
       this.width = o.asset.originalWidth
       this.height = o.asset.originalHeight
       this.aspectRatio = o.asset.aspectRatio
-      this.minScale = o.minScale || 0.25
-      this.maxScale = o.maxScale || 0.25
+      this.minScale = o.minScale ? o.minScale / 100 : 0.25
+      this.maxScale = o.maxScale ? o.maxScale / 100 : 0.25
       this.lqip = o.asset.lqip
       this.o = o
       this._url = imageUrlFor(o).width(750).url()
