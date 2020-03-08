@@ -17,9 +17,15 @@ export class PortableTextBlock {
     this.type = BlockTypes.PORTABLE_TEXT
     this.id = UID++
     this.o = o
+    this.text = o.reduce((acc, el) => {
+      return acc + el.children.reduce((acc, c) => {
+        return acc + c.text + '\n'
+      }, '') + '\n'
+    }, '')
     this.options = options
-    this.minScale = options.textMinScale ? options.textMinScale : 0.3
-    this.maxScale = options.textMaxScale ? options.textMaxScale : 0.4
+    this.minScale = options.textMinScale ? options.textMinScale / 100 : 0.3
+    this.maxScale = options.textMaxScale ? options.textMaxScale / 100 : 0.4
+    this.textBoxHeightRatio = options.textBoxHeightRatio ? options.textBoxHeightRatio / 100 : 1
   }
 }
 
@@ -29,8 +35,8 @@ export class TextBlock {
       this.id = UID++
       this.text = text
       this.options = options
-      this.minScale = options.textMinScale ? options.textMinScale : 0.3
-      this.maxScale = options.textMaxScale ? options.textMaxScale : 0.4
+      this.minScale = options.textMinScale ? options.textMinScale / 100 : 0.3
+      this.maxScale = options.textMaxScale ? options.textMaxScale / 100 : 0.4
     }
 }
 

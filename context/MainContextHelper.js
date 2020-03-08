@@ -57,7 +57,10 @@ export const processNewsData = (newsData) => {
         if (item._type == 'projectImage') {
             blocks.push(new ImageBlock(item))
         } else {
-            blocks.push(new TextBlock(item.text))
+            // Get text min and max scale
+            console.log('item is: ', item)
+            const { text, textMinScale, textMaxScale, textBoxHeightRatio } = item
+            blocks.push(new PortableTextBlock(text, { textMinScale, textMaxScale, textBoxHeightRatio }))
         }
     }
 

@@ -85,15 +85,18 @@ class ProjectView extends React.Component {
             newWidth = Math.max(newWidth, 300)
             let newHeight
 
+            console.log('updateMarkerForNextBlock: ', block, newWidth)
+
             if (block.width) {
               newHeight = newWidth / block.width * block.height
             } else if (block.text) {
               let measurement = measureText('p', '', block.text, newWidth)
               let measurementNoWidth = measureText('p', '', block.text)
               newHeight = measurement.h
+              if (block.textBoxHeightRatio) newHeight *= block.textBoxHeightRatio
               newWidth = Math.min(measurementNoWidth.w, newWidth)
             } else {
-              newHeight = newWidth
+              newHeight = newWidth / 2
             }
 
             this.updateMarkerDOM({ width: newWidth, height: newHeight })
