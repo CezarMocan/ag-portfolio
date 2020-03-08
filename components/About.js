@@ -23,7 +23,7 @@ class About extends React.Component {
         })
         return (
             <div className={cls} style={{height: windowHeight}}>
-                <div className="about-content">
+                <div className="about-content" style={{height: 0.65 * windowHeight}}>
                     <div className="nav-about-top-left">
                         <p style={{margin: 0}}>Anthony V. Gagliardi / about</p>
                     </div>
