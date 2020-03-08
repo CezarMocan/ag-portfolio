@@ -5,7 +5,7 @@
     padding-left: 40px;
     padding-top: 30px;
     padding-bottom: 1px;
-    
+
     @media screen and (max-width: 667px) {
         padding-left: 20px;
         padding-top: 15px;
@@ -34,7 +34,18 @@
         display: inline-block;
         margin-left: 0px;
         margin-top: 0px;
-        margin-bottom: 20px;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        position: fixed;
+        width: 100%;
+        background-color: #fafafa;
+        z-index: 2;
+
+        &.fake {
+          position: relative;
+          color: transparent;
+          background-color: transparent;
+        }
     }
 
     .colophon {

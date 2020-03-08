@@ -2,6 +2,7 @@ import React from 'react'
 import classnames from 'classnames'
 import clamp from 'lodash.clamp'
 import { CSSTransitionGroup } from 'react-transition-group'
+import Div100vh from 'react-div-100vh'
 import { withMainContext } from '../context/MainContext'
 import StaticProjectBlock from './StaticProjectBlock'
 import { BlockTypes } from '../modules/DataModels'
@@ -17,6 +18,9 @@ class ProjectView extends React.Component {
     constructor(props) {
       super(props)
       this.imageBoundingBox = { width: 0, height: 0 }
+    }
+    componentWillMount() {
+      this.setState({ windowHeight: window.innerHeight })
     }
     componentDidMount() {
         const { fetchProjects } = this.props
@@ -77,7 +81,7 @@ class ProjectView extends React.Component {
     }
     render() {
         const { isAboutPageOpen, isMouseTrackerVisible, isProjectHighlightMode, data } = this.props
-        const { transitionState, currentImageIndex, transitioningImage, currentProjectBlocks, textBlocks, imageBlocks } = this.state
+        const { transitionState, currentImageIndex, transitioningImage, currentProjectBlocks, textBlocks, imageBlocks, windowHeight } = this.state
 
         if (!data) { return null }
         if (currentProjectBlocks.length == 0) return null
@@ -95,7 +99,7 @@ class ProjectView extends React.Component {
         })
 
         return (
-            <div className={containerClassnames}>
+            <div className={containerClassnames} style={{height: windowHeight}}>
               <div
                 ref={r => this.onImageContainerRef(r)}
                 className="mobile-image-container"

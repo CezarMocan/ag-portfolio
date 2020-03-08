@@ -5,24 +5,31 @@ import { withMainContext } from '../context/MainContext'
 import { portableTextSerializers } from '../modules/sanity'
 
 class About extends React.Component {
+    state = {windowHeight: 0}
     onProjectClick = (projectId) => (e) => {
         const { navigateToProjectId, toggleMouseTracker } = this.props
         toggleMouseTracker(true)
         navigateToProjectId(projectId)
     }
+    componentDidMount() {
+        this.setState({ windowHeight: window.innerHeight })
+      }  
     render() {
+        const { windowHeight } = this.state
         const { isAboutPageOpen, about, projects } = this.props
         const cls = classnames({
             'about-container': true,
             'visible': isAboutPageOpen
         })
         return (
-            <div className={cls}>
+            <div className={cls} style={{height: windowHeight}}>
                 <div className="about-content">
                     <div className="nav-about-top-left">
                         <p style={{margin: 0}}>Anthony V. Gagliardi / about</p>
                     </div>
-
+                    <div className="nav-about-top-left fake">
+                        <p style={{margin: 0}}>Anthony V. Gagliardi / about</p>
+                    </div>
                     <p>
                         { projects && projects.map((p, index) => {
                             return (
