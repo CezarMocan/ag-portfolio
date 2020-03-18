@@ -85,7 +85,7 @@ class ProjectView extends React.Component {
             newWidth = Math.max(newWidth, 300)
             let newHeight
 
-            console.log('updateMarkerForNextBlock: ', block, newWidth)
+            // console.log('updateMarkerForNextBlock: ', block, newWidth)
 
             if (block.width) {
               newHeight = newWidth / block.width * block.height

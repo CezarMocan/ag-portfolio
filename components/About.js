@@ -50,6 +50,7 @@ class About extends React.Component {
                         renderContainerOnSingleChild={true}
                     />
                 </div>
+                <div className="about-content-footer-container-fadeout"></div>
                 <div className="colophon">
                   <div className="out-facing-links">
                       <div className="link">
@@ -64,6 +65,8 @@ class About extends React.Component {
                     Website by <a href="https://cezar.io" target="__blank">Cezar Mocan</a>.
                   </div>
                 </div>
+
+                <div className="about-content-header-container-fadeout"></div>
             </div>
         )
     }

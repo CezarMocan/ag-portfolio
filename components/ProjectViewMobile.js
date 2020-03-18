@@ -122,6 +122,7 @@ class ProjectView extends React.Component {
                     />
                 ))}
               </div>
+              <div className="mobile-text-container-fadeout"></div>
             </div>
         )
     }

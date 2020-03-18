@@ -7,6 +7,13 @@ class Navigation extends React.Component {
       titleTransitionStyle: '',
       titleString: ''
     }
+    onTitleClick = (evt) => {
+      const { titleString } = this.state
+      const isNewsPage = (titleString.indexOf('/ news') != -1)
+      if (isNewsPage) return
+      const { navigateLandingPage } = this.props
+      if (navigateLandingPage) navigateLandingPage()    
+    }
     onFinGClick = (evt) => {
         const { navigateLandingPage } = this.props
         if (navigateLandingPage) navigateLandingPage()
@@ -60,7 +67,7 @@ class Navigation extends React.Component {
     }
     render() {
         const { isAboutPageOpen } = this.props
-        const { titleString, titleTransitionStyle } = this.state
+        const { titleString, titleTransitionStyle } = this.state        
         const brClassnames = classnames({'nav-container': true, 'nav-next': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
         const blClassnames = classnames({'nav-container': true, 'nav-previous': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
         const trClassnames = classnames({'nav-container': true, 'nav-fin-g': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
@@ -72,7 +79,6 @@ class Navigation extends React.Component {
             <>
                 <div className={brClassnames}
                   onMouseUp={this.onNavigateNextClick}
-                  onTouchEnd={this.onNavigateNextClick}
                   onMouseEnter={this.onNavigationMouseEnter}
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
@@ -80,7 +86,6 @@ class Navigation extends React.Component {
                 </div>
                 <div className={blClassnames}
                   onMouseUp={this.onNavigatePrevClick}
-                  onTouchEnd={this.onNavigatePrevClick}
                   onMouseEnter={this.onNavigationMouseEnter}
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
@@ -88,7 +93,6 @@ class Navigation extends React.Component {
                 </div>
                 <div className={trClassnames}
                   onMouseUp={this.onFinGClick}
-                  onTouchEnd={this.onFinGClick}
                   onMouseEnter={this.onNavigationMouseEnter}
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
@@ -96,6 +100,7 @@ class Navigation extends React.Component {
                 </div>
 
                 <div className={tlClassnames}
+                  onMouseUp={this.onTitleClick}
                   onMouseEnter={this.onNavigationMouseEnter}
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
