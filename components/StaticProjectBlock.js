@@ -46,18 +46,26 @@ export default class SanityAssetBlock extends React.Component {
         }
 
         { block.type == BlockTypes.TEXT &&
-          <div className={containerCls}>
-            <p className="project-text"> { block.text } </p>
-          </div>
+          <>
+            <div className="text-top-transparency-gradient"></div>
+            <div className={containerCls}>
+              <p className="project-text"> { block.text } </p>
+            </div>
+            <div className="text-bottom-transparency-gradient"></div>
+          </>
         }
 
         { block.type == BlockTypes.PORTABLE_TEXT &&
+        <>
+          {/* <div className="text-top-transparency-gradient"></div>
+          <div className="text-bottom-transparency-gradient"></div> */}
           <PortableBlockContent
             blocks={block.o}
             serializers={portableTextSerializers}
             className={containerCls}
             renderContainerOnSingleChild={true}
           />
+        </>
         }
       </>
     )

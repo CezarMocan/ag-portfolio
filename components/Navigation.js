@@ -4,8 +4,8 @@ import { withMainContext } from '../context/MainContext'
 
 class Navigation extends React.Component {
     state = {
-      titleTransitionStyle: '',
-      titleString: ''
+      titleTransitionStyle: 'transition-visible',
+      titleString: 'Anthony V. Gagliardi / Loading...'
     }
     onTitleClick = (evt) => {
       const { titleString } = this.state
@@ -54,7 +54,7 @@ class Navigation extends React.Component {
       } else if (title) {
         titleString = title
       } else {
-        titleString = ''
+        titleString = 'Anthony V. Gagliardi / Loading...'
       }
 
       if (titleString != this.state.titleString) {

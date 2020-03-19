@@ -10,7 +10,7 @@ import { BlockTypes } from '../modules/DataModels'
 class ProjectView extends React.Component {
     state = {
       currentProjectBlocks: [],
-      currentImageIndex: 0,
+      currentImageIndex: -1,
       transitioningImage: false,
       imageBlocks: [],
       textBlocks: []
@@ -47,7 +47,7 @@ class ProjectView extends React.Component {
                         transitionState: 'transitioning-in',
                         textBlocks,
                         imageBlocks,
-                        currentImageIndex: 0
+                        currentImageIndex: -1
                     })
                 }, 500)
             })
@@ -98,6 +98,12 @@ class ProjectView extends React.Component {
           hidden: transitioningImage
         })
 
+        const imageCounterCls = classnames({
+          'mobile-image-wrapper': true,
+          'mobile-image-counter': true,
+          hidden: transitioningImage
+        })
+
         return (
             <div className={containerClassnames} style={{height: windowHeight}}>
               <div
@@ -105,13 +111,21 @@ class ProjectView extends React.Component {
                 className="mobile-image-container"
                 onClick={this.onImageClick}
               >
-                <div className={imageWrapperCls}>
-                  <StaticProjectBlock
-                    block={imageBlocks[currentImageIndex]}
-                    w={imageDimensions.width}
-                    h={imageDimensions.height}
-                  />
-                </div>
+                { currentImageIndex >= 0 && 
+                  <div className={imageWrapperCls}>
+                    <StaticProjectBlock
+                      block={imageBlocks[currentImageIndex]}
+                      w={imageDimensions.width}
+                      h={imageDimensions.height}
+                    />
+                  </div>
+                }
+                { currentImageIndex == -1 &&
+                  <div className={imageCounterCls}>
+                    <p>{imageBlocks.length}</p>
+                  </div>
+                }
+
 
               </div>
               <div className="mobile-text-container">
@@ -121,6 +135,7 @@ class ProjectView extends React.Component {
                       block={i}
                     />
                 ))}
+                <div style={{width: '100%', height: '20px'}}></div>
               </div>
               <div className="mobile-text-container-fadeout"></div>
             </div>
