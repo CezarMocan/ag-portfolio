@@ -24,8 +24,8 @@ class ProjectBlock extends React.Component {
 
       const { onHighlightMouseDown, isProjectHighlightMode, isProjectMoveMode, block, visible } = this.props
 
-      if (this.isTextBlockType(blockType) && !isProjectMoveMode)
-        e.stopPropagation()
+      // if (this.isTextBlockType(blockType) && !isProjectMoveMode)
+        // e.stopPropagation()
 
       if (isProjectHighlightMode && visible && onHighlightMouseDown) {
         onHighlightMouseDown(e)
@@ -36,7 +36,7 @@ class ProjectBlock extends React.Component {
       this.isMouseDown = false
 
       if (!isProjectHighlightMode && this.isTextBlockType(blockType) && this.isMouseDown) {
-        e.stopPropagation()
+        // e.stopPropagation()
       }
 
       if (isProjectHighlightMode && visible && onHighlightMouseUp) {

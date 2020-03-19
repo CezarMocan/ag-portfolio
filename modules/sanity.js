@@ -67,8 +67,21 @@ export const portableTextSerializers = {
       // Read https://css-tricks.com/use-target_blank/
       const { blank, href } = mark
       return blank ?
-        <a href={href} target="_blank" rel="noopener">{children}</a>
-        : <a href={href}>{children}</a>
+        <a href={href} 
+          onClick={(e) => e.stopPropagation()} 
+          onMouseDown={(e) => { e.stopPropagation() } } 
+          // onMouseUp={(e) => { if (that.isDown) { e.stopPropagation() }; that.isDown = false; }} 
+          target="_blank" 
+          rel="noopener">
+            {children}
+          </a>
+        : <a href={href} 
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => { e.stopPropagation(); } } 
+            // onMouseUp={(e) => { if (that.isDown) { e.stopPropagation() }; that.isDown = false; }} 
+          >
+            {children}
+          </a>
     }
   }
 }

@@ -3,8 +3,6 @@ import { TextBlock, PortableTextBlock, ImageBlock } from '../modules/DataModels'
 const processProjectData = (projectData) => {
     const blocks = []
 
-    console.log('pd: ', projectData)
-
     // First element that gets placed on the page is always the project title
     // Actually, no title block for now.    
     // blocks.push(new TextBlock(projectData.title))

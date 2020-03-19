@@ -10,6 +10,8 @@ import { BlockTypes } from '../modules/DataModels'
 class ProjectView extends React.Component {
     state = {
       currentProjectBlocks: [],
+      textActive: false,
+      transitioningText: false,
       currentImageIndex: -1,
       transitioningImage: false,
       imageBlocks: [],
@@ -47,7 +49,8 @@ class ProjectView extends React.Component {
                         transitionState: 'transitioning-in',
                         textBlocks,
                         imageBlocks,
-                        currentImageIndex: -1
+                        currentImageIndex: -1,
+                        textActive: false
                     })
                 }, 500)
             })
@@ -79,9 +82,19 @@ class ProjectView extends React.Component {
         }, 500)
       })
     }
+    onTextPlaceholderClick = (e) => {
+      const { textActive } = this.state
+      this.setState({ transitioningText: true }, () => {
+        setTimeout(() => {
+          this.setState({ textActive: true }, () => {
+            this.setState({ transitioningText: false })
+          })
+        }, 500)
+      })
+    }
     render() {
         const { isAboutPageOpen, isMouseTrackerVisible, isProjectHighlightMode, data } = this.props
-        const { transitionState, currentImageIndex, transitioningImage, currentProjectBlocks, textBlocks, imageBlocks, windowHeight } = this.state
+        const { transitionState, textActive, transitioningText, currentImageIndex, transitioningImage, currentProjectBlocks, textBlocks, imageBlocks, windowHeight } = this.state
 
         if (!data) { return null }
         if (currentProjectBlocks.length == 0) return null
@@ -102,6 +115,16 @@ class ProjectView extends React.Component {
           'mobile-image-wrapper': true,
           'mobile-image-counter': true,
           hidden: transitioningImage
+        })
+
+        const textPlaceholderCls = classnames({
+          'mobile-text-placeholder': true,
+          hidden: transitioningText
+        })
+
+        const textCls = classnames({
+          'text-hidden-container': true,
+          hidden: transitioningText
         })
 
         return (
@@ -129,12 +152,21 @@ class ProjectView extends React.Component {
 
               </div>
               <div className="mobile-text-container">
-                { textBlocks.map((i, index) => (
-                    <StaticProjectBlock
-                      key={`block-text-${i.id}`}
-                      block={i}
-                    />
-                ))}
+                { !textActive && 
+                  <div className={textPlaceholderCls} onClick={this.onTextPlaceholderClick}>
+                    <p>INFO</p>
+                  </div>
+                }
+                { textActive && 
+                  <div className={textCls}>
+                    { textBlocks.map((i, index) => (
+                        <StaticProjectBlock
+                          key={`block-text-${i.id}`}
+                          block={i}
+                        />
+                    ))}
+                  </div>
+                }
                 <div style={{width: '100%', height: '20px'}}></div>
               </div>
               <div className="mobile-text-container-fadeout"></div>

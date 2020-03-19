@@ -146,8 +146,10 @@ class ProjectView extends React.Component {
     }
     onMouseDown = (e) => {
         // console.log('onMouseDown: ', this.markerAttributes)
-        if (!this.markerAttributes.active) return
-        const { currentProjectBlocks } = this.state
+        if (!this.markerAttributes.active) return        
+        const { currentProjectBlocks, transitionState } = this.state
+        if (transitionState == 'transitioning-out') return
+
         let placedBlocks = this.state.placedBlocks.slice(0)
 
         if (placedBlocks.length < currentProjectBlocks.length) {
@@ -167,6 +169,9 @@ class ProjectView extends React.Component {
     onMouseUp = (e) => {
         const { isProjectHighlightMode, navigateNextProject } = this.props
         const { movingBlockMode, selectedBlockId } = this.state
+
+        const { transitionState } = this.state
+        if (transitionState == 'transitioning-out') return
 
         if (this.markerAttributes.active) {
             this.updateMarkerForNextBlock(this.state.currentProjectBlocks, this.state.placedBlocks)
@@ -298,7 +303,7 @@ class ProjectView extends React.Component {
                         remainingProjects: this.state.currentProjectBlocks.length,
                         movingBlockMode: { on: false, dX: 0, dY: 0, blockId: null }
                     })
-                }, 500)
+                }, 750)
             })
         }
 

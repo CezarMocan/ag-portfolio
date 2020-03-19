@@ -36,6 +36,7 @@
 
   .mobile-text-container {
     position: relative;
+    height: 100%;
     margin: 0 10px 105px;
     @media screen and (max-width: 667px) {
       margin: 0 10px 32px;
@@ -48,6 +49,30 @@
     &::-webkit-scrollbar { /* WebKit */
       width: 0;
       height: 0;
+    }
+
+    .mobile-text-placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: ~"calc(100% - 35px)";
+      // margin-top: 10px;
+      border-bottom: 1px solid black;
+      border-left: 1px solid black;
+      border-right: 1px solid black;
+      opacity: 1;
+      transition: opacity 0.5s linear;
+      &.hidden {
+        opacity: 0;
+      }
+    }
+
+    .text-hidden-container {
+      opacity: 1;
+      transition: opacity 0.5s linear;
+      &.hidden {
+        opacity: 0;
+      }  
     }
 
     .text {

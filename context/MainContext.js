@@ -112,7 +112,6 @@ export default class MainContextProvider extends React.Component {
     }
 
     navigateToProjectId = (id) => {
-        console.log('Navigate to project id: ', id)
         if (id == PID_NEWS) {
             this.navigateLandingPage()
             return
