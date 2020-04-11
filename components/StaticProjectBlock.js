@@ -6,15 +6,39 @@ import { portableTextSerializers } from '../modules/sanity'
 import { BlockTypes } from '../modules/DataModels'
 
 export default class SanityAssetBlock extends React.Component {
-  state = {}
+  state = {
+    src: '',
+    placeholder: ''
+  }
 
-  componentDidMount() {
-    console.log('StaticBlock didMount')
+  UNSAFE_componentWillUpdate(nextProps) {
+    if (nextProps.block.id == this.props.block.id && nextProps.w == this.props.w) return
+    if (!nextProps.block.getUrl) return
+    this.setState({
+      src: nextProps.block.getUrl(nextProps.w),
+      placeholder: nextProps.block.getLQUrl()
+    })
+  }
+
+  UNSAFE_componentWillMount() {
+    const props = this.props
+    if (!props.block || !props.block.getUrl) return
+    this.setState({
+      src: props.block.getUrl(props.w),
+      placeholder: props.block.getLQUrl()
+    })
+  }
+  shouldComponentUpdate(newProps) {
+    if (newProps.block && newProps.block.id != this.props.block.id) return true
+    if (newProps.w != this.props.w) return true
+    if (newProps.text && newProps.text != this.props.text) return true
+    return false
   }
 
   render() {
-    const { block, w, h } = this.props
+    const { block, w, h } = this.props    
     if (!block) return null
+    const { src, placeholder } = this.state
 
     const containerCls = classnames({
       "image": block.type == BlockTypes.IMAGE,
@@ -27,11 +51,10 @@ export default class SanityAssetBlock extends React.Component {
           <div className={containerCls} style={{width: w, height: h}}>
             <ProgressiveImage
               delay={100}
-              src={block.getUrl(w)}
-              placeholder={block.getLQUrl()}
+              src={src}
+              placeholder={placeholder}
             >
               { (src, loading) => {
-                console.log('progressive loading: ', loading, w, h)
                 const cls = classnames({
                   "project-image-placeholder": true,
                   "fadeout-after": !loading,

@@ -16,18 +16,20 @@ class ProjectBlock extends React.Component {
       return (blockType == BlockTypes.TEXT || blockType == BlockTypes.PORTABLE_TEXT)
     }
     onWheel = (blockType) => (e) => {
-        if (this.isTextBlockType(blockType))
+        // if (this.isTextBlockType(blockType))
           e.stopPropagation()
     }
     onMouseDown = (blockType) => (e) => {
       this.isMouseDown = true
-
+      console.log('onMouseDown: ', blockType)
       const { onHighlightMouseDown, isProjectHighlightMode, isProjectMoveMode, block, visible } = this.props
 
       // if (this.isTextBlockType(blockType) && !isProjectMoveMode)
-        // e.stopPropagation()
+      if (!isProjectMoveMode)
+        e.stopPropagation()
 
-      if (isProjectHighlightMode && visible && onHighlightMouseDown) {
+      //if (isProjectHighlightMode && visible && onHighlightMouseDown) {
+      if (visible && onHighlightMouseDown) {
         onHighlightMouseDown(e)
       }
     }
@@ -35,11 +37,13 @@ class ProjectBlock extends React.Component {
       const { onHighlightMouseUp, isProjectHighlightMode, isProjectMoveMode, block, visible } = this.props
       this.isMouseDown = false
 
-      if (!isProjectHighlightMode && this.isTextBlockType(blockType) && this.isMouseDown) {
-        // e.stopPropagation()
+      // if (!isProjectHighlightMode && this.isTextBlockType(blockType) && this.isMouseDown) {
+      if (!isProjectHighlightMode && this.isMouseDown) {
+        e.stopPropagation()
       }
 
-      if (isProjectHighlightMode && visible && onHighlightMouseUp) {
+      // if (isProjectHighlightMode && visible && onHighlightMouseUp) {
+      if (visible && onHighlightMouseUp) {
         onHighlightMouseUp(e)
       }
     }
@@ -47,10 +51,10 @@ class ProjectBlock extends React.Component {
       const { onMouseEnter, isProjectHighlightMode, isProjectMoveMode, visible } = this.props
       if (!visible) return
 
-      if (this.isTextBlockType(blockType)) {
+      // if (this.isTextBlockType(blockType)) {
         const { toggleMouseTracker } = this.props
         toggleMouseTracker(false)
-      }
+      // }
 
       if (onMouseEnter) onMouseEnter()
 
@@ -61,28 +65,26 @@ class ProjectBlock extends React.Component {
     }
     onMouseLeave = (blockType) => (e) => {
       const { onMouseLeave, isProjectHighlightMode, isProjectMoveMode } = this.props
-
-      if (this.isTextBlockType(blockType)) {
-        const { toggleMouseTracker } = this.props
-        toggleMouseTracker(true)
-      }
-
+      const { toggleMouseTracker } = this.props
+      setTimeout(() => {
+        const { block, hoverBlockId } = this.props
+        if (hoverBlockId == null) toggleMouseTracker(true)
+      }, 20)
       if (onMouseLeave) onMouseLeave()
-
-      // if (isProjectHighlightMode && !isProjectMoveMode) {
-      if (!isProjectMoveMode) {
-        this.setState({ hovered: false })
-      }
+      this.setState({ hovered: false })
     }
     render() {
-        const { block, transform, additionalTransform, visible, clicked, isDimmed } = this.props
+        const { block, transform, additionalTransform, visible, clicked, isDimmed, isProjectHighlightMode } = this.props
         if (!block || !transform) return null
+
+        const { hovered } = this.state
 
         const wrapperCls = classnames({
           "project-block-container": true,
           "text-block-container": block.type == BlockTypes.TEXT || block.type == BlockTypes.PORTABLE_TEXT,
           "image-block-container": block.type == BlockTypes.IMAGE,
           "with-overflow": block.type == BlockTypes.TEXT || block.type == BlockTypes.PORTABLE_TEXT,
+          "z-transition-fwd": (isProjectHighlightMode && hovered),
           "dimmed": isDimmed,
           "hidden": !visible
         })
@@ -93,8 +95,7 @@ class ProjectBlock extends React.Component {
 
         x += (additionalTransform.x || 0)
         y += (additionalTransform.y || 0)
-
-        const { hovered } = this.state
+        
         const { regularShadowColor, highlightShadowColor } = this.props
         const shadowColor = (hovered && !clicked) ? highlightShadowColor : regularShadowColor
 
@@ -108,7 +109,8 @@ class ProjectBlock extends React.Component {
                     width: `${w}px`,
                     height: `${h}px`,
                     transform: `translateX(-50%) translateY(-50%) rotate(${toDeg(transform.r)})`,
-                    border: `1px solid ${shadowColor}`
+                    border: `1px solid ${shadowColor}`,
+                    // zIndex: (isProjectHighlightMode && hovered) ? 1000 : 'inherit'
                 }}
                 onWheel={this.onWheel(block.type)}
                 onMouseEnter={this.onMouseEnter(block.type)}
@@ -130,6 +132,7 @@ ProjectBlock.defaultProps = {
     visible: true,
     regularShadowColor: 'rgba(0, 0, 0, 0)',
     highlightShadowColor: 'rgba(0, 0, 0, 0)',
+    highlightBlockId: null,
     hovered: false,
     isProjectHighlightMode: false,
     isProjectMoveMode: false,
