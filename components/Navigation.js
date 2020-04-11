@@ -1,15 +1,17 @@
 import React from 'react'
 import classnames from 'classnames'
 import { withMainContext } from '../context/MainContext'
+import { isMobile } from '../modules/utils'
 
 class Navigation extends React.Component {
     state = {
       titleTransitionStyle: 'transition-visible',
-      titleString: 'Anthony V. Gagliardi / Loading...'
+      titleString: 'Anthony V. Gagliardi / Loading...',
+      isMobileFlag: false,
     }
     onTitleClick = (evt) => {
       const { titleString } = this.state
-      const isNewsPage = (titleString.indexOf('/ news') != -1)
+      const isNewsPage = (titleString.toLowerCase().indexOf('/ news') != -1)
       if (isNewsPage) return
       const { navigateLandingPage } = this.props
       if (navigateLandingPage) navigateLandingPage()    
@@ -65,9 +67,12 @@ class Navigation extends React.Component {
         })
       }
     }
+    componentDidMount() {
+      this.setState({ isMobileFlag: isMobile() })
+    }
     render() {
         const { isAboutPageOpen } = this.props
-        const { titleString, titleTransitionStyle } = this.state        
+        const { titleString, titleTransitionStyle, isMobileFlag } = this.state
         const brClassnames = classnames({'nav-container': true, 'nav-next': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
         const blClassnames = classnames({'nav-container': true, 'nav-previous': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
         const trClassnames = classnames({'nav-container': true, 'nav-fin-g': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
@@ -104,7 +109,13 @@ class Navigation extends React.Component {
                   onMouseEnter={this.onNavigationMouseEnter}
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
-                  <p style={{margin: 0}}> { titleString } </p>
+                  { !isMobileFlag && <p style={{margin: 0}}> { titleString } </p> }
+                  { isMobileFlag && 
+                    <>
+                    <p style={{margin: 0}}> { titleString.split('/')[0] }/ </p>
+                    <p style={{margin: 0}}> { titleString.split('/')[1] } </p>
+                    </>
+                  }
                 </div>
 
 
