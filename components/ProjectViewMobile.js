@@ -137,6 +137,7 @@ class ProjectView extends React.Component {
                 { currentImageIndex >= 0 && 
                   <div className={imageWrapperCls}>
                     <StaticProjectBlock
+                      forceUpdate={true}
                       block={imageBlocks[currentImageIndex]}
                       w={imageDimensions.width}
                       h={imageDimensions.height}

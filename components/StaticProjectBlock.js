@@ -31,7 +31,9 @@ export default class SanityAssetBlock extends React.Component {
   shouldComponentUpdate(newProps) {
     if (newProps.block && newProps.block.id != this.props.block.id) return true
     if (newProps.w != this.props.w) return true
+    if (newProps.h != this.props.h) return true
     if (newProps.text && newProps.text != this.props.text) return true
+    if (this.props.forceUpdate) return true
     return false
   }
 
