@@ -1,5 +1,5 @@
 import React from 'react'
-import { withRouter } from 'next/router'
+import { withPageRouter } from '../modules/withPageRouter'
 import Style from '../static/styles/main.less'
 import MainContextProvider from '../context/MainContext'
 import Head from '../components/Head'
@@ -10,7 +10,7 @@ import ProjectView from '../components/ProjectView'
 class Project extends React.Component {
     render() {
         return (
-            <MainContextProvider url={this.props.router.query.id} router={this.props.router}>
+            <MainContextProvider url={this.props.router.asPath.split(/\//)[1]} router={this.props.router}>
                 <Head/>
                 <About/>
                 <ProjectView/>
@@ -20,4 +20,4 @@ class Project extends React.Component {
     }
 }
 
-export default withRouter(Project)
+export default withPageRouter(Project)
