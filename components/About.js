@@ -36,7 +36,8 @@ class About extends React.Component {
                         { projects && projects.map((p, index) => {
                             return (
                                 <div className="project-link-container interactive"
-                                    onMouseUp={this.onProjectClick(p.id)}
+                                    onClick={this.onProjectClick(p.id)}
+                                    // onMouseUp={this.onProjectClick(p.id)}
                                     // onTouchEnd={this.onProjectClick(p.id)}
                                 >
                                     &emsp;{index + 1}. <span className="project-link link">{p.title}<br/></span>

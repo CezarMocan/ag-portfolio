@@ -121,7 +121,7 @@ class Navigation extends React.Component {
 
                 <div className={aboutClassnames}
                   onMouseUp={this.onAboutClick}
-                  onTouchEnd={this.onAboutClick}
+                  // onTouchEnd={this.onAboutClick}
                   onMouseEnter={this.onNavigationMouseEnter}
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
