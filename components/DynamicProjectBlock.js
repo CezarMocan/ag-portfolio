@@ -54,7 +54,8 @@ class ProjectBlock extends React.Component {
 
       if (onMouseEnter) onMouseEnter()
 
-      if (isProjectHighlightMode && !isProjectMoveMode) {
+      // if (isProjectHighlightMode && !isProjectMoveMode) {
+      if (!isProjectMoveMode) {
         this.setState({ hovered: true })
       }
     }
@@ -68,12 +69,13 @@ class ProjectBlock extends React.Component {
 
       if (onMouseLeave) onMouseLeave()
 
-      if (isProjectHighlightMode && !isProjectMoveMode) {
+      // if (isProjectHighlightMode && !isProjectMoveMode) {
+      if (!isProjectMoveMode) {
         this.setState({ hovered: false })
       }
     }
     render() {
-        const { block, transform, additionalTransform, visible, clicked } = this.props
+        const { block, transform, additionalTransform, visible, clicked, isDimmed } = this.props
         if (!block || !transform) return null
 
         const wrapperCls = classnames({
@@ -81,6 +83,7 @@ class ProjectBlock extends React.Component {
           "text-block-container": block.type == BlockTypes.TEXT || block.type == BlockTypes.PORTABLE_TEXT,
           "image-block-container": block.type == BlockTypes.IMAGE,
           "with-overflow": block.type == BlockTypes.TEXT || block.type == BlockTypes.PORTABLE_TEXT,
+          "dimmed": isDimmed,
           "hidden": !visible
         })
 
@@ -115,7 +118,7 @@ class ProjectBlock extends React.Component {
                 onTouchStart={this.onMouseDown(block.type)}
                 onTouchEnd={this.onMouseUp(block.type)}
             >
-              <StaticProjectBlock block={block} w={w} h={h}/>
+              <StaticProjectBlock key={`static-project-block-${block.id}`} block={block} w={w} h={h}/>
             </div>
         )
     }
@@ -130,6 +133,7 @@ ProjectBlock.defaultProps = {
     hovered: false,
     isProjectHighlightMode: false,
     isProjectMoveMode: false,
+    isDimmed: false,
     transform: {},
     additionalTransform: {},
     onHighlightMouseUp: null,

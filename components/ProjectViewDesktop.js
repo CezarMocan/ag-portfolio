@@ -19,7 +19,8 @@ class ProjectView extends React.Component {
             blockId: null,
             mouseDownX: 0, mouseDownY: 0,
             dX: 0, dY: 0
-        }
+        },
+        highlightBlockId: null
     }
     constructor(props) {
         super(props)
@@ -212,6 +213,28 @@ class ProjectView extends React.Component {
             }
         }
     }
+    onBlockMouseEnter = (blockId) => (e) => {
+        const { isProjectHighlightMode } = this.props
+        const { movingBlockMode } = this.state
+
+        if (isProjectHighlightMode) {            
+            if (movingBlockMode.on) return
+            this.setState({ highlightBlockId: blockId })
+        } else {
+
+        }
+    }
+    onBlockMouseLeave = (blockId) => (e) => {
+        const { isProjectHighlightMode } = this.props
+        const { highlightBlockId, movingBlockMode } = this.state
+
+        if (isProjectHighlightMode && highlightBlockId == blockId) {
+            if (movingBlockMode.on) return
+            this.setState({ highlightBlockId: null })
+        } else {
+
+        }
+    }
     onBlockHighlightMouseDown = (blockId) => (e) => {
         const { isProjectHighlightMode } = this.props
         if (!isProjectHighlightMode) return
@@ -310,7 +333,7 @@ class ProjectView extends React.Component {
     }
     render() {
         const { isAboutPageOpen, isMouseTrackerVisible, isProjectHighlightMode, data } = this.props
-        const { selectedBlockId, transitionState, currentProjectBlocks } = this.state
+        const { selectedBlockId, transitionState, currentProjectBlocks, highlightBlockId } = this.state
 
         if (!data) { return null }
 
@@ -361,6 +384,10 @@ class ProjectView extends React.Component {
                         highlightShadowColor={this.markerAttributes.color}
                         isProjectHighlightMode={isProjectHighlightMode}
                         isProjectMoveMode={movingBlockMode.on}
+                        isDimmed={isProjectHighlightMode && highlightBlockId != null && highlightBlockId != i.block.id}
+                        isHighlightHovered={isProjectHighlightMode && highlightBlockId == i.block.id}
+                        onMouseEnter={this.onBlockMouseEnter(i.block.id)}
+                        onMouseLeave={this.onBlockMouseLeave(i.block.id)}
                         onHighlightMouseUp={this.onBlockHighlightMouseUp(i.block.id)}
                         onHighlightMouseDown={this.onBlockHighlightMouseDown(i.block.id)}
                         visible={!isProjectHighlightMode || selectedBlockId == null || (selectedBlockId == i.block.id)}
@@ -388,6 +415,10 @@ class ProjectView extends React.Component {
                             highlightShadowColor={this.markerAttributes.color}
                             isProjectHighlightMode={isProjectHighlightMode}
                             isProjectMoveMode={movingBlockMode.on}
+                            isDimmed={isProjectHighlightMode && highlightBlockId != null && highlightBlockId != i.block.id}
+                            isHighlightHovered={isProjectHighlightMode && highlightBlockId == i.block.id}
+                            onMouseEnter={this.onBlockMouseEnter(i.block.id)}
+                            onMouseLeave={this.onBlockMouseLeave(i.block.id)}    
                             onHighlightMouseUp={this.onBlockHighlightMouseUp(i.block.id)}
                             onHighlightMouseDown={this.onBlockHighlightMouseDown(i.block.id)}
                             visible={!isProjectHighlightMode || selectedBlockId == null || (selectedBlockId == i.block.id)}

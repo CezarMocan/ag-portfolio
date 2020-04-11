@@ -45,7 +45,7 @@ class About extends React.Component {
                     <br/>
                     <PortableBlockContent
                         blocks={about ? about.description : []}
-                        className={""}
+                        className={"about-text-container"}
                         serializers={portableTextSerializers}
                         renderContainerOnSingleChild={true}
                     />

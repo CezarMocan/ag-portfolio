@@ -113,8 +113,15 @@
           min-height: 12px;
         }
     }
+    filter: grayscale(0);
+
+    &.dimmed {
+      opacity: 0.55;
+      filter: grayscale(1);
+    }
+
     opacity: 1;
-    transition: opacity 1s linear, border 0.3s ease-in;
+    transition: opacity 0.75s ease-in-out, border 0.75s ease-in-out, filter 0.75s ease-in-out;
 
     &.hidden {
       opacity: 0;

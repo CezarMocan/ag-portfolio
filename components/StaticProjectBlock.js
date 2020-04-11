@@ -8,6 +8,10 @@ import { BlockTypes } from '../modules/DataModels'
 export default class SanityAssetBlock extends React.Component {
   state = {}
 
+  componentDidMount() {
+    console.log('StaticBlock didMount')
+  }
+
   render() {
     const { block, w, h } = this.props
     if (!block) return null
@@ -27,6 +31,7 @@ export default class SanityAssetBlock extends React.Component {
               placeholder={block.getLQUrl()}
             >
               { (src, loading) => {
+                console.log('progressive loading: ', loading, w, h)
                 const cls = classnames({
                   "project-image-placeholder": true,
                   "fadeout-after": !loading,
