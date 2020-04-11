@@ -8,6 +8,8 @@ class About extends React.Component {
     state = {windowHeight: 0}
     onProjectClick = (projectId) => (e) => {
         const { navigateToProjectId, toggleMouseTracker } = this.props
+        e.preventDefault()
+        e.stopPropagation()
         toggleMouseTracker(true)
         navigateToProjectId(projectId)
     }
@@ -35,7 +37,7 @@ class About extends React.Component {
                             return (
                                 <div className="project-link-container interactive"
                                     onMouseUp={this.onProjectClick(p.id)}
-                                    onTouchEnd={this.onProjectClick(p.id)}
+                                    // onTouchEnd={this.onProjectClick(p.id)}
                                 >
                                     &emsp;{index + 1}. <span className="project-link link">{p.title}<br/></span>
                                 </div>
