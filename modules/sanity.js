@@ -31,7 +31,8 @@ export const queries = {
           metadata
         },
         ...
-      }
+      },
+      ...
     }
   `,
   about: `

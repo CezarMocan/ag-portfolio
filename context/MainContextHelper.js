@@ -1,38 +1,32 @@
 import { TextBlock, PortableTextBlock, ImageBlock } from '../modules/DataModels'
 
+const getBlockForItem = (item) => {
+    if (item._type == 'projectImage') {
+        return new ImageBlock(item)
+    } else {
+        const { text, textMinScale, textMaxScale, textBoxHeightRatio, isSmallText } = item
+        return new PortableTextBlock(text, { textMinScale, textMaxScale, textBoxHeightRatio, isSmallText })
+    }
+}
+
 const processProjectData = (projectData) => {
     const blocks = []
 
-    // First element that gets placed on the page is always the project title
-    // Actually, no title block for now.    
-    // blocks.push(new TextBlock(projectData.title))
-
-    // Then we place all blocks
     for (let i = 0; i < projectData.projectBlocks.length; i++) {
         const item = projectData.projectBlocks[i]
-        if (item._type == 'projectImage') {
-            blocks.push(new ImageBlock(item))
-        } else {
-            // Get text min and max scale
-            const { text, textMinScale, textMaxScale, textBoxHeightRatio } = item
-            blocks.push(new PortableTextBlock(text, { textMinScale, textMaxScale, textBoxHeightRatio }))
-        }
+        blocks.push(getBlockForItem(item))
     }
 
-    // // const noImages = 1
-    // for (let i = 0; i < noImages; i++) blocks.push(
-    //     new ImageBlock(projectData.images[i])
-    // )
+    return blocks
+}
 
-    // // Get text min and max scale
-    // const { textMinScale, textMaxScale } = projectData
+export const processNewsData = (newsData) => {
+    const blocks = []
 
-    // // Then we place the description
-    // blocks.push(new PortableTextBlock(projectData.description, {textMinScale, textMaxScale}))
-
-    // // At the end, we place the collaborators and context
-    // if (projectData.client && projectData.client != '') blocks.push(new TextBlock(projectData.client, { textMinScale, textMaxScale }))
-    // if (projectData.collaborators && projectData.collaborators != '') blocks.push(new TextBlock(projectData.collaborators, { textMinScale, textMaxScale }))
+    for (let i = 0; i < newsData.items.length; i++) {
+        const item = newsData.items[i]
+        blocks.push(getBlockForItem(item))
+    }
 
     return blocks
 }
@@ -57,21 +51,4 @@ export const processProjectsData = (data) => {
         projectList,
         raw: { ...data }
     }
-}
-
-export const processNewsData = (newsData) => {
-    const blocks = []
-
-    for (let i = 0; i < newsData.items.length; i++) {
-        const item = newsData.items[i]
-        if (item._type == 'projectImage') {
-            blocks.push(new ImageBlock(item))
-        } else {
-            // Get text min and max scale
-            const { text, textMinScale, textMaxScale, textBoxHeightRatio } = item
-            blocks.push(new PortableTextBlock(text, { textMinScale, textMaxScale, textBoxHeightRatio }))
-        }
-    }
-
-    return blocks
 }

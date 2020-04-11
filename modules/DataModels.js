@@ -26,6 +26,7 @@ export class PortableTextBlock {
     this.minScale = options.textMinScale ? options.textMinScale / 100 : 0.3
     this.maxScale = options.textMaxScale ? options.textMaxScale / 100 : 0.4
     this.textBoxHeightRatio = options.textBoxHeightRatio ? options.textBoxHeightRatio / 100 : 1
+    this.isSmallText = !!options.isSmallText
   }
 }
 
@@ -37,6 +38,7 @@ export class TextBlock {
       this.options = options
       this.minScale = options.textMinScale ? options.textMinScale / 100 : 0.3
       this.maxScale = options.textMaxScale ? options.textMaxScale / 100 : 0.4
+      this.isSmallText = !!options.isSmallText
     }
 }
 

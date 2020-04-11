@@ -42,7 +42,8 @@ export default class SanityAssetBlock extends React.Component {
 
     const containerCls = classnames({
       "image": block.type == BlockTypes.IMAGE,
-      "text": block.type == BlockTypes.TEXT || block.type == BlockTypes.PORTABLE_TEXT
+      "text": block.type == BlockTypes.TEXT || block.type == BlockTypes.PORTABLE_TEXT,
+      "sanity-small-text": (block.type == BlockTypes.TEXT || block.type == BlockTypes.PORTABLE_TEXT) && block.isSmallText
     })
 
     return (

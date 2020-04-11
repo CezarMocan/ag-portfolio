@@ -92,8 +92,9 @@ class ProjectView extends React.Component {
             if (block.width) {
               newHeight = newWidth / block.width * block.height
             } else if (block.text) {
-              let measurement = measureText('p', '', block.text, newWidth)
-              let measurementNoWidth = measureText('p', '', block.text)
+              let measurementUnit = block.isSmallText ? 'h6' : 'p'
+              let measurement = measureText(measurementUnit, '', block.text, newWidth)
+              let measurementNoWidth = measureText(measurementUnit, '', block.text)
               newHeight = measurement.h
               if (block.textBoxHeightRatio) newHeight *= block.textBoxHeightRatio
               newWidth = Math.min(measurementNoWidth.w, newWidth)
