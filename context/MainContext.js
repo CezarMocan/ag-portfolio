@@ -101,7 +101,7 @@ export default class MainContextProvider extends React.Component {
         }
         const { url, id } = data.projectList[index]
 
-        this.props.router.push(this.props.router.pathname, `/${url}`, { shallow: true })
+        this.props.router.push(this.props.router.pathname, `/${url.current}`, { shallow: true })
         const { currentProjectId, isProjectHighlightMode } = this.state.currentProjectId
 
         this.setState({
@@ -170,7 +170,7 @@ export default class MainContextProvider extends React.Component {
         let currentProjectId = PID_NEWS
 
         if (this.props.url) {
-            let currentProject = data.projectList.find(p => (p.url == this.props.url))
+            let currentProject = data.projectList.find(p => (p.url.current == this.props.url))
             currentProjectId = currentProject ? currentProject.id : PID_NEWS
         }
 

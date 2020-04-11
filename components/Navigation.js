@@ -54,7 +54,7 @@ class Navigation extends React.Component {
       if (title && year) {
         titleString = `Anthony V. Gagliardi / ${title}, ${year}`
       } else if (title) {
-        titleString = title
+        titleString = `Anthony V. Gagliardi / ${title}`
       } else {
         titleString = 'Anthony V. Gagliardi / Loading...'
       }
