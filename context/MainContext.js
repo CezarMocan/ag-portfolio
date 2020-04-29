@@ -102,7 +102,7 @@ export default class MainContextProvider extends React.Component {
         const { url, id } = data.projectList[index]
 
         this.props.router.push(this.props.router.pathname, `/${url.current}`, { shallow: true })
-        const { currentProjectId, isProjectHighlightMode } = this.state.currentProjectId
+        const { currentProjectId, isProjectHighlightMode } = this.state
 
         this.setState({
             currentProjectId: id,

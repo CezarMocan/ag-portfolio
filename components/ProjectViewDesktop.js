@@ -41,7 +41,7 @@ class ProjectView extends React.Component {
     }
     updateMarkerDOM = ({ x = null, y = null, width = null, height = null, rotation = null, visible = null, active = null, color = null }) => {
         if (visible !== null) this.markerAttributes.visible = visible
-        if (active !== null && active != this.markerAttributes.active) {
+        if ((active !== null && active != this.markerAttributes.active) || active == false) {
             const { toggleMouseTracker } = this.props
             toggleMouseTracker(active)
             this.markerAttributes.active = active
@@ -102,10 +102,10 @@ class ProjectView extends React.Component {
               newHeight = newWidth / 2
             }
 
-            this.updateMarkerDOM({ width: newWidth, height: newHeight })
-
             const remainingProjects = currentProjectBlocks.length - placedBlocks.length
             setTimeout(() => {
+                this.currentCursorSizes = { width: newWidth, height: newHeight }
+                this.updateMarkerDOM(this.currentCursorSizes)
                 this.setState({ remainingProjects })
             }, 500)
         } else {
@@ -118,10 +118,12 @@ class ProjectView extends React.Component {
     }
     isInBounds() {
         const { x, y, width, height } = this.markerAttributes
-        if (4 * x <= width) return false
-        if (4 * y <= height) return false
-        if (4 * (window.innerWidth - x) <= width) return false
-        if (4 * (window.innerHeight - y) <= height) return false
+        if (y < 75) return false
+        if (y > window.innerHeight - 100) return false        
+        // if (4 * x <= width) return false
+        // if (4 * y <= height) return false
+        // if (4 * (window.innerWidth - x) <= width) return false
+        // if (4 * (window.innerHeight - y) <= height) return false
         return true
     }
     onMouseMove = (e) => {
@@ -230,6 +232,7 @@ class ProjectView extends React.Component {
 
             this.setState({ highlightBlockId: blockId, hoverBlockId: blockId })
         } else {
+            // this.updateMarkerDOM({ width: 0, height: 0 })
             this.setState({ hoverBlockId: blockId })
         }
     }
@@ -241,8 +244,10 @@ class ProjectView extends React.Component {
             if (movingBlockMode.on) return
             this.setState({ highlightBlockId: null, hoverBlockId: null })
         } else {
-            if (this.state.hoverBlockId == blockId)
+            // this.updateMarkerDOM(this.currentCursorSizes)
+            if (this.state.hoverBlockId == blockId) {
                 this.setState({ hoverBlockId: null })
+            }
         }
     }
     onBlockHighlightMouseDown = (blockId) => (e) => {
@@ -364,7 +369,7 @@ class ProjectView extends React.Component {
         const containerClassnames = classnames({
             "project-view-container": true,
             "cursor-none": !isProjectHighlightMode && !mouseTrackerHidden,
-            "cursor-crosshair": !this.isMobile && (isProjectHighlightMode && selectedBlockId != null) || mouseTrackerHidden,
+            "cursor-crosshair": !this.isMobile && ((isProjectHighlightMode || mouseTrackerHidden) && selectedBlockId != null),
             "cursor-arrow": !this.isMobile && isProjectHighlightMode && selectedBlockId == null,
             visible: !isAboutPageOpen && transitionState != 'transitioning-out'
         })

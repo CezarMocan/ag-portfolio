@@ -35,14 +35,17 @@
         visibility: hidden;
         opacity: 1;
         display: block;
+        z-index: inherit;
 
-        transition: width 0.5s ease-in-out, height 0.5s ease-in-out, opacity 0.2s ease-in, color 0.2s ease-out, border-color 0.2s ease-out;
+        transition: width 0.5s ease-in-out, height 0.5s ease-in-out, opacity 0.75s ease-in-out, color 0.2s ease-out, border-color 0.2s ease-out;
 
         &.hidden {
-          // opacity: 0;
+          opacity: 0;
+          z-index: -100;
+          transition: width 0.5s ease-in-out, height 0.5s ease-in-out, opacity 0.1s ease-in, color 0.2s ease-out, border-color 0.2s ease-out;
           // display: none;
           // visibility: hidden
-          display: none;
+          // display: none;
         }
 
         .project-id-indicator {
@@ -130,7 +133,7 @@
     }
 
     opacity: 1;
-    transition: opacity 0.75s ease-in-out, border 0.75s ease-in-out, filter 0.75s ease-in-out, z-index 1.2s ease-in-out;
+    transition: opacity 0.75s ease-in, border 0.75s ease-in-out, filter 0.75s ease-in-out, z-index 1.2s ease-in-out;
 
     &.hidden {
       opacity: 0;
@@ -161,7 +164,7 @@
     // perspective: 1000;
     // transform: translate3d(0,0,0);
     // transform: translateZ(0);
-    // filter: blur(2px);
+    // filter: blur(6px);
   }
 }
 

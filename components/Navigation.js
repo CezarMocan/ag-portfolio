@@ -6,7 +6,7 @@ import { isMobile } from '../modules/utils'
 class Navigation extends React.Component {
     state = {
       titleTransitionStyle: 'transition-visible',
-      titleString: 'Anthony V. Gagliardi / Loading...',
+      titleString: 'Anthony V. Gagliardi/ Loading...',
       isMobileFlag: false,
     }
     onTitleClick = (evt) => {
@@ -52,11 +52,11 @@ class Navigation extends React.Component {
 
       let titleString
       if (title && year) {
-        titleString = `Anthony V. Gagliardi / ${title}, ${year}`
+        titleString = `Anthony V. Gagliardi/ ${title}, ${year}`
       } else if (title) {
-        titleString = `Anthony V. Gagliardi / ${title}`
+        titleString = `Anthony V. Gagliardi/ ${title}`
       } else {
-        titleString = 'Anthony V. Gagliardi / Loading...'
+        titleString = 'Anthony V. Gagliardi/ Loading...'
       }
 
       if (titleString != this.state.titleString) {
@@ -109,10 +109,15 @@ class Navigation extends React.Component {
                   onMouseEnter={this.onNavigationMouseEnter}
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
-                  { !isMobileFlag && <p style={{margin: 0}}> { titleString } </p> }
+                  { !isMobileFlag && 
+                    <>
+                    <span className="link" style={{margin: 0}}> { titleString.split('/')[0] }</span> /
+                    <span style={{margin: 0}}> { titleString.split('/')[1] } </span>
+                    </>
+                  }
                   { isMobileFlag && 
                     <>
-                    <p style={{margin: 0}}> { titleString.split('/')[0] }/ </p>
+                    <p className="link" style={{margin: 0}}> { titleString.split('/')[0] }</p> /
                     <p style={{margin: 0}}> { titleString.split('/')[1] } </p>
                     </>
                   }

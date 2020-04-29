@@ -27,7 +27,7 @@ class About extends React.Component {
             <div className={cls} style={{height: windowHeight}}>
                 <div className="about-content" style={{height: 0.65 * windowHeight}}>
                     <div className="nav-about-top-left">
-                        <p style={{margin: 0}}>Anthony V. Gagliardi / About</p>
+                        <p style={{margin: 0}}><span className="link">Anthony V. Gagliardi</span> / About</p>
                     </div>
                     <div className="nav-about-top-left fake">
                         <p style={{margin: 0}}>Anthony V. Gagliardi / About</p>
@@ -57,8 +57,9 @@ class About extends React.Component {
                 <div className="colophon">
                   <div className="out-facing-links">
                       <div className="link">
-                          <a className="interactive" href="mailto:anthony@almost.studio" target="__blank"><p>email</p></a>
+                          <a className="interactive" href="mailto:anthony@almost.studio" target="__blank"><p>anthony@almost.studio</p></a>
                       </div>
+                      &emsp;
                       <div className="link">
                           <a className="interactive" href="https://www.instagram.com/anthonyvgagliardi/" target="__blank"><p>instagram</p></a>
                       </div>
