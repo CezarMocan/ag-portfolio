@@ -21,14 +21,28 @@ export const queries = {
       textMaxScale,
       orderNumber,
       "projectBlocks": projectBlocks[]{
-        asset->{
-          "originalWidth": metadata.dimensions.width,
-          "originalHeight": metadata.dimensions.height,
-          "aspectRatio": metadata.dimensions.aspectRatio,
-          "lqip": metadata.lqip,
-          size,
-          url,
-          metadata
+        ...,
+        _type == "projectImage" => {
+          ...,
+          asset->{
+            "originalWidth": metadata.dimensions.width,
+            "originalHeight": metadata.dimensions.height,
+            "aspectRatio": metadata.dimensions.aspectRatio,
+            "lqip": metadata.lqip,
+            size,
+            url,
+            metadata,
+            ...  
+          }
+        },
+        _type == "projectVideo" => {
+          ...,
+          video {
+            asset->{
+              ...  
+            },
+            ...
+          }
         },
         ...
       },

@@ -4,12 +4,15 @@ import { mipmap } from './utils'
 
 const imageBuilder = imageUrlBuilder(sanityClient)
 const imageUrlFor = (source) => imageBuilder.image(source)
+const videoUrlFor = (asset) => `https://stream.mux.com/${asset.playbackId}.m3u8`
+
 let UID = 0
 
 export const BlockTypes = {
     TEXT: 'TEXT',
     PORTABLE_TEXT: 'PORTABLE_TEXT',
-    IMAGE: 'IMAGE'
+    IMAGE: 'IMAGE',
+    VIDEO: 'VIDEO'
 }
 
 export class PortableTextBlock {
@@ -66,4 +69,31 @@ export class ImageBlock {
     getLQUrl() {
       return this.lqip
     }
+}
+
+export class VideoBlock {
+  constructor(o) {
+    this.type = BlockTypes.VIDEO
+    this.id = UID++
+
+    const arString = o.video.asset.data.aspect_ratio
+    this.aspectRatio = parseFloat(arString.split(':')[0]) / parseFloat(arString.split(':')[1])
+    console.log(this.aspectRatio)
+    this.width = 1000
+    this.height = this.width / this.aspectRatio
+    this.playbackId = o.video.asset.playbackId
+    this.minScale = o.minScale ? o.minScale / 100 : 0.25
+    this.maxScale = o.maxScale ? o.maxScale / 100 : 0.25
+    this.o = o
+    this._url = videoUrlFor(o.video.asset)
+  }
+
+  getUrl() {
+    return this._url    
+  }
+  getLQUrl() {
+    // https://image.mux.com/2epN56MPc2BMXi7iLNrtMyy029YT00AkXs/thumbnail.jpg?time=0
+    // That is the link for video thumbnail
+    return this._url
+  }
 }

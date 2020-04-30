@@ -21,14 +21,17 @@
     "@sanity/image-url": "^0.140.12",
     "@zeit/next-less": "^1.0.1",
     "classnames": "^2.2.6",
+    "hls.js": "^0.13.1",
     "less": "^3.9.0",
     "lodash.clamp": "^4.0.3",
-    "next": "^9.0.3",
+    "next": "^9.3.6",
     "react": "^16.9.0",
     "react-css-transition-replace": "^4.0.2",
     "react-div-100vh": "^0.3.8",
     "react-dom": "^16.9.0",
     "react-progressive-image": "^0.6.0",
-    "react-transition-group": "^1.2.1"
+    "react-transition-group": "^1.2.1",
+    "sanity-mux-player": "0.0.26",
+    "video-react": "^0.14.1"
   }
 }

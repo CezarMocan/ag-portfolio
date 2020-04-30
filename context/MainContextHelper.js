@@ -1,9 +1,12 @@
-import { TextBlock, PortableTextBlock, ImageBlock } from '../modules/DataModels'
+import { TextBlock, PortableTextBlock, ImageBlock, VideoBlock } from '../modules/DataModels'
 
 const getBlockForItem = (item) => {
     if (item._type == 'projectImage') {
         return new ImageBlock(item)
-    } else {
+    } else if (item._type == 'projectVideo') {
+        return new VideoBlock(item)
+    } 
+    else {
         const { text, textMinScale, textMaxScale, textBoxHeightRatio, isSmallText } = item
         return new PortableTextBlock(text, { textMinScale, textMaxScale, textBoxHeightRatio, isSmallText })
     }

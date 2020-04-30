@@ -138,6 +138,19 @@
     &.hidden {
       opacity: 0;
     }
+
+    .video-player {
+      video {
+        height: 100%;
+        width: 100%;
+        &:focus {
+          outline: none;
+        }
+      }
+      button {
+        display: none;
+      }
+    }
 }
 
 .project-image-container {

@@ -197,6 +197,7 @@ export default class MainContextProvider extends React.Component {
     }
     fetchProjectsSanity = async () => {    
       const projects = await sanityClient.fetch(queries.allProjects)
+      console.log('projects: ', projects)
       return projects
     }
 

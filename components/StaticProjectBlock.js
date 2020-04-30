@@ -4,6 +4,8 @@ import ProgressiveImage from 'react-progressive-image'
 import classnames from 'classnames'
 import { portableTextSerializers } from '../modules/sanity'
 import { BlockTypes } from '../modules/DataModels'
+import { Player, ControlBar, BigPlayButton, Shortcut } from 'video-react'
+import HLSSource from './hlsSource'
 
 export default class SanityAssetBlock extends React.Component {
   state = {
@@ -48,8 +50,44 @@ export default class SanityAssetBlock extends React.Component {
       "sanity-small-text": (block.type == BlockTypes.TEXT || block.type == BlockTypes.PORTABLE_TEXT) && block.isSmallText
     })
 
+    const videoPlayerCls = classnames({
+      'video-player': true,
+      // 'hidden': !open 
+    })
+
+    const videoRefHandler = null
+
     return (
       <>
+        { block.type == BlockTypes.VIDEO &&
+          <div className={containerCls} style={{width: w, height: h}}>
+            <Player ref={ (p) => { 
+                if (p)
+                  // p.video.video.disablePictureInPicture = true
+                  p.video.video.setAttribute('disablePictureInPicture', true)
+              }} 
+              key={`player-${block.id}`}
+              preload='auto'
+              playsInline 
+              // src={src}
+              fluid={false}
+              width={w}
+              height={h}
+              autoplay={true}
+              loop={true}
+              className={videoPlayerCls}
+              style={{width: `${w}px`, height: `${h}px`}}
+            >
+              <ControlBar disableCompletely={true}/>
+              <Shortcut clickable={false} />
+              <HLSSource
+                isVideoChild
+                src={src}
+              />
+            </Player> 
+          </div>
+        }
+
         { block.type == BlockTypes.IMAGE &&
           <div className={containerCls} style={{width: w, height: h}}>
             <ProgressiveImage
