@@ -356,8 +356,8 @@ class ProjectView extends React.Component {
 
         const { placedBlocks } = this.state
 
-        const textBlocks = placedBlocks.filter(b => b.block.type != BlockTypes.IMAGE)
-        const imageBlocks = placedBlocks.filter(b => b.block.type == BlockTypes.IMAGE)
+        const textBlocks = placedBlocks.filter(b => b.block.type != BlockTypes.IMAGE && b.block.type != BlockTypes.VIDEO)
+        const imageBlocks = placedBlocks.filter(b => b.block.type == BlockTypes.IMAGE || b.block.type == BlockTypes.VIDEO)
 
         const mouseTrackerHidden = (!isMouseTrackerVisible || isProjectHighlightMode)
 

@@ -10,7 +10,8 @@ import HLSSource from './hlsSource'
 export default class SanityAssetBlock extends React.Component {
   state = {
     src: '',
-    placeholder: ''
+    placeholder: '',
+    videoLoaded: false,
   }
 
   UNSAFE_componentWillUpdate(nextProps) {
@@ -30,19 +31,32 @@ export default class SanityAssetBlock extends React.Component {
       placeholder: props.block.getLQUrl()
     })
   }
-  shouldComponentUpdate(newProps) {
+  shouldComponentUpdate(newProps, newState) {
     if (newProps.block && newProps.block.id != this.props.block.id) return true
     if (newProps.w != this.props.w) return true
     if (newProps.h != this.props.h) return true
     if (newProps.text && newProps.text != this.props.text) return true
+    if (newState.videoLoaded != this.state.videoLoaded) return true
     if (this.props.forceUpdate) return true
     return false
+  }
+
+  onVideoRef = (p) => {
+    if (p) {
+      console.log('video ref: ', this.props.block)
+      p.video.video.setAttribute('disablePictureInPicture', true)
+      p.video.video.onloadeddata = () => {
+        // console.log('video loaded', this)
+        p.video.video.play()
+        this.setState({ videoLoaded: true })
+      }
+    }
   }
 
   render() {
     const { block, w, h } = this.props    
     if (!block) return null
-    const { src, placeholder } = this.state
+    const { src, placeholder, videoLoaded } = this.state
 
     const containerCls = classnames({
       "image": block.type == BlockTypes.IMAGE,
@@ -55,17 +69,21 @@ export default class SanityAssetBlock extends React.Component {
       // 'hidden': !open 
     })
 
+    const videoPlaceholderCls = classnames({
+      'video-thumbnail': true,
+      'fadein': true,
+      'hidden': videoLoaded
+    })
+
+    console.log('render videoPlaceholderCls: ', videoPlaceholderCls)
+
     const videoRefHandler = null
 
     return (
       <>
         { block.type == BlockTypes.VIDEO &&
           <div className={containerCls} style={{width: w, height: h}}>
-            <Player ref={ (p) => { 
-                if (p)
-                  // p.video.video.disablePictureInPicture = true
-                  p.video.video.setAttribute('disablePictureInPicture', true)
-              }} 
+            <Player ref={this.onVideoRef.bind(this)} 
               key={`player-${block.id}`}
               preload='auto'
               playsInline 
@@ -73,7 +91,7 @@ export default class SanityAssetBlock extends React.Component {
               fluid={false}
               width={w}
               height={h}
-              autoplay={true}
+              autoplay={false}
               loop={true}
               className={videoPlayerCls}
               style={{width: `${w}px`, height: `${h}px`}}
@@ -84,7 +102,8 @@ export default class SanityAssetBlock extends React.Component {
                 isVideoChild
                 src={src}
               />
-            </Player> 
+            </Player>
+            <img src={block.thumbnailSrc} width={w} height={h} className={videoPlaceholderCls}/>
           </div>
         }
 

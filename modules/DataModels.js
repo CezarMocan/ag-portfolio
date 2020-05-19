@@ -5,6 +5,20 @@ import { mipmap } from './utils'
 const imageBuilder = imageUrlBuilder(sanityClient)
 const imageUrlFor = (source) => imageBuilder.image(source)
 const videoUrlFor = (asset) => `https://stream.mux.com/${asset.playbackId}.m3u8`
+const videoThumbnailUrlFor = (asset) => `https://image.mux.com/${asset.playbackId}/thumbnail.jpg?time=0&width=1000`
+
+const toDataURL = (url, callback) => {
+  var xhr = new XMLHttpRequest();
+  xhr.onload = () => {
+    var reader = new FileReader();
+    reader.onloadend = () => { callback(reader.result) }
+    reader.readAsDataURL(xhr.response)
+  }
+  xhr.open('GET', url);
+  xhr.responseType = 'blob';
+  xhr.send();
+}
+
 
 let UID = 0
 
@@ -20,6 +34,7 @@ export class PortableTextBlock {
     this.type = BlockTypes.PORTABLE_TEXT
     this.id = UID++
     this.o = o
+    // console.log('portable text block o: ', o)
     this.text = o.reduce((acc, el) => {
       return acc + el.children.reduce((acc, c) => {
         return acc + c.text + '\n'
@@ -76,6 +91,8 @@ export class VideoBlock {
     this.type = BlockTypes.VIDEO
     this.id = UID++
 
+    console.log('video o: ', o)
+
     const arString = o.video.asset.data.aspect_ratio
     this.aspectRatio = parseFloat(arString.split(':')[0]) / parseFloat(arString.split(':')[1])
     console.log(this.aspectRatio)
@@ -87,7 +104,6 @@ export class VideoBlock {
     this.o = o
     this._url = videoUrlFor(o.video.asset)
   }
-
   getUrl() {
     return this._url    
   }
@@ -95,5 +111,15 @@ export class VideoBlock {
     // https://image.mux.com/2epN56MPc2BMXi7iLNrtMyy029YT00AkXs/thumbnail.jpg?time=0
     // That is the link for video thumbnail
     return this._url
+  }
+  async fetchThumbnails() {
+    await new Promise((resolve, reject) => {
+      let url = videoThumbnailUrlFor(this.o.video.asset)
+      toDataURL(url, (dataUrl) => {
+        console.log('toDataUrl: ', url, dataUrl)
+        this.thumbnailSrc = dataUrl
+        resolve()
+      })
+    })
   }
 }

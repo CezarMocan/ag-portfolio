@@ -161,7 +161,7 @@
     width: 100%;
     position: absolute;
     left: 0;
-    top: 0;
+    top: 0;    
 }
 .project-image-placeholder {
   width: 100%;
@@ -181,6 +181,17 @@
   }
 }
 
+.video-thumbnail {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 1;
+  transition: opacity 0.75s ease-in-out;  
+  &.hidden {
+    opacity: 0;
+  }
+}
 
 .project-item-transition-enter {
   opacity: 0.01;

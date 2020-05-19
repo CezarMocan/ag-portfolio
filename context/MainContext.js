@@ -164,8 +164,8 @@ export default class MainContextProvider extends React.Component {
         const about = await this.fetchAboutSanity()
         const news = await this.fetchNewsSanity()
 
-        const data = processProjectsData(projects)
-        const newsData = processNewsData(news)
+        const data = await processProjectsData(projects)
+        const newsData = await processNewsData(news)
 
         let currentProjectId = PID_NEWS
 

@@ -11,12 +11,11 @@ export default class HLSSource extends Component {
     // `video` is the property insert from `Video` component
     // `video` is the html5 video element
     const Hls = require('hls.js')
-    this.hls = new Hls();
-    const { src, video } = this.props;
-    console.log('hlsSource: ', src, video)
+    this.hls = new Hls({ debug: false });
+    const { src, video } = this.props;    
     // load hls video source base on hls.js
+    console.log('src is: ', src)
     if (Hls.isSupported()) {
-      console.log('is supported')
       this.hls.loadSource(src);
       this.hls.attachMedia(video);
       this.hls.on(Hls.Events.MANIFEST_PARSED, () => {
