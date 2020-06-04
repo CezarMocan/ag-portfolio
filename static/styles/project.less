@@ -138,19 +138,58 @@
     &.hidden {
       opacity: 0;
     }
+}
 
-    .video-player {
-      video {
-        height: 100%;
-        width: 100%;
-        &:focus {
-          outline: none;
-        }
-      }
-      button {
-        display: none;
-      }
+.video-player {
+  video {
+    height: 100%;
+    width: 100%;
+    &:focus {
+      outline: none;
     }
+  }
+  button {
+    display: none;
+  }
+}
+
+.video-container {
+  position: relative;
+}
+
+.video-controls {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%) translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  border-radius: 13px;
+  transition: opacity 0.75s ease-in;
+  cursor: pointer;
+  &.hidden {
+    opacity: 0;
+  }
+
+  .volume-icon {
+    width: 55%;
+    height: 55%;
+    padding: 5px;
+    opacity: 0.75;
+    &.hidden {
+      display: none;
+    }        
+  }
+}
+
+
+.video-react-big-play-button {
+  display: none;
 }
 
 .project-image-container {

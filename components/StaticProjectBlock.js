@@ -12,6 +12,8 @@ export default class SanityAssetBlock extends React.Component {
     src: '',
     placeholder: '',
     videoLoaded: false,
+    videoMuted: true,
+    videoControlsVisible: true
   }
 
   UNSAFE_componentWillUpdate(nextProps) {
@@ -37,30 +39,48 @@ export default class SanityAssetBlock extends React.Component {
     if (newProps.h != this.props.h) return true
     if (newProps.text && newProps.text != this.props.text) return true
     if (newState.videoLoaded != this.state.videoLoaded) return true
+    if (newState.videoMuted != this.state.videoMuted) return true
+    if (newState.videoControlsVisible != this.state.videoControlsVisible) return true
     if (this.props.forceUpdate) return true
     return false
   }
 
   onVideoRef = (p) => {
     if (p) {
-      console.log('video ref: ', this.props.block)
       p.video.video.setAttribute('disablePictureInPicture', true)
       p.video.video.onloadeddata = () => {
-        // console.log('video loaded', this)
         p.video.video.play()
         this.setState({ videoLoaded: true })
       }
     }
   }
 
+  stopEvent = (e) => {
+    e.stopPropagation()
+  }
+
+  onVideoVolumeToggle = (e) => {
+    e.stopPropagation()
+    this.setState({ videoMuted: !this.state.videoMuted })    
+  }
+
+  onVideoMouseEnter = (e) => {
+    this.setState({ videoControlsVisible: true })
+  }
+
+  onVideoMouseLeave = (e) => {
+    this.setState({ videoControlsVisible: false })
+  }
+
   render() {
     const { block, w, h } = this.props    
     if (!block) return null
-    const { src, placeholder, videoLoaded } = this.state
+    const { src, placeholder, videoLoaded, videoMuted, videoControlsVisible } = this.state
 
     const containerCls = classnames({
       "image": block.type == BlockTypes.IMAGE,
       "text": block.type == BlockTypes.TEXT || block.type == BlockTypes.PORTABLE_TEXT,
+      "video-container": block.type == BlockTypes.VIDEO,
       "sanity-small-text": (block.type == BlockTypes.TEXT || block.type == BlockTypes.PORTABLE_TEXT) && block.isSmallText
     })
 
@@ -75,35 +95,61 @@ export default class SanityAssetBlock extends React.Component {
       'hidden': videoLoaded
     })
 
-    console.log('render videoPlaceholderCls: ', videoPlaceholderCls)
+    const videoControlsCls = classnames({
+      'video-controls': true,
+      'hidden': !videoControlsVisible
+    })
+
+    const volumeIconOnCls = classnames({
+      'volume-icon': true,
+      hidden: videoMuted
+    })
+
+    const volumeIconOffCls = classnames({
+      'volume-icon': true,
+      hidden: !videoMuted
+    })
 
     const videoRefHandler = null
 
     return (
       <>
         { block.type == BlockTypes.VIDEO &&
-          <div className={containerCls} style={{width: w, height: h}}>
-            <Player ref={this.onVideoRef.bind(this)} 
-              key={`player-${block.id}`}
-              preload='auto'
-              playsInline 
-              // src={src}
-              fluid={false}
-              width={w}
-              height={h}
-              autoplay={false}
-              loop={true}
-              className={videoPlayerCls}
-              style={{width: `${w}px`, height: `${h}px`}}
-            >
-              <ControlBar disableCompletely={true}/>
-              <Shortcut clickable={false} />
-              <HLSSource
-                isVideoChild
-                src={src}
-              />
-            </Player>
-            <img src={block.thumbnailSrc} width={w} height={h} className={videoPlaceholderCls}/>
+          <div className={containerCls} 
+            style={{width: w, height: h}} 
+            onMouseEnter={this.onVideoMouseEnter} 
+            onMouseLeave={this.onVideoMouseLeave}>
+              <Player ref={this.onVideoRef.bind(this)} 
+                key={`player-${block.id}`}
+                preload='auto'
+                playsInline 
+                // src={src}
+                fluid={false}
+                width={w}
+                height={h}
+                autoplay={false}
+                loop={true}
+                muted={videoMuted}
+                className={videoPlayerCls}
+                style={{width: `${w}px`, height: `${h}px`}}
+              >
+                <ControlBar disableCompletely={true}/>
+                <Shortcut clickable={false} />
+                <HLSSource
+                  isVideoChild
+                  src={src}
+                />
+              </Player>
+              <img src={block.thumbnailSrc} width={w} height={h} className={videoPlaceholderCls}/>
+              <div className={videoControlsCls} 
+                onClick={this.onVideoVolumeToggle}
+                onMouseDown={this.stopEvent}
+                onMouseUp={this.stopEvent}
+                onTouchStart={this.stopEvent}
+                onTouchEnd={this.stopEvent}>
+                <img className={volumeIconOnCls} src="static/icons/volume_on.svg"/>
+                <img className={volumeIconOffCls} src="static/icons/volume_off.svg"/>
+              </div>
           </div>
         }
 
