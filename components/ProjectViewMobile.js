@@ -36,8 +36,8 @@ class ProjectView extends React.Component {
             const { getCurrentProjectMetadata } = this.props
             const { color } = getCurrentProjectMetadata()
             const currentProjectBlocks = getCurrentProjectBlocks()
-            const textBlocks = currentProjectBlocks.filter(b => b.type != BlockTypes.IMAGE)
-            const imageBlocks = currentProjectBlocks.filter(b => b.type == BlockTypes.IMAGE)
+            const textBlocks = currentProjectBlocks.filter(b => b.type != BlockTypes.IMAGE && b.type != BlockTypes.VIDEO)
+            const imageBlocks = currentProjectBlocks.filter(b => b.type == BlockTypes.IMAGE || b.type == BlockTypes.VIDEO)
 
             this.setState({
                 transitionState: 'transitioning-out',
