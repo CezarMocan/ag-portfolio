@@ -127,11 +127,16 @@ class ProjectView extends React.Component {
           hidden: transitioningText
         })
 
+        const imageContainerCls = classnames({
+          'mobile-image-container': true,
+          'shrink': textActive
+        })
+
         return (
             <div className={containerClassnames} style={{height: windowHeight}}>
               <div
                 ref={r => this.onImageContainerRef(r)}
-                className="mobile-image-container"
+                className={imageContainerCls}
                 onClick={this.onImageClick}
               >
                 { currentImageIndex >= 0 && 
@@ -146,7 +151,7 @@ class ProjectView extends React.Component {
                 }
                 { currentImageIndex == -1 &&
                   <div className={imageCounterCls}>
-                    <p>{imageBlocks.length}</p>
+                    <p className="mobile-placeholder-text">{imageBlocks.length}</p>
                   </div>
                 }
 
@@ -155,7 +160,7 @@ class ProjectView extends React.Component {
               <div className="mobile-text-container">
                 { !textActive && 
                   <div className={textPlaceholderCls} onClick={this.onTextPlaceholderClick}>
-                    <p>INFO</p>
+                    <p className="mobile-placeholder-text">INFO</p>
                   </div>
                 }
                 { textActive && 

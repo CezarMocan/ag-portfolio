@@ -12,14 +12,13 @@ export default class HLSSource extends Component {
     // `video` is the html5 video element
     const Hls = require('hls.js')
     this.hls = new Hls({ debug: false });
-    const { src, video } = this.props;    
+    const { src, video, autoplay } = this.props;    
     // load hls video source base on hls.js
-    console.log('src is: ', src)
     if (Hls.isSupported()) {
       this.hls.loadSource(src);
       this.hls.attachMedia(video);
       this.hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        video.play();
+        if (autoplay) video.play();
       });
     }
   }

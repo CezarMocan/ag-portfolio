@@ -117,7 +117,7 @@ class Navigation extends React.Component {
                   }
                   { isMobileFlag && 
                     <>
-                    <p className="link" style={{margin: 0, display: 'inline-block', marginBottom: '2px'}}> { titleString.split('/')[0] }/</p>
+                    <p style={{margin: 0, display: 'inline-block', marginBottom: '2px'}}> <span className="link">{ titleString.split('/')[0] }</span> /</p>
                     <p style={{margin: 0}}> { titleString.split('/')[1] } </p>
                     </>
                   }

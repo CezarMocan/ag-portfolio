@@ -3,33 +3,46 @@ import PortableBlockContent from '@sanity/block-content-to-react'
 import ProgressiveImage from 'react-progressive-image'
 import classnames from 'classnames'
 import { portableTextSerializers } from '../modules/sanity'
+import { withMainContext } from '../context/MainContext'
 import { BlockTypes } from '../modules/DataModels'
 import { Player, ControlBar, BigPlayButton, Shortcut } from 'video-react'
 import HLSSource from './hlsSource'
+import { isMobile } from '../modules/utils'
 
-export default class SanityAssetBlock extends React.Component {
+class SanityAssetBlock extends React.Component {
   state = {
     src: '',
     placeholder: '',
     videoLoaded: false,
     videoMuted: true,
-    videoControlsVisible: true
+    videoControlsVisible: true,
+    mobileVideoPlaying: false
   }
 
   UNSAFE_componentWillUpdate(nextProps) {
     if (nextProps.block.id == this.props.block.id && nextProps.w == this.props.w) return
-    if (!nextProps.block.getUrl) return
-    this.setState({
-      src: nextProps.block.getUrl(nextProps.w),
-      placeholder: nextProps.block.getLQUrl()
-    })
+    let newState = {
+      videoLoaded: false,
+      videoMuted: true,
+      videoControlsVisible: true,
+      mobileVideoPlaying: false
+    }
+
+    if (nextProps.block.getUrl) {
+      const dpr = window.devicePixelRatio || 1
+      newState.src = nextProps.block.getUrl(nextProps.w * dpr)
+      newState.placeholder = nextProps.block.getLQUrl() 
+    }
+
+    this.setState(newState)
   }
 
   UNSAFE_componentWillMount() {
     const props = this.props
     if (!props.block || !props.block.getUrl) return
+    const dpr = window.devicePixelRatio || 1
     this.setState({
-      src: props.block.getUrl(props.w),
+      src: props.block.getUrl(props.w * dpr),
       placeholder: props.block.getLQUrl()
     })
   }
@@ -41,15 +54,19 @@ export default class SanityAssetBlock extends React.Component {
     if (newState.videoLoaded != this.state.videoLoaded) return true
     if (newState.videoMuted != this.state.videoMuted) return true
     if (newState.videoControlsVisible != this.state.videoControlsVisible) return true
-    if (this.props.forceUpdate) return true
+    if (newState.mobileVideoPlaying != this.state.mobileVideoPlaying) return true
+    if (newProps.forceUpdate) return true
+    
     return false
   }
 
   onVideoRef = (p) => {
+    const { isMobile } = this.props
     if (p) {
+      this._videoRef = p
       p.video.video.setAttribute('disablePictureInPicture', true)
       p.video.video.onloadeddata = () => {
-        p.video.video.play()
+        if (!isMobile) p.video.video.play()
         this.setState({ videoLoaded: true })
       }
     }
@@ -59,9 +76,16 @@ export default class SanityAssetBlock extends React.Component {
     e.stopPropagation()
   }
 
+  onVideoPlay = (e) => {
+    e.stopPropagation()
+    if (!this._videoRef) return
+    this._videoRef.video.video.play()
+    this.setState({ mobileVideoPlaying: true })
+  }
+
   onVideoVolumeToggle = (e) => {
     e.stopPropagation()
-    this.setState({ videoMuted: !this.state.videoMuted })    
+    this.setState({ videoMuted: !this.state.videoMuted })
   }
 
   onVideoMouseEnter = (e) => {
@@ -73,9 +97,9 @@ export default class SanityAssetBlock extends React.Component {
   }
 
   render() {
-    const { block, w, h } = this.props    
+    const { block, w, h, isMobile } = this.props    
     if (!block) return null
-    const { src, placeholder, videoLoaded, videoMuted, videoControlsVisible } = this.state
+    const { src, placeholder, videoLoaded, videoMuted, videoControlsVisible, mobileVideoPlaying } = this.state
 
     const containerCls = classnames({
       "image": block.type == BlockTypes.IMAGE,
@@ -97,7 +121,12 @@ export default class SanityAssetBlock extends React.Component {
 
     const videoControlsCls = classnames({
       'video-controls': true,
-      'hidden': !videoControlsVisible
+      'hidden': !videoControlsVisible || (isMobile && !mobileVideoPlaying)
+    })
+
+    const videoPlayMobileCls = classnames({
+      'video-play-button-mobile': true,
+      'hidden': !videoLoaded || (isMobile && mobileVideoPlaying)
     })
 
     const volumeIconOnCls = classnames({
@@ -122,8 +151,8 @@ export default class SanityAssetBlock extends React.Component {
               <Player ref={this.onVideoRef.bind(this)} 
                 key={`player-${block.id}`}
                 preload='auto'
-                playsInline 
-                // src={src}
+                playsInline
+                defaultMuted
                 fluid={false}
                 width={w}
                 height={h}
@@ -138,9 +167,10 @@ export default class SanityAssetBlock extends React.Component {
                 <HLSSource
                   isVideoChild
                   src={src}
+                  autoplay={!isMobile}
                 />
               </Player>
-              <img src={block.thumbnailSrc} width={w} height={h} className={videoPlaceholderCls}/>
+              <img src={block.thumbnailSrc} width={w} height={h} className={videoPlaceholderCls}/>              
               <div className={videoControlsCls} 
                 onClick={this.onVideoVolumeToggle}
                 onMouseDown={this.stopEvent}
@@ -149,7 +179,18 @@ export default class SanityAssetBlock extends React.Component {
                 onTouchEnd={this.stopEvent}>
                 <img className={volumeIconOnCls} src="static/icons/volume_on.svg"/>
                 <img className={volumeIconOffCls} src="static/icons/volume_off.svg"/>
+                { videoLoaded }
               </div>
+              { isMobile &&
+                <div className={videoPlayMobileCls} 
+                  onClick={this.onVideoPlay}
+                  onMouseDown={this.stopEvent}
+                  onMouseUp={this.stopEvent}
+                  onTouchStart={this.stopEvent}
+                  onTouchEnd={this.stopEvent}>
+                  Play Video
+                </div>
+              }
           </div>
         }
 
@@ -209,3 +250,7 @@ export default class SanityAssetBlock extends React.Component {
 SanityAssetBlock.defaultProps = {
   block: null,
 }
+
+export default withMainContext((context, props) => ({
+  isMobile: context.isMobile,
+}))(SanityAssetBlock)

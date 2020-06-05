@@ -34,7 +34,6 @@ export class PortableTextBlock {
     this.type = BlockTypes.PORTABLE_TEXT
     this.id = UID++
     this.o = o
-    // console.log('portable text block o: ', o)
     this.text = o.reduce((acc, el) => {
       return acc + el.children.reduce((acc, c) => {
         return acc + c.text + '\n'
@@ -91,11 +90,8 @@ export class VideoBlock {
     this.type = BlockTypes.VIDEO
     this.id = UID++
 
-    console.log('video o: ', o)
-
     const arString = o.video.asset.data.aspect_ratio
     this.aspectRatio = parseFloat(arString.split(':')[0]) / parseFloat(arString.split(':')[1])
-    console.log(this.aspectRatio)
     this.width = 1000
     this.height = this.width / this.aspectRatio
     this.playbackId = o.video.asset.playbackId
@@ -116,7 +112,6 @@ export class VideoBlock {
     await new Promise((resolve, reject) => {
       let url = videoThumbnailUrlFor(this.o.video.asset)
       toDataURL(url, (dataUrl) => {
-        console.log('toDataUrl: ', url, dataUrl)
         this.thumbnailSrc = dataUrl
         resolve()
       })
