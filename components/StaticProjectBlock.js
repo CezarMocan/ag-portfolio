@@ -121,7 +121,7 @@ class SanityAssetBlock extends React.Component {
 
     const videoControlsCls = classnames({
       'video-controls': true,
-      'hidden': !videoControlsVisible || (isMobile && !mobileVideoPlaying)
+      'hidden': (!isMobile && !videoControlsVisible) || (isMobile && !mobileVideoPlaying)
     })
 
     const videoPlayMobileCls = classnames({
