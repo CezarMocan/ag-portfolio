@@ -7,6 +7,7 @@ import StaticProjectBlock from './StaticProjectBlock'
 
 
 class ProjectBlock extends React.Component {
+    isMouseIn = false
     isMouseDown = false
     state = {
       hovered: false
@@ -20,8 +21,7 @@ class ProjectBlock extends React.Component {
           e.stopPropagation()
     }
     onMouseDown = (blockType) => (e) => {
-      this.isMouseDown = true
-      console.log('onMouseDown: ', blockType)
+      this.isMouseDown = true    
       const { onHighlightMouseDown, isProjectHighlightMode, isProjectMoveMode, block, visible } = this.props
 
       // if (this.isTextBlockType(blockType) && !isProjectMoveMode)
@@ -46,8 +46,11 @@ class ProjectBlock extends React.Component {
       if (visible && onHighlightMouseUp) {
         onHighlightMouseUp(e)
       }
+      if (!this.isMouseIn)
+        this.onMouseEnter(blockType)(e)
     }
     onMouseEnter = (blockType) => (e) => {
+      this.isMouseIn = true
       const { onMouseEnter, isProjectHighlightMode, isProjectMoveMode, visible } = this.props
       if (!visible) return
 
@@ -64,6 +67,7 @@ class ProjectBlock extends React.Component {
       }
     }
     onMouseLeave = (blockType) => (e) => {
+      this.isMouseIn = false
       const { onMouseLeave, isProjectHighlightMode, isProjectMoveMode } = this.props
       const { toggleMouseTracker } = this.props
       setTimeout(() => {

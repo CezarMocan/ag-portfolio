@@ -76,11 +76,13 @@ class SanityAssetBlock extends React.Component {
     e.stopPropagation()
   }
 
-  onVideoPlay = (e) => {
+  onMobileVideoPlay = (e) => {
     e.stopPropagation()
     if (!this._videoRef) return
+    const { isMobile } = this.props
+    if (!isMobile) return
     this._videoRef.video.video.play()
-    this.setState({ mobileVideoPlaying: true })
+    this.setState({ mobileVideoPlaying: true, videoMuted: false })
   }
 
   onVideoVolumeToggle = (e) => {
@@ -121,7 +123,7 @@ class SanityAssetBlock extends React.Component {
 
     const videoControlsCls = classnames({
       'video-controls': true,
-      'hidden': (!isMobile && !videoControlsVisible) || (isMobile && !mobileVideoPlaying)
+      'hidden': (!isMobile && !videoControlsVisible) || (isMobile)
     })
 
     const videoPlayMobileCls = classnames({
@@ -184,7 +186,7 @@ class SanityAssetBlock extends React.Component {
               </div>
               { isMobile &&
                 <div className={videoPlayMobileCls} 
-                  onClick={this.onVideoPlay}
+                  onClick={this.onMobileVideoPlay}
                   onMouseDown={this.stopEvent}
                   onMouseUp={this.stopEvent}
                   onTouchStart={this.stopEvent}

@@ -87,8 +87,6 @@ class ProjectView extends React.Component {
             newWidth = Math.max(newWidth, 300)
             let newHeight
 
-            // console.log('updateMarkerForNextBlock: ', block, newWidth)
-
             if (block.width) {
               newHeight = newWidth / block.width * block.height
             } else if (block.text) {
@@ -148,7 +146,6 @@ class ProjectView extends React.Component {
         }
     }
     onMouseDown = (e) => {
-        // console.log('onMouseDown: ', this.markerAttributes)
         if (!this.markerAttributes.active) return        
         const { currentProjectBlocks, transitionState } = this.state
         if (transitionState == 'transitioning-out') return
@@ -166,7 +163,6 @@ class ProjectView extends React.Component {
                 transform: { x, y, w, r, h },
                 block
             })
-
             this.updateMarkerForNextBlock(this.state.currentProjectBlocks, placedBlocks)
             this.setState({ placedBlocks })
         }
@@ -252,7 +248,6 @@ class ProjectView extends React.Component {
     }
     onBlockHighlightMouseDown = (blockId) => (e) => {
         const { isProjectHighlightMode } = this.props
-        // if (!isProjectHighlightMode) return
         const { selectedBlockId, movingBlockMode } = this.state
 
         if (movingBlockMode.blockId == null || movingBlockMode.blockId == undefined) {
