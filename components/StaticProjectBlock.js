@@ -126,7 +126,8 @@ class SanityAssetBlock extends React.Component {
 
     const videoPlayMobileCls = classnames({
       'video-play-button-mobile': true,
-      'hidden': !videoLoaded || (isMobile && mobileVideoPlaying)
+      // 'hidden': !videoLoaded || (isMobile && mobileVideoPlaying)
+      'hidden': (isMobile && mobileVideoPlaying)
     })
 
     const volumeIconOnCls = classnames({
