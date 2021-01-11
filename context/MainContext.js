@@ -14,7 +14,8 @@ export default class MainContextProvider extends React.Component {
         isAboutPageOpen: false,
         isMouseTrackerVisible: true,
         currentProjectId: null,
-        isProjectHighlightMode: false,
+        newsPageNavCount: 0,
+        isProjectHighlightMode: false,        
 
         data: null,
         about: null,
@@ -91,7 +92,8 @@ export default class MainContextProvider extends React.Component {
         this.setState({
             currentProjectId: PID_NEWS,
             isAboutPageOpen: false,
-            isProjectHighlightMode: currentProjectId == PID_NEWS ? isProjectHighlightMode : false
+            newsPageNavCount: this.state.newsPageNavCount + 1,
+            isProjectHighlightMode: false
         })
     }
 

@@ -84,7 +84,7 @@ class ProjectView extends React.Component {
 
             // const newWidth = 100 + 200 * Math.random()
             let newWidth = randInterval(block.minScale, block.maxScale) * window.innerWidth
-            newWidth = Math.max(newWidth, 300)
+            // newWidth = Math.max(newWidth, 300)
             let newHeight
 
             if (block.width) {
@@ -313,10 +313,10 @@ class ProjectView extends React.Component {
         fetchProjects()
     }
     componentDidUpdate(oldProps) {
-        const { currentProjectId, getCurrentProjectBlocks } = this.props
+        const { currentProjectId, getCurrentProjectBlocks, newsPageNavCount } = this.props
 
         // Current project has been updated
-        if (currentProjectId != oldProps.currentProjectId) {
+        if (currentProjectId != oldProps.currentProjectId || newsPageNavCount != oldProps.newsPageNavCount) {
             const { getCurrentProjectMetadata } = this.props
             const { color } = getCurrentProjectMetadata()
             this.updateMarkerDOM({ color, rotation: 0 })
@@ -449,6 +449,7 @@ export default withMainContext((context, props) => ({
     isAboutPageOpen: context.isAboutPageOpen,
     isMouseTrackerVisible: context.isMouseTrackerVisible,
     currentProjectId: context.currentProjectId,
+    newsPageNavCount: context.newsPageNavCount,
     isProjectHighlightMode: context.isProjectHighlightMode,
     data: context.data,
 

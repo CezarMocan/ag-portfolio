@@ -11,10 +11,8 @@ class Navigation extends React.Component {
     }
     onTitleClick = (evt) => {
       const { titleString } = this.state
-      const isNewsPage = (titleString.toLowerCase().indexOf('/ news') != -1)
-      if (isNewsPage) return
-      const { navigateLandingPage } = this.props
-      if (navigateLandingPage) navigateLandingPage()    
+      const { toggleAboutPage, isAboutPageOpen } = this.props
+      if (toggleAboutPage) toggleAboutPage(!isAboutPageOpen)
     }
     onFinGClick = (evt) => {
         const { navigateLandingPage } = this.props

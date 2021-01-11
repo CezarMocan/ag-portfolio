@@ -48,7 +48,7 @@ class About extends React.Component {
                     <br/>
                     <PortableBlockContent
                         blocks={about ? about.description : []}
-                        className={"about-text-container"}
+                        className={"about-text-container sanity-small-text"}
                         serializers={portableTextSerializers}
                         renderContainerOnSingleChild={true}
                     />
@@ -65,7 +65,7 @@ class About extends React.Component {
                       </div>
                   </div>
                   <div className="copyright-notice">
-                    Anthony V Gagliardi © 2020. All Rights Reserved.<br/>
+                    Anthony V Gagliardi © {new Date().getFullYear()}. All Rights Reserved.<br/>
                     Website by <a href="https://cezar.io" target="__blank">Cezar Mocan</a>.
                   </div>
                 </div>
