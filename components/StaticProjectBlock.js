@@ -171,6 +171,7 @@ class SanityAssetBlock extends React.Component {
                   isVideoChild
                   src={src}
                   autoplay={!isMobile}
+                  // autoplay={false}
                 />
               </Player>
               <img src={block.thumbnailSrc} width={w} height={h} className={videoPlaceholderCls}/>              

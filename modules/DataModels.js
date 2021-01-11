@@ -5,7 +5,7 @@ import { mipmap } from './utils'
 const imageBuilder = imageUrlBuilder(sanityClient)
 const imageUrlFor = (source) => imageBuilder.image(source)
 const videoUrlFor = (asset) => `https://stream.mux.com/${asset.playbackId}.m3u8`
-const videoThumbnailUrlFor = (asset) => `https://image.mux.com/${asset.playbackId}/thumbnail.jpg?time=0&width=1000`
+const videoThumbnailUrlFor = (asset) => `https://image.mux.com/${asset.playbackId}/thumbnail.jpg?time=${asset.thumbTime}&width=1000`
 
 const toDataURL = (url, callback) => {
   var xhr = new XMLHttpRequest();
