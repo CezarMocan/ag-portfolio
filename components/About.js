@@ -3,9 +3,13 @@ import classnames from 'classnames'
 import PortableBlockContent from '@sanity/block-content-to-react'
 import { withMainContext } from '../context/MainContext'
 import { portableTextSerializers } from '../modules/sanity'
+import clipboard from 'clipboard-copy'
 
 class About extends React.Component {
-    state = {windowHeight: 0}
+    state = {
+      windowHeight: 0,
+      copiedNoticeVisible: false
+    }
     onProjectClick = (projectId) => (e) => {
         const { navigateToProjectId, toggleMouseTracker } = this.props
         e.preventDefault()
@@ -13,15 +17,25 @@ class About extends React.Component {
         toggleMouseTracker(true)
         navigateToProjectId(projectId)
     }
+    onCopy = (msg) => (e) => {
+      clipboard(msg)
+      this.setState({
+        copiedNoticeVisible: true
+      }, () => { setTimeout(() => { this.setState({ copiedNoticeVisible: false }) }, 3000)})
+    }
     componentDidMount() {
         this.setState({ windowHeight: window.innerHeight })
       }  
     render() {
-        const { windowHeight } = this.state
+        const { windowHeight, copiedNoticeVisible } = this.state
         const { isAboutPageOpen, about, projects } = this.props
         const cls = classnames({
             'about-container': true,
             'visible': isAboutPageOpen
+        })
+        const copiedCls = classnames({
+          'copied-notice': true,
+          'visible': copiedNoticeVisible
         })
         return (
             <div className={cls} style={{height: windowHeight}}>
@@ -56,8 +70,9 @@ class About extends React.Component {
                 <div className="about-content-footer-container-fadeout"></div>
                 <div className="colophon">
                   <div className="out-facing-links">
+                      <p className={copiedCls}>Copied to clipboard!</p>
                       <div className="link">
-                          <a className="interactive" href="mailto:anthony@almost.studio" target="__blank"><p>anthony@almost.studio</p></a>
+                          <p className="interactive" onClick={this.onCopy('anthony@almost.studio')}>anthony@almost.studio</p>
                       </div>
                       &emsp;
                       <div className="link">

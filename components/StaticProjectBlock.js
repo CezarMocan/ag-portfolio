@@ -14,13 +14,15 @@ class SanityAssetBlock extends React.Component {
     src: '',
     placeholder: '',
     videoLoaded: false,
-    videoMuted: true,
+    videoMuted: false,
     videoControlsVisible: true,
     mobileVideoPlaying: false
   }
 
   UNSAFE_componentWillUpdate(nextProps) {
     if (nextProps.block.id == this.props.block.id && nextProps.w == this.props.w) return
+    if (nextProps.block.id == this.props.block.id && this.props.block.type == BlockTypes.VIDEO) return
+    // if (nextProps.block.id == this.props.block.id) return
     let newState = {
       videoLoaded: false,
       videoMuted: true,
@@ -31,7 +33,8 @@ class SanityAssetBlock extends React.Component {
     if (nextProps.block.getUrl) {
       const dpr = window.devicePixelRatio || 1
       newState.src = nextProps.block.getUrl(nextProps.w * dpr)
-      newState.placeholder = nextProps.block.getLQUrl() 
+      // newState.src = nextProps.block.getUrl(window.innerWidth * 0.8 * dpr)
+      newState.placeholder = (nextProps.block.id == this.props.block.id) ? this.state.src : nextProps.block.getLQUrl() 
     }
 
     this.setState(newState)
@@ -43,6 +46,7 @@ class SanityAssetBlock extends React.Component {
     const dpr = window.devicePixelRatio || 1
     this.setState({
       src: props.block.getUrl(props.w * dpr),
+      // src: props.block.getUrl(window.innerWidth * 0.8 * dpr),
       placeholder: props.block.getLQUrl()
     })
   }
@@ -132,6 +136,11 @@ class SanityAssetBlock extends React.Component {
       'hidden': (isMobile && mobileVideoPlaying)
     })
 
+    const videoPlaceholderMobileCls = classnames({
+      'video-placeholder-mobile': true,
+      'hidden': (isMobile && mobileVideoPlaying)
+    })
+
     const volumeIconOnCls = classnames({
       'volume-icon': true,
       hidden: videoMuted
@@ -148,7 +157,7 @@ class SanityAssetBlock extends React.Component {
       <>
         { block.type == BlockTypes.VIDEO &&
           <div className={containerCls} 
-            style={{width: w, height: h}} 
+            style={{width: w, height: h, transition: 'all 0.75s ease-in-out'}} 
             onMouseEnter={this.onVideoMouseEnter} 
             onMouseLeave={this.onVideoMouseLeave}>
               <Player ref={this.onVideoRef.bind(this)} 
@@ -174,7 +183,7 @@ class SanityAssetBlock extends React.Component {
                   // autoplay={false}
                 />
               </Player>
-              <img src={block.thumbnailSrc} width={w} height={h} className={videoPlaceholderCls}/>              
+              <img src={block.thumbnailSrc} width={w} height={h} className={videoPlaceholderCls}/>
               <div className={videoControlsCls} 
                 onClick={this.onVideoVolumeToggle}
                 onMouseDown={this.stopEvent}
@@ -186,6 +195,8 @@ class SanityAssetBlock extends React.Component {
                 { videoLoaded }
               </div>
               { isMobile &&
+                <>
+                <img src={block.thumbnailSrc} width={w} height={h} className={videoPlaceholderMobileCls}/>
                 <div className={videoPlayMobileCls} 
                   onClick={this.onMobileVideoPlay}
                   onMouseDown={this.stopEvent}
@@ -194,12 +205,13 @@ class SanityAssetBlock extends React.Component {
                   onTouchEnd={this.stopEvent}>
                   Play Video
                 </div>
+                </>
               }
           </div>
         }
 
         { block.type == BlockTypes.IMAGE &&
-          <div className={containerCls} style={{width: w, height: h}}>
+          <div className={containerCls} style={{width: w, height: h, transition: 'all 0.75s ease-in-out'}} >
             <ProgressiveImage
               delay={100}
               src={src}
@@ -209,13 +221,13 @@ class SanityAssetBlock extends React.Component {
                 const cls = classnames({
                   "project-image-placeholder": true,
                   "fadeout-after": !loading,
-                  "blurred": true
+                  "blurred": (placeholder == block.getLQUrl())
                 })
                 return (
-                  <div className="project-image-container">
+                  <div className="project-image-container" style={{width: '100%', height: '100%'}}>
                     {/* <img src={src} className={cls}/> */}
-                    <img draggable="false" src={block.getLQUrl()} className={cls} width={w} height={h}/>
-                    { !loading && w && h && <img draggable="false" src={src} width={w} height={h} className="project-image fadein"/> }
+                    <img draggable="false" src={placeholder} className={cls} style={{width: '100%', height: '100%'}}/>
+                    { !loading && w && h && <img draggable="false" src={src} style={{width: '100%', height: '100%'}} className="project-image fadein"/> }
                     { !loading && !(w && h) && <img draggable="false" src={src} className="project-image fadein"/> }
                   </div>
                 )

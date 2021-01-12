@@ -146,13 +146,14 @@ class ProjectView extends React.Component {
         }
     }
     onMouseDown = (e) => {
+        const { selectedBlockId } = this.state
         if (!this.markerAttributes.active) return        
         const { currentProjectBlocks, transitionState } = this.state
         if (transitionState == 'transitioning-out') return
 
         let placedBlocks = this.state.placedBlocks.slice(0)
 
-        if (placedBlocks.length < currentProjectBlocks.length) {
+        if (placedBlocks.length < currentProjectBlocks.length && selectedBlockId === null) {
             const index = placedBlocks.length % currentProjectBlocks.length
             const block = currentProjectBlocks[index]
 
@@ -178,13 +179,13 @@ class ProjectView extends React.Component {
             // this.updateMarkerForNextBlock(this.state.currentProjectBlocks, this.state.placedBlocks)
         // }
 
-        if (isProjectHighlightMode) {
+        // if (isProjectHighlightMode) {
             if (selectedBlockId != null) {
                 this.setState({ selectedBlockId: null, movingBlockMode: { on: false } })
-            } else if (!movingBlockMode.on && navigateNextProject) {
+            } else if (!movingBlockMode.on && navigateNextProject && isProjectHighlightMode) {
                 navigateNextProject()
             }
-        }
+        // }
     }
     onScroll = (e) => {
         const angleDelta = e.deltaY / 200
@@ -218,7 +219,7 @@ class ProjectView extends React.Component {
         const { movingBlockMode, placedBlocks } = this.state
         let newPlacedBlocks = placedBlocks.slice(0)
 
-        if (isProjectHighlightMode) {            
+        // if (isProjectHighlightMode) {            
             if (movingBlockMode.on) return
             // const blockIndex = newPlacedBlocks.findIndex((e) => e.block.id == blockId)
             // const lastIndex = newPlacedBlocks.length - 1
@@ -227,16 +228,16 @@ class ProjectView extends React.Component {
             // newPlacedBlocks[blockIndex] = aux
 
             this.setState({ highlightBlockId: blockId, hoverBlockId: blockId })
-        } else {
+        // } else {
             // this.updateMarkerDOM({ width: 0, height: 0 })
-            this.setState({ hoverBlockId: blockId })
-        }
+            // this.setState({ hoverBlockId: blockId })
+        // }
     }
     onBlockMouseLeave = (blockId) => (e) => {
         const { isProjectHighlightMode } = this.props
         const { highlightBlockId, movingBlockMode } = this.state
 
-        if (isProjectHighlightMode && highlightBlockId == blockId) {
+        if (highlightBlockId == blockId) {
             if (movingBlockMode.on) return
             this.setState({ highlightBlockId: null, hoverBlockId: null })
         } else {
@@ -251,7 +252,7 @@ class ProjectView extends React.Component {
         const { selectedBlockId, movingBlockMode } = this.state
 
         if (movingBlockMode.blockId == null || movingBlockMode.blockId == undefined) {
-            if (isProjectHighlightMode && selectedBlockId != null) return
+            if (selectedBlockId != null) return
             this.setState({ movingBlockMode: {
                 ...movingBlockMode,
                 on: true,
@@ -270,7 +271,7 @@ class ProjectView extends React.Component {
         e.stopPropagation()
         if (movingBlockMode.blockId != null && movingBlockMode.blockId != undefined) {
         // if (selectedBlockId == null) {
-            if (isProjectHighlightMode && selectedBlockId != null) return
+            if (selectedBlockId != null) return
             if (movingBlockMode.on && (Math.abs(movingBlockMode.dX) > 5 || Math.abs(movingBlockMode.dY) > 5)) {
                 let movedBlockIndex = placedBlocks.findIndex(b => b.block.id == movingBlockMode.blockId)
                 if (movedBlockIndex < 0) return
@@ -354,7 +355,7 @@ class ProjectView extends React.Component {
         const textBlocks = placedBlocks.filter(b => b.block.type != BlockTypes.IMAGE && b.block.type != BlockTypes.VIDEO)
         const imageBlocks = placedBlocks.filter(b => b.block.type == BlockTypes.IMAGE || b.block.type == BlockTypes.VIDEO)
 
-        const mouseTrackerHidden = (!isMouseTrackerVisible || isProjectHighlightMode)
+        const mouseTrackerHidden = (!isMouseTrackerVisible || isProjectHighlightMode || selectedBlockId != null)
 
         const mouseTrackerCls = classnames({
           'mouse-tracker': true,
@@ -364,7 +365,7 @@ class ProjectView extends React.Component {
         const containerClassnames = classnames({
             "project-view-container": true,
             "cursor-none": !isProjectHighlightMode && !mouseTrackerHidden,
-            "cursor-crosshair": !this.isMobile && ((isProjectHighlightMode || mouseTrackerHidden) && selectedBlockId != null),
+            "cursor-crosshair": !this.isMobile && (mouseTrackerHidden && selectedBlockId != null),
             "cursor-arrow": !this.isMobile && isProjectHighlightMode && selectedBlockId == null,
             visible: !isAboutPageOpen && transitionState != 'transitioning-out'
         })
@@ -397,19 +398,19 @@ class ProjectView extends React.Component {
                         hoverBlockId={hoverBlockId}
                         isProjectHighlightMode={isProjectHighlightMode}
                         isProjectMoveMode={movingBlockMode.on}                        
-                        isDimmed={isProjectHighlightMode && highlightBlockId != null && highlightBlockId != i.block.id}
-                        isHighlightHovered={isProjectHighlightMode && highlightBlockId == i.block.id}
+                        isDimmed={highlightBlockId != null && highlightBlockId != i.block.id}
+                        isHighlightHovered={highlightBlockId == i.block.id}
                         onMouseEnter={this.onBlockMouseEnter(i.block.id)}
                         onMouseLeave={this.onBlockMouseLeave(i.block.id)}
                         onHighlightMouseUp={this.onBlockHighlightMouseUp(i.block.id)}
                         onHighlightMouseDown={this.onBlockHighlightMouseDown(i.block.id)}
-                        visible={!isProjectHighlightMode || selectedBlockId == null || (selectedBlockId == i.block.id)}
-                        clicked={isProjectHighlightMode && selectedBlockId == i.block.id}
+                        visible={selectedBlockId == null || (selectedBlockId == i.block.id)}
+                        clicked={selectedBlockId == i.block.id}
                         />
                     ))}
                 </CSSTransitionGroup>
 
-                { !this.isMobile && !isProjectHighlightMode && !isAboutPageOpen && transitionState != 'transitioning-out' &&
+                { !this.isMobile && !isProjectHighlightMode && selectedBlockId == null && !isAboutPageOpen && transitionState != 'transitioning-out' &&
                     <div className={mouseTrackerCls} ref={ m => this._mT = m }>
                         <div className="project-id-indicator" ref={m => this._pidIndicator = m}>{remainingProjects}</div>
                     </div>
@@ -429,14 +430,14 @@ class ProjectView extends React.Component {
                             hoverBlockId={hoverBlockId}
                             isProjectHighlightMode={isProjectHighlightMode}
                             isProjectMoveMode={movingBlockMode.on}
-                            isDimmed={isProjectHighlightMode && highlightBlockId != null && highlightBlockId != i.block.id}
-                            isHighlightHovered={isProjectHighlightMode && highlightBlockId == i.block.id}
+                            isDimmed={highlightBlockId != null && highlightBlockId != i.block.id}
+                            isHighlightHovered={highlightBlockId == i.block.id}
                             onMouseEnter={this.onBlockMouseEnter(i.block.id)}
                             onMouseLeave={this.onBlockMouseLeave(i.block.id)}    
                             onHighlightMouseUp={this.onBlockHighlightMouseUp(i.block.id)}
                             onHighlightMouseDown={this.onBlockHighlightMouseDown(i.block.id)}
-                            visible={!isProjectHighlightMode || selectedBlockId == null || (selectedBlockId == i.block.id)}
-                            clicked={isProjectHighlightMode && selectedBlockId == i.block.id}
+                            visible={selectedBlockId == null || (selectedBlockId == i.block.id)}
+                            clicked={selectedBlockId == i.block.id}
                         />
                     ))}
                 </CSSTransitionGroup>

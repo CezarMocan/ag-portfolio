@@ -59,6 +59,7 @@ export const queries = {
     *[_type=='news']{
       "id": _id,
       displayTitle,
+      desktopShowsImages,
       color,
       "items": items[]{
         asset->{

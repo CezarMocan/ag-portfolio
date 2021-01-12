@@ -5,6 +5,16 @@ import { BlockTypes } from '../modules/DataModels'
 import { toDeg } from '../modules/utils'
 import StaticProjectBlock from './StaticProjectBlock'
 
+const getFullScreenDimensions = (w, h, Ww, Wh) => {
+  const w1 = Ww * 0.8, h1 = w1 * h / w
+  const h2 = Wh * 0.8, w2 = h2 * w / h
+
+  if (h1 < Wh * 0.8) {
+    return { width: w1, height: h1 }
+  } else {
+    return { width: w2, height: h2 }
+  }
+}
 
 class ProjectBlock extends React.Component {
     isMouseIn = false
@@ -78,7 +88,7 @@ class ProjectBlock extends React.Component {
       this.setState({ hovered: false })
     }
     render() {
-        const { block, transform, additionalTransform, visible, clicked, isDimmed, isProjectHighlightMode } = this.props
+        const { block, transform, additionalTransform, visible, clicked, isDimmed, isProjectHighlightMode, isProjectMoveMode } = this.props
         if (!block || !transform) return null
 
         const { hovered } = this.state
@@ -89,6 +99,7 @@ class ProjectBlock extends React.Component {
           "image-block-container": block.type == BlockTypes.IMAGE,
           "with-overflow": block.type == BlockTypes.TEXT || block.type == BlockTypes.PORTABLE_TEXT,
           "z-transition-fwd": (isProjectHighlightMode && hovered),
+          "no-transition-position": isProjectMoveMode,
           "dimmed": isDimmed,
           "hidden": !visible
         })
@@ -102,6 +113,15 @@ class ProjectBlock extends React.Component {
         
         const { regularShadowColor, highlightShadowColor } = this.props
         const shadowColor = (hovered && !clicked) ? highlightShadowColor : regularShadowColor
+
+        // if (clicked && (block.type == BlockTypes.IMAGE || block.type == BlockTypes.VIDEO)) {
+        if (clicked) {
+          const { width, height } = getFullScreenDimensions(w, h, window.innerWidth, window.innerHeight)
+          w = width
+          h = height
+          x = window.innerWidth / 2
+          y = window.innerHeight / 2
+        }
 
         return (
             <div

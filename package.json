@@ -21,6 +21,7 @@
     "@sanity/image-url": "^0.140.12",
     "@zeit/next-less": "^1.0.1",
     "classnames": "^2.2.6",
+    "clipboard-copy": "^4.0.1",
     "hls.js": "^0.13.1",
     "less": "^3.9.0",
     "lodash.clamp": "^4.0.3",

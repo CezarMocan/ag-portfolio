@@ -25,11 +25,13 @@ const processProjectData = async (projectData) => {
     return blocks
 }
 
-export const processNewsData = async (newsData) => {
+export const processNewsData = async (newsData, isMobile) => {
     const blocks = []
 
     for (let i = 0; i < newsData.items.length; i++) {
         const item = newsData.items[i]
+        // If desktop is not supposed to show images, skip them
+        if (!isMobile && !newsData.desktopShowsImages && item._type == 'projectImage') continue
         blocks.push(await getBlockForItem(item))
     }
 

@@ -169,7 +169,7 @@ export default class MainContextProvider extends React.Component {
         const news = await this.fetchNewsSanity()
 
         const data = await processProjectsData(projects)
-        const newsData = await processNewsData(news)
+        const newsData = await processNewsData(news, this.state.isMobile)
 
         let currentProjectId = PID_NEWS
 
