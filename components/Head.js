@@ -12,9 +12,9 @@ export default class HeadComponent extends React.Component {
         {/* <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png"/>
         <link rel="icon" type="image/png" sizes="96x96" href="/static/favicon-96x96.png"/>
         <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png"/> */}
-        <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-y-32x32.png"/>
-        <link rel="icon" type="image/png" sizes="96x96" href="/static/favicon-y-96x96.png"/>
-        <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-y-16x16.png"/>
+        <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-test-32x32.png"/>
+        <link rel="icon" type="image/png" sizes="96x96" href="/static/favicon-test-96x96.png"/>
+        <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-test-16x16.png"/>
 
       </Head>
     )
