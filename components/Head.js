@@ -22,5 +22,5 @@ export default class HeadComponent extends React.Component {
 }
 
 HeadComponent.defaultProps = {
-  title: 'Anthony Gagliardi – Portfolio'
+  title: 'Anthony V. Gagliardi – Portfolio'
 }
