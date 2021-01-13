@@ -102,6 +102,22 @@ class SanityAssetBlock extends React.Component {
     this.setState({ videoControlsVisible: false })
   }
 
+  onLinkClick = (e) => {
+    e.stopPropagation()
+  }
+
+  componentDidMount() {
+    document.querySelectorAll('a').forEach(l => l.addEventListener('click', this.onLinkClick))
+    document.querySelectorAll('a').forEach(l => l.addEventListener('mousedown', this.onLinkClick))
+    document.querySelectorAll('a').forEach(l => l.addEventListener('mouseup', this.onLinkClick))
+  }
+
+  componentWillUnmount() {
+    document.querySelectorAll('a').forEach(l => l.removeEventListener('click', this.onLinkClick))
+    document.querySelectorAll('a').forEach(l => l.removeEventListener('mousedown', this.onLinkClick))
+    document.querySelectorAll('a').forEach(l => l.removeEventListener('mouseup', this.onLinkClick))
+  }
+
   render() {
     const { block, w, h, isMobile } = this.props    
     if (!block) return null

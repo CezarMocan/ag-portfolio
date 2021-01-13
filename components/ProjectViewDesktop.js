@@ -329,7 +329,8 @@ class ProjectView extends React.Component {
                 remainingProjects: currentProjectBlocks.length,
                 highlightBlockId: null,
                 hoverBlockId: null,
-                isProjectHighlightMode: false
+                isProjectHighlightMode: false,
+                selectedBlockId: null,
             }, () => {
                 this.updateMarkerForNextBlock(this.state.currentProjectBlocks, [])
                 setTimeout(() => {
