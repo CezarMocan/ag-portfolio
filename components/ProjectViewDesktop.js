@@ -116,8 +116,8 @@ class ProjectView extends React.Component {
     }
     isInBounds() {
         const { x, y, width, height } = this.markerAttributes
-        if (y < 75) return false
-        if (y > window.innerHeight - 100) return false        
+        if (y < 70) return false
+        if (y > window.innerHeight - 75) return false        
         // if (4 * x <= width) return false
         // if (4 * y <= height) return false
         // if (4 * (window.innerWidth - x) <= width) return false

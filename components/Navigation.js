@@ -10,13 +10,15 @@ class Navigation extends React.Component {
       isMobileFlag: false,
     }
     onTitleClick = (evt) => {
-      const { titleString } = this.state
-      const { toggleAboutPage, isAboutPageOpen } = this.props
-      if (toggleAboutPage) toggleAboutPage(!isAboutPageOpen)
+      // const { titleString } = this.state
+      // const { toggleAboutPage, isAboutPageOpen } = this.props
+      // if (toggleAboutPage) toggleAboutPage(!isAboutPageOpen)
+      const { navigateLandingPage } = this.props
+      if (navigateLandingPage) navigateLandingPage()
     }
     onFinGClick = (evt) => {
-        const { navigateLandingPage } = this.props
-        if (navigateLandingPage) navigateLandingPage()
+        const { navigateRandomPage } = this.props
+        if (navigateRandomPage) navigateRandomPage()
     }
     onAboutClick = (evt) => {
         const { toggleAboutPage } = this.props
@@ -76,7 +78,7 @@ class Navigation extends React.Component {
         const trClassnames = classnames({'nav-container': true, 'nav-fin-g': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
         const trAboutClassnames = classnames({'nav-container': true, 'nav-top-right': true, 'interactive': isAboutPageOpen, 'close-image': true, visible: isAboutPageOpen })
         const tlClassnames = classnames({'nav-container': true, 'nav-top-left': true, 'interactive': false, visible: (!isAboutPageOpen && titleTransitionStyle == 'transition-visible')})
-        const aboutClassnames = classnames({'nav-container': true, 'nav-bottom-right': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
+        const aboutClassnames = classnames({'nav-container': true, 'nav-top-right': true, 'interactive': !isAboutPageOpen, visible: !isAboutPageOpen })
 
         return (
             <>
@@ -86,6 +88,7 @@ class Navigation extends React.Component {
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
                     <img src="static/icons/noun_V.png"/>
+                    <p className="icon-description next-project-description">Next</p>
                 </div>
                 <div className={blClassnames}
                   onMouseUp={this.onNavigatePrevClick}
@@ -93,6 +96,7 @@ class Navigation extends React.Component {
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
                     <img src="static/icons/noun_A.png"/>
+                    <p className="icon-description previous-project-description">Previous</p>
                 </div>
                 <div className={trClassnames}
                   onMouseUp={this.onFinGClick}
@@ -100,6 +104,7 @@ class Navigation extends React.Component {
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
                     <img src="static/icons/noun_G-2.svg"/>
+                    <p className="icon-description random-project-description">Random</p>
                 </div>
 
                 <div className={tlClassnames}
@@ -158,6 +163,7 @@ export default withMainContext((context, props) => ({
     navigateNextProject: context.action.navigateNextProject,
     navigatePreviousProject: context.action.navigatePreviousProject,
     navigateLandingPage: context.action.navigateLandingPage,
+    navigateRandomPage: context.action.navigateRandomPage,
 
     getCurrentProjectMetadata: context.action.getCurrentProjectMetadata
   }))(Navigation)

@@ -15,6 +15,7 @@
     opacity: 0;
     transition: opacity 0.5s linear;
     max-width: ~"calc(100vw - 40px)";
+
     &.visible {
         opacity: 1;
     }
@@ -26,29 +27,71 @@
           height: @nav-icon-size-mobile;
         }
     }
+    .icon-description {
+      position: absolute;
+      font-size: 8pt;
+      opacity: 0;
+      text-align: center;
+      transition: opacity 0.25s ease-in-out;
+    }
     &.nav-previous {
-        left: 40px;
+        // left: 40px;
+        left: 50%;
         bottom: 25px;
+        transform: translateX(-200%);
+        .previous-project-description {          
+          top: -21px;
+          left: -7px;
+        }
+        &:hover {
+          .previous-project-description {
+            opacity: 1;
+          }
+        }
         @media screen and (max-width: 667px) {
             bottom: 5px;
             left: @nav-margin-ew-mobile;
+            transform: translateX(0);
         }
     }
     &.nav-next {
-        left: 95px;
+        // left: 95px;
+        left: 50%;
+        transform: translateX(-50%);
         bottom: 21px;
+
+        .next-project-description {          
+          top: -24px;
+          left: 1.5px;
+        }
+        &:hover {
+          .next-project-description {
+            opacity: 1;
+          }
+        }
         @media screen and (max-width: 667px) {
-            bottom: 0px;
-            left: 50%;
-            transform: translateX(-50%);
+          bottom: 0px;
+          left: 50%;
+          transform: translateX(-50%);
+          .next-project-notice {
+            display: none;
+          }
         }
     }
     &.nav-fin-g {
         left: 50%;
         right: auto;
-        bottom: 25px;
-        transform: translateX(-50%);
-
+        bottom: 23.5px;
+        transform: translateX(110%);
+        .random-project-description {          
+          top: -21px;
+          left: -7.5px;
+        }
+        &:hover {
+          .random-project-description {
+            opacity: 1;
+          }
+        }
         @media screen and (max-width: 667px) {
             bottom: 3px;
             right: @nav-margin-ew-mobile;

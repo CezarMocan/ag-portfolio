@@ -3,9 +3,11 @@ import sanityClient, { queries } from '../modules/sanity'
 import { processProjectsData, processNewsData } from './MainContextHelper'
 
 const sleep = (s) => new Promise((res, rej) => setTimeout(res, s * 1000))
+const getRandom = (min, max) => (min + parseInt(Math.floor(Math.random() * (max - min))))
 
 const PID_NEWS = 'PID_NEWS'
 const ABOUT_URL = 'about'
+
 
 const MainContext = React.createContext()
 
@@ -95,6 +97,17 @@ export default class MainContextProvider extends React.Component {
             newsPageNavCount: this.state.newsPageNavCount + 1,
             isProjectHighlightMode: false
         })
+    }
+
+    navigateRandomPage = () => {
+        const { currentProjectId, isProjectHighlightMode, data } = this.state           
+
+        let newProjectIndex = getRandom(0, data.projectList.length)
+        while (data.projectList[newProjectIndex].id == currentProjectId && data.projectList.length > 1) {
+          newProjectIndex = getRandom(0, data.projectList.length)
+        }
+
+        this.navigateToProjectByIndex(newProjectIndex)
     }
 
     navigateToProjectByIndex = (index) => {

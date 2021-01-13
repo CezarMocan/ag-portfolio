@@ -28,7 +28,7 @@ class About extends React.Component {
       }  
     render() {
         const { windowHeight, copiedNoticeVisible } = this.state
-        const { isAboutPageOpen, about, projects } = this.props
+        const { isAboutPageOpen, about, projects, isMobile } = this.props
         const cls = classnames({
             'about-container': true,
             'visible': isAboutPageOpen
@@ -37,19 +37,20 @@ class About extends React.Component {
           'copied-notice': true,
           'visible': copiedNoticeVisible
         })
+        const footerHeight = isMobile ? 120 : 170
         return (
             <div className={cls} style={{height: windowHeight}}>
-                <div className="about-content" style={{height: 0.65 * windowHeight}}>
+                <div className="about-content" style={{height: windowHeight - footerHeight}}>
                     <div className="nav-about-top-left">
                         <p style={{margin: 0}}><span className="link">Anthony V. Gagliardi</span> / About</p>
                     </div>
                     <div className="nav-about-top-left fake">
                         <p style={{margin: 0}}>Anthony V. Gagliardi / About</p>
                     </div>
-                    <p>
+                    <div className="projects-list">
                         { projects && projects.map((p, index) => {
                             return (
-                                <div key={`about-item-${index}`} className="project-link-container interactive"
+                                <div key={`about-item-${index}`} className="project-link-container"
                                     onClick={this.onProjectClick(p.id)}
                                     // onMouseUp={this.onProjectClick(p.id)}
                                     // onTouchEnd={this.onProjectClick(p.id)}
@@ -58,7 +59,7 @@ class About extends React.Component {
                                 </div>
                             )
                         })}
-                    </p>
+                    </div>
                     <br/>
                     <PortableBlockContent
                         blocks={about ? about.description : []}
@@ -80,7 +81,7 @@ class About extends React.Component {
                       </div>
                   </div>
                   <div className="copyright-notice">
-                    Anthony V Gagliardi © {new Date().getFullYear()}. All Rights Reserved.<br/>
+                    Anthony V. Gagliardi © {new Date().getFullYear()}. All Rights Reserved.<br/>
                     Website by <a href="https://cezar.io" target="__blank">Cezar Mocan</a>.
                   </div>
                 </div>
@@ -95,6 +96,7 @@ export default withMainContext((context, props) => ({
     isAboutPageOpen: context.isAboutPageOpen,
     about: context.about,
     projects: context.projects,
+    isMobile: context.isMobile,
 
     toggleMouseTracker: context.action.toggleMouseTracker,
     navigateToProjectId: context.action.navigateToProjectId
