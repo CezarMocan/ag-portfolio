@@ -15,7 +15,9 @@
     margin: 60px 10px 8px;
     flex: 5.2;
     overflow: hidden;
-    border: 1px solid black;
+    &.bordered {
+      border: 1px solid black;
+    }
     transition: flex 0.5s ease-in-out;
 
     &.shrink {
@@ -36,6 +38,9 @@
       }
       &.mobile-image-counter {
         height: 98%;
+      }
+      .image {
+        transition: none !important;
       }
     }
   }
@@ -96,7 +101,7 @@
     bottom: 32px;
     height: 40px;
     width: 100%;
-    background-image: linear-gradient(to bottom, rgba(250, 250, 250, 0), rgba(250, 250, 250, 0.93), #fafafa);
+    background-image: linear-gradient(to bottom, rgba(244, 244, 244, 0), rgba(244, 244, 244, 0.93), #f4f4f4);
   }
 
 }

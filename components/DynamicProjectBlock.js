@@ -5,14 +5,18 @@ import { BlockTypes } from '../modules/DataModels'
 import { toDeg } from '../modules/utils'
 import StaticProjectBlock from './StaticProjectBlock'
 
-const getFullScreenDimensions = (w, h, Ww, Wh) => {
-  const w1 = Ww * 0.8, h1 = w1 * h / w
-  const h2 = Wh * 0.8, w2 = h2 * w / h
-
-  if (h1 < Wh * 0.8) {
-    return { width: w1, height: h1 }
+const getFullScreenDimensions = (w, h, Ww, Wh, blockType) => {
+  if (blockType == BlockTypes.IMAGE || blockType == BlockTypes.VIDEO) {
+    const w1 = Ww * 0.8, h1 = w1 * h / w
+    const h2 = Wh * 0.8, w2 = h2 * w / h
+  
+    if (h1 < Wh * 0.8) {
+      return { width: w1, height: h1 }
+    } else {
+      return { width: w2, height: h2 }
+    }  
   } else {
-    return { width: w2, height: h2 }
+    return { width: Ww * 0.75, height: Wh * 0.7 }
   }
 }
 
@@ -116,7 +120,7 @@ class ProjectBlock extends React.Component {
 
         // if (clicked && (block.type == BlockTypes.IMAGE || block.type == BlockTypes.VIDEO)) {
         if (clicked) {
-          const { width, height } = getFullScreenDimensions(w, h, window.innerWidth, window.innerHeight)
+          const { width, height } = getFullScreenDimensions(w, h, window.innerWidth, window.innerHeight, block.type)
           w = width
           h = height
           x = window.innerWidth / 2

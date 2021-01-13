@@ -10,7 +10,7 @@ import { BlockTypes } from '../modules/DataModels'
 class ProjectView extends React.Component {
     state = {
       currentProjectBlocks: [],
-      textActive: false,
+      textActive: true,
       transitioningText: false,
       currentImageIndex: -1,
       transitioningImage: false,
@@ -50,7 +50,7 @@ class ProjectView extends React.Component {
                         textBlocks,
                         imageBlocks,
                         currentImageIndex: -1,
-                        textActive: false
+                        textActive: true
                     })
                 }, 500)
             })
@@ -129,6 +129,7 @@ class ProjectView extends React.Component {
 
         const imageContainerCls = classnames({
           'mobile-image-container': true,
+          'bordered': (currentImageIndex == -1),
           'shrink': textActive
         })
 
