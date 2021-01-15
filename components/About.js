@@ -41,7 +41,7 @@ class About extends React.Component {
                 <div className="about-content" style={{height: windowHeight - footerHeight}}>
                     <div className="about-header">
                       <div className="nav-about-top-left">
-                          <p style={{margin: 0}}><span className="link">Anthony V. Gagliardi</span> / About</p>
+                          <p style={{margin: 0}}><span className="link">Anthony V. Gagliardi</span> / About &amp; Projects</p>
                       </div>
                       <div className="nav-about-top-left fake">
                           <p style={{margin: 0}}>Anthony V. Gagliardi / About</p>
