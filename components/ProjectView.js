@@ -5,13 +5,14 @@ import { withMainContext } from '../context/MainContext'
 
 class ProjectView extends React.Component {
   render() {
-    const { isMobile } = this.props
+    const { isMobile, isSmallWindow } = this.props
     if (isMobile == null) return (null)
-    if (isMobile) return (<ProjectViewMobile/>)
+    if (isMobile || isSmallWindow) return (<ProjectViewMobile/>)
     else return (<ProjectViewDesktop/>)
   }
 }
 
 export default withMainContext((context, props) => ({
   isMobile: context.isMobile,
+  isSmallWindow: context.isSmallWindow
 }))(ProjectView)

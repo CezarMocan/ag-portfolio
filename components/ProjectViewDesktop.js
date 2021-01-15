@@ -61,20 +61,9 @@ class ProjectView extends React.Component {
         this._mT.style.height = `${this.markerAttributes.height}px`
         this._mT.style.transform = `translateX(-50%) translateY(-50%) rotate(${toDeg(this.markerAttributes.rotation)})`;
 
-        // if (this.props.isMouseTrackerVisible && !this.props.isProjectHighlightMode)
-            // this._mT.style.opacity = this.markerAttributes.active ? "1" : "0.2"
-
-        // this._mT.style.color = this.markerAttributes.active ? "black" : "#aaaaaa"
-        // this._mT.style.borderColor = this.markerAttributes.active ? "black" : "#aaaaaa"
-        // this._mT.style.borderColor = this.markerAttributes.color;
-        // this._mT.style.boxShadow = `0 0 10px ${this.markerAttributes.color}`
-
         if (this._mTIndicator) {
-            this._mTIndicator.style.border = `solid ${this.markerAttributes.color}`
-            this._mTIndicator.style.borderWidth = `0px 1px 0px 1px`
-        }
-        if (this._pidIndicator) {
-            // this._pidIndicator.style.fontSize = `${this.markerAttributes.height}px`
+          this._mTIndicator.style.border = `solid ${this.markerAttributes.color}`
+          this._mTIndicator.style.borderWidth = `0px 1px 0px 1px`
         }
     }
     updateMarkerForNextBlock = (currentProjectBlocks, placedBlocks) => {
@@ -115,14 +104,10 @@ class ProjectView extends React.Component {
 
     }
     isInBounds() {
-        const { x, y, width, height } = this.markerAttributes
-        if (y < 70) return false
-        if (y > window.innerHeight - 75) return false        
-        // if (4 * x <= width) return false
-        // if (4 * y <= height) return false
-        // if (4 * (window.innerWidth - x) <= width) return false
-        // if (4 * (window.innerHeight - y) <= height) return false
-        return true
+      const { x, y, width, height } = this.markerAttributes
+      if (y < 70) return false
+      if (y > window.innerHeight - 75) return false        
+      return true
     }
     onMouseMove = (e) => {
         const { isProjectHighlightMode } = this.props
@@ -169,23 +154,15 @@ class ProjectView extends React.Component {
         }
     }
     onMouseUp = (e) => {
-        const { isProjectHighlightMode, navigateNextProject } = this.props
-        const { movingBlockMode, selectedBlockId } = this.state
+      const { isProjectHighlightMode, navigateNextProject } = this.props
+      const { movingBlockMode, selectedBlockId, transitionState } = this.state
+      if (transitionState == 'transitioning-out') return
 
-        const { transitionState } = this.state
-        if (transitionState == 'transitioning-out') return
-
-        // if (!isProjectHighlightMode) {
-            // this.updateMarkerForNextBlock(this.state.currentProjectBlocks, this.state.placedBlocks)
-        // }
-
-        // if (isProjectHighlightMode) {
-            if (selectedBlockId != null) {
-                this.setState({ selectedBlockId: null, movingBlockMode: { on: false } })
-            } else if (!movingBlockMode.on && navigateNextProject && isProjectHighlightMode) {
-                navigateNextProject()
-            }
-        // }
+      if (selectedBlockId != null) {
+        this.setState({ selectedBlockId: null, movingBlockMode: { on: false } })
+      } else if (!movingBlockMode.on && navigateNextProject && isProjectHighlightMode) {
+        navigateNextProject()
+      }
     }
     onScroll = (e) => {
         const angleDelta = e.deltaY / 200
@@ -215,54 +192,35 @@ class ProjectView extends React.Component {
         }
     }
     onBlockMouseEnter = (blockId) => (e) => {
-        const { isProjectHighlightMode } = this.props
-        const { movingBlockMode, placedBlocks } = this.state
-        let newPlacedBlocks = placedBlocks.slice(0)
-
-        // if (isProjectHighlightMode) {            
-            if (movingBlockMode.on) return
-            // const blockIndex = newPlacedBlocks.findIndex((e) => e.block.id == blockId)
-            // const lastIndex = newPlacedBlocks.length - 1
-            // let aux = newPlacedBlocks[lastIndex]
-            // newPlacedBlocks[lastIndex] = newPlacedBlocks[blockIndex]
-            // newPlacedBlocks[blockIndex] = aux
-
-            this.setState({ highlightBlockId: blockId, hoverBlockId: blockId })
-        // } else {
-            // this.updateMarkerDOM({ width: 0, height: 0 })
-            // this.setState({ hoverBlockId: blockId })
-        // }
+      const { movingBlockMode, placedBlocks } = this.state
+      if (movingBlockMode.on) return
+      this.setState({ highlightBlockId: blockId, hoverBlockId: blockId })
     }
     onBlockMouseLeave = (blockId) => (e) => {
-        const { isProjectHighlightMode } = this.props
-        const { highlightBlockId, movingBlockMode } = this.state
-
-        if (highlightBlockId == blockId) {
-            if (movingBlockMode.on) return
-            this.setState({ highlightBlockId: null, hoverBlockId: null })
-        } else {
-            // this.updateMarkerDOM(this.currentCursorSizes)
-            if (this.state.hoverBlockId == blockId) {
-                this.setState({ hoverBlockId: null })
-            }
+      const { highlightBlockId, movingBlockMode } = this.state
+      if (highlightBlockId == blockId) {
+        if (movingBlockMode.on) return
+        this.setState({ highlightBlockId: null, hoverBlockId: null })
+      } else {
+        if (this.state.hoverBlockId == blockId) {
+          this.setState({ hoverBlockId: null })
         }
+      }
     }
     onBlockHighlightMouseDown = (blockId) => (e) => {
-        const { isProjectHighlightMode } = this.props
-        const { selectedBlockId, movingBlockMode } = this.state
-
-        if (movingBlockMode.blockId == null || movingBlockMode.blockId == undefined) {
-            if (selectedBlockId != null) return
-            this.setState({ movingBlockMode: {
-                ...movingBlockMode,
-                on: true,
-                mouseDownX: e.clientX || e.touches[0].clientX,
-                mouseDownY: e.clientY || e.touches[0].clientY,
-                dX: 0,
-                dY: 0,
-                blockId
-            } })
-        }
+      const { selectedBlockId, movingBlockMode } = this.state
+      if (movingBlockMode.blockId == null || movingBlockMode.blockId == undefined) {
+        if (selectedBlockId != null) return
+        this.setState({ movingBlockMode: {
+          ...movingBlockMode,
+          on: true,
+          mouseDownX: e.clientX || e.touches[0].clientX,
+          mouseDownY: e.clientY || e.touches[0].clientY,
+          dX: 0,
+          dY: 0,
+          blockId
+        } })
+      }
     }
     onBlockHighlightMouseUp = (blockId) => (e) => {
         const { isProjectHighlightMode } = this.props
@@ -314,34 +272,34 @@ class ProjectView extends React.Component {
         fetchProjects()
     }
     componentDidUpdate(oldProps) {
-        const { currentProjectId, getCurrentProjectBlocks, newsPageNavCount } = this.props
+        const { currentProjectId, getCurrentProjectBlocks, newsPageNavCount, forceRefreshCount } = this.props
 
         // Current project has been updated
-        if (currentProjectId != oldProps.currentProjectId || newsPageNavCount != oldProps.newsPageNavCount) {
-            const { getCurrentProjectMetadata } = this.props
-            const { color } = getCurrentProjectMetadata()
-            this.updateMarkerDOM({ color, rotation: 0 })
-            const currentProjectBlocks = getCurrentProjectBlocks()
+        if (currentProjectId != oldProps.currentProjectId || newsPageNavCount != oldProps.newsPageNavCount || forceRefreshCount != oldProps.forceRefreshCount) {
+          const { getCurrentProjectMetadata } = this.props
+          const { color } = getCurrentProjectMetadata()
+          this.updateMarkerDOM({ color, rotation: 0 })
+          const currentProjectBlocks = getCurrentProjectBlocks()
 
-            this.setState({
-                transitionState: 'transitioning-out',
-                currentProjectBlocks,
-                remainingProjects: currentProjectBlocks.length,
-                highlightBlockId: null,
-                hoverBlockId: null,
-                isProjectHighlightMode: false,
-                selectedBlockId: null,
-            }, () => {
-                this.updateMarkerForNextBlock(this.state.currentProjectBlocks, [])
-                setTimeout(() => {
-                    this.setState({
-                        placedBlocks: [],
-                        transitionState: 'transitioning-in',
-                        remainingProjects: this.state.currentProjectBlocks.length,
-                        movingBlockMode: { on: false, dX: 0, dY: 0, blockId: null },
-                    })
-                }, 750)
-            })
+          this.setState({
+            transitionState: 'transitioning-out',
+            currentProjectBlocks,
+            remainingProjects: currentProjectBlocks.length,
+            highlightBlockId: null,
+            hoverBlockId: null,
+            isProjectHighlightMode: false,
+            selectedBlockId: null,
+          }, () => {
+            this.updateMarkerForNextBlock(this.state.currentProjectBlocks, [])
+            setTimeout(() => {
+              this.setState({
+                placedBlocks: [],
+                transitionState: 'transitioning-in',
+                remainingProjects: this.state.currentProjectBlocks.length,
+                movingBlockMode: { on: false, dX: 0, dY: 0, blockId: null },
+              })
+            }, 750)
+          })
         }
 
     }
@@ -452,6 +410,7 @@ export default withMainContext((context, props) => ({
     isMouseTrackerVisible: context.isMouseTrackerVisible,
     currentProjectId: context.currentProjectId,
     newsPageNavCount: context.newsPageNavCount,
+    forceRefreshCount: context.forceRefreshCount,
     isProjectHighlightMode: context.isProjectHighlightMode,
     data: context.data,
 

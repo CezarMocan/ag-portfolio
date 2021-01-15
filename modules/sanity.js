@@ -74,6 +74,18 @@ export const queries = {
         ...
       }
     }
+  `,
+  press: `
+    *[_type=='press']{
+      "id": _id,
+      "items": items[]{
+        title,
+        publication,
+        year,
+        url,
+        "id": _id
+      }
+    }
   `
 }
 

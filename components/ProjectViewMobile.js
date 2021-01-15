@@ -21,40 +21,36 @@ class ProjectView extends React.Component {
       super(props)
       this.imageBoundingBox = { width: 0, height: 0 }
     }
-    componentWillMount() {
-      this.setState({ windowHeight: window.innerHeight })
-    }
     componentDidMount() {
-        const { fetchProjects } = this.props
-        fetchProjects()
+      const { fetchProjects } = this.props
+      fetchProjects()
     }
     componentDidUpdate(oldProps) {
-        const { currentProjectId, getCurrentProjectBlocks } = this.props
+      const { currentProjectId, getCurrentProjectBlocks, forceRefreshCount } = this.props
+      // Current project has been updated
+      if (currentProjectId != oldProps.currentProjectId || forceRefreshCount != oldProps.forceRefreshCount) {
+        const { getCurrentProjectMetadata } = this.props
+        const { color } = getCurrentProjectMetadata()
+        const currentProjectBlocks = getCurrentProjectBlocks()
+        const textBlocks = currentProjectBlocks.filter(b => b.type != BlockTypes.IMAGE && b.type != BlockTypes.VIDEO)
+        const imageBlocks = currentProjectBlocks.filter(b => b.type == BlockTypes.IMAGE || b.type == BlockTypes.VIDEO)
 
-        // Current project has been updated
-        if (currentProjectId != oldProps.currentProjectId) {
-            const { getCurrentProjectMetadata } = this.props
-            const { color } = getCurrentProjectMetadata()
-            const currentProjectBlocks = getCurrentProjectBlocks()
-            const textBlocks = currentProjectBlocks.filter(b => b.type != BlockTypes.IMAGE && b.type != BlockTypes.VIDEO)
-            const imageBlocks = currentProjectBlocks.filter(b => b.type == BlockTypes.IMAGE || b.type == BlockTypes.VIDEO)
-
+        this.setState({
+          transitionState: 'transitioning-out',
+          currentProjectBlocks
+        }, () => {
+          setTimeout(() => {
             this.setState({
-                transitionState: 'transitioning-out',
-                currentProjectBlocks
-            }, () => {
-                setTimeout(() => {
-                    this.setState({
-                        placedBlocks: [],
-                        transitionState: 'transitioning-in',
-                        textBlocks,
-                        imageBlocks,
-                        currentImageIndex: -1,
-                        textActive: true
-                    })
-                }, 500)
+              placedBlocks: [],
+              transitionState: 'transitioning-in',
+              textBlocks,
+              imageBlocks,
+              currentImageIndex: -1,
+              textActive: true
             })
-        }
+          }, 500)
+        })
+      }
     }
     getImageDimensions(bbox, image) {
       if (!bbox || !image) return { width: 0, height: 0 }
@@ -93,8 +89,8 @@ class ProjectView extends React.Component {
       })
     }
     render() {
-        const { isAboutPageOpen, isMouseTrackerVisible, isProjectHighlightMode, data } = this.props
-        const { transitionState, textActive, transitioningText, currentImageIndex, transitioningImage, currentProjectBlocks, textBlocks, imageBlocks, windowHeight } = this.state
+        const { isAboutPageOpen, data, windowHeight } = this.props
+        const { transitionState, textActive, transitioningText, currentImageIndex, transitioningImage, currentProjectBlocks, textBlocks, imageBlocks } = this.state
 
         if (!data) { return null }
         if (currentProjectBlocks.length == 0) return null
@@ -188,6 +184,8 @@ export default withMainContext((context, props) => ({
     currentProjectId: context.currentProjectId,
     isProjectHighlightMode: context.isProjectHighlightMode,
     data: context.data,
+    windowHeight: context.windowHeight,
+    forceRefreshCount: context.forceRefreshCount,
 
     getCurrentProjectBlocks: context.action.getCurrentProjectBlocks,
     fetchProjects: context.action.fetchProjects,
