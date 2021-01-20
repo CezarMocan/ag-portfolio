@@ -120,6 +120,11 @@ export default class MainContextProvider extends React.Component {
         this.navigateToProjectByIndex(newProjectIndex)
     }
 
+    resetProject = () => {
+      const { currentProjectId } = this.state
+      this.navigateToProjectId(currentProjectId, true)
+    }
+
     navigateToProjectByIndex = (index, forceRefresh = true) => {
       const { data } = this.state        
       if (!data.projectList[index]) {

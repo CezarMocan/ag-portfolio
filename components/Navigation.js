@@ -17,8 +17,8 @@ class Navigation extends React.Component {
       if (navigateLandingPage) navigateLandingPage()
     }
     onFinGClick = (evt) => {
-        const { navigateRandomPage } = this.props
-        if (navigateRandomPage) navigateRandomPage()
+        const { resetProject } = this.props
+        if (resetProject) resetProject()
     }
     onAboutClick = (evt) => {
         const { toggleAboutPage } = this.props
@@ -104,7 +104,7 @@ class Navigation extends React.Component {
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
                     <img src="static/icons/noun_G-2.svg"/>
-                    <p className="icon-description random-project-description">Random</p>
+                    <p className="icon-description random-project-description">Reset</p>
                 </div>
 
                 <div className={tlClassnames}
@@ -163,7 +163,7 @@ export default withMainContext((context, props) => ({
     navigateNextProject: context.action.navigateNextProject,
     navigatePreviousProject: context.action.navigatePreviousProject,
     navigateLandingPage: context.action.navigateLandingPage,
-    navigateRandomPage: context.action.navigateRandomPage,
+    resetProject: context.action.resetProject,
 
     getCurrentProjectMetadata: context.action.getCurrentProjectMetadata
   }))(Navigation)
