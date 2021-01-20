@@ -30,6 +30,7 @@
     "react-css-transition-replace": "^4.0.2",
     "react-div-100vh": "^0.3.8",
     "react-dom": "^16.9.0",
+    "react-ga": "^3.3.0",
     "react-progressive-image": "^0.6.0",
     "react-transition-group": "^1.2.1",
     "sanity-mux-player": "0.0.26",

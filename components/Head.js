@@ -15,7 +15,6 @@ export default class HeadComponent extends React.Component {
         <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-4-32x32.png"/>
         <link rel="icon" type="image/png" sizes="96x96" href="/static/favicon-4-96x96.png"/>
         <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-4-16x16.png"/>
-
       </Head>
     )
   }
