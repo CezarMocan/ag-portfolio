@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xml:space="preserve"
+   version="1.1"
+   style="image-rendering:optimizeQuality;shape-rendering:geometricPrecision;text-rendering:geometricPrecision"
+   viewBox="0 0 609 766"
+   x="0px"
+   y="0px"
+   fill-rule="evenodd"
+   clip-rule="evenodd"
+   id="svg847"
+   sodipodi:docname="noun_pause_1948231.svg"
+   width="609"
+   height="766"
+   inkscape:version="1.0.1 (c497b03c, 2020-09-10)"><metadata
+     id="metadata851"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1264"
+     inkscape:window-height="719"
+     id="namedview849"
+     showgrid="false"
+     inkscape:zoom="0.6464752"
+     inkscape:cx="304.5"
+     inkscape:cy="478.75"
+     inkscape:window-x="0"
+     inkscape:window-y="23"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg847" /><defs
+     id="defs835"><style
+       type="text/css"
+       id="style833">
+   
+    .fil0 {fill:black}
+   
+  </style></defs><g
+     id="g841"
+     style="fill:#fafafa;fill-opacity:1"><path
+       class="fil0"
+       d="m 131,0 c 72,0 131,59 131,131 V 635 C 262,707 203,766 131,766 59,766 0,707 0,635 V 131 C 0,59 59,0 131,0 Z"
+       id="path837"
+       style="fill:#fafafa;fill-opacity:1" /><path
+       class="fil0"
+       d="m 478,0 c 72,0 131,59 131,131 v 504 c 0,72 -59,131 -131,131 -72,0 -131,-59 -131,-131 V 131 C 347,59 406,0 478,0 Z"
+       id="path839"
+       style="fill:#fafafa;fill-opacity:1" /></g></svg>

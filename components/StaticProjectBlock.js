@@ -219,7 +219,7 @@ class SanityAssetBlock extends React.Component {
                   onMouseUp={this.stopEvent}
                   onTouchStart={this.stopEvent}
                   onTouchEnd={this.stopEvent}>
-                  Play Video
+                  <img className="play-icon" src="static/icons/icon-play.svg"/>
                 </div>
                 </>
               }

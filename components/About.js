@@ -33,7 +33,7 @@ class About extends React.Component {
           'copied-notice': true,
           'visible': copiedNoticeVisible
         })
-        const footerHeight = isMobile ? 120 : 140
+        const footerHeight = isMobile ? 120 : 165
 
         return (
             <div className={cls} style={{height: windowHeight}}>
