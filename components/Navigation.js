@@ -133,7 +133,7 @@ class Navigation extends React.Component {
                   onMouseEnter={this.onNavigationMouseEnter}
                   onMouseLeave={this.onNavigationMouseLeave}
                 >
-                    <p className="link" style={{margin: 0}}>about &amp; projects</p>
+                    <p className="link" style={{margin: 0}}>about &amp;<br className="mobile-only"/> projects</p>
                 </div>
 
                 { isAboutPageOpen &&

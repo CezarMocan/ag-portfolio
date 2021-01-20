@@ -103,5 +103,11 @@
     width: 100%;
     background-image: linear-gradient(to bottom, rgba(244, 244, 244, 0), rgba(244, 244, 244, 0.93), #f4f4f4);
   }
+}
 
+.mobile-only {
+  display: none;
+  @media screen and (max-width: 667px) {
+    display: inherit;
+  }
 }

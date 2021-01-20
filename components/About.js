@@ -22,6 +22,13 @@ class About extends React.Component {
         copiedNoticeVisible: true
       }, () => { setTimeout(() => { this.setState({ copiedNoticeVisible: false }) }, 3000)})
     }
+    componentDidUpdate(oldProps) {
+      if (!oldProps.isAboutPageOpen && this.props.isAboutPageOpen) {
+        if (this._leftColumn) this._leftColumn.scrollTop = 0
+        if (this._rightColumn) this._rightColumn.scrollTop = 0
+        if (this._containerColumn) this._containerColumn.scrollTop = 0
+      }
+    }
     render() {
         const { copiedNoticeVisible } = this.state
         const { windowHeight, isAboutPageOpen, about, projects, press, isMobile } = this.props
@@ -38,7 +45,7 @@ class About extends React.Component {
         return (
             <div className={cls} style={{height: windowHeight}}>
 
-                <div className="about-content" style={{height: windowHeight - footerHeight}}>
+                <div className="about-content" style={{height: windowHeight - footerHeight}} ref={(r) => this._containerColumn = r}>
                     <div className="about-header">
                       <div className="nav-about-top-left">
                           <p style={{margin: 0}}><span className="link">Anthony V. Gagliardi</span> / About &amp; Projects</p>
@@ -49,7 +56,7 @@ class About extends React.Component {
                     </div>
 
                     <div className="about-main">
-                      <div className="about-main-left-column">
+                      <div className="about-main-left-column" ref={(r) => this._leftColumn = r}>
                         <PortableBlockContent
                           blocks={about ? about.description : []}
                           className={"about-text-container sanity-small-text"}
@@ -59,7 +66,7 @@ class About extends React.Component {
                         <br/><br/>
                       </div>
 
-                      <div className="about-main-right-column">
+                      <div className="about-main-right-column" ref={(r) => this._rightColumn = r}>
                         <div className="projects-list">
                           <div className="about-section-title">Selected Work</div>
                           { projects && projects.map((p, index) => {
