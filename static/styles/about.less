@@ -23,6 +23,7 @@
       &::-webkit-scrollbar { /* WebKit */
         width: 0;
         height: 0;
+        display: none;
       }
       @media screen and (max-width: 667px) {
         overflow: scroll;
@@ -40,9 +41,14 @@
       .about-main-left-column {
         flex: 9;
         padding-top: 15px;
+        overflow-y: scroll;
         scrollbar-width: none; /* Firefox */
         -ms-overflow-style: none; /* IE 10+ */  
-        overflow: scroll;
+        &::-webkit-scrollbar { /* WebKit */
+          width: 0;
+          height: 0;
+          display: none;
+        }
         margin-right: 75px;
         @media screen and (max-width: 667px) {
           overflow: auto;
@@ -52,9 +58,14 @@
       }
       .about-main-right-column {
         flex: 5;
+        overflow-y: scroll;
         scrollbar-width: none; /* Firefox */
-        -ms-overflow-style: none; /* IE 10+ */  
-        overflow: scroll;
+        -ms-overflow-style: none; /* IE 10+ */ 
+        &::-webkit-scrollbar { /* WebKit */
+          width: 0;
+          height: 0;
+          display: none;
+        }         
         @media screen and (max-width: 667px) {
           overflow: auto;
           flex: none;
