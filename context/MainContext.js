@@ -33,9 +33,18 @@ export default class MainContextProvider extends React.Component {
       isSmallWindow: true,
 
       action: this
-    }    
+    }
 
     // Helpers
+    getPageTitle = () => {
+      if (this.state.isAboutPageOpen) {
+        return `Anthony V. Gagliardi – About`
+      } else {
+        let title = this.getCurrentProjectMetadata().title
+        if (title) return `Anthony V. Gagliardi – ${title}`
+        return `Anthony V. Gagliardi – Portfolio`
+      }
+    }
     getCurrentProjectMetadata = () => {        
         const { data, news, currentProjectId } = this.state
         if (data && data.raw) {
