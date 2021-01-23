@@ -10,7 +10,8 @@
     "start": "next build && next start",
     "export": "rm -rf .next && next build && next export",
     "sync:s3": "AWS_DEFAULT_PROFILE=cezar-cli aws s3 sync out s3://avg.studio",
-    "deploy": "npm run export && npm run sync:s3"
+    "invalidate:distribution": "AWS_DEFAULT_PROFILE=cezar-cli aws cloudfront create-invalidation --distribution-id E2MIZPWOSL49B6 --paths \"/*\"",
+    "deploy": "npm run export && npm run sync:s3 && npm run invalidate:distribution"
   },
   "keywords": [],
   "author": "",
