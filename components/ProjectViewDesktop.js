@@ -90,10 +90,13 @@ class ProjectView extends React.Component {
             }
 
             const remainingProjects = currentProjectBlocks.length - placedBlocks.length
-            setTimeout(() => {
+            this._bakCurrentCursorSizes = { width: newWidth, height: newHeight }
+            this._bakRemainingProjects = remainingProjects
+            this.placementTimeout = setTimeout(() => {
                 this.currentCursorSizes = { width: newWidth, height: newHeight }
                 this.updateMarkerDOM(this.currentCursorSizes)
                 this.setState({ remainingProjects })
+                this.placementTimeout = null
             }, 500)
         } else {
             const { isProjectHighlightMode, setIsProjectHighlightMode } = this.props
@@ -132,6 +135,11 @@ class ProjectView extends React.Component {
     }
     onMouseDown = (e) => {
         const { selectedBlockId } = this.state
+        if (this.placementTimeout != null) {
+          // clearTimeout(this.placementTimeout)
+          // this.placementTimeout = null
+          return
+        }
         if (!this.markerAttributes.active) return        
         const { currentProjectBlocks, transitionState } = this.state
         if (transitionState == 'transitioning-out') return
@@ -139,11 +147,20 @@ class ProjectView extends React.Component {
         let placedBlocks = this.state.placedBlocks.slice(0)
 
         if (placedBlocks.length < currentProjectBlocks.length && selectedBlockId === null) {
+
+            if (this.placementTimeout != null) {
+              clearTimeout(this.placementTimeout)
+              this.currentCursorSizes = this._bakCurrentCursorSizes
+              this.updateMarkerDOM(this.currentCursorSizes)
+              this.setState({ remainingProjects: this._bakRemainingProjects })
+              this.placementTimeout = null
+            }
+
             const index = placedBlocks.length % currentProjectBlocks.length
             const block = currentProjectBlocks[index]
 
             const x = e.clientX || e.touches[0].clientX, y = e.clientY || e.touches[0].clientY, r = this.markerAttributes.rotation
-            const w = this.markerAttributes.width, h = this.markerAttributes.height
+            const w = this.markerAttributes.width, h = this.markerAttributes.height            
 
             placedBlocks.push({
                 transform: { x, y, w, r, h },
@@ -154,6 +171,9 @@ class ProjectView extends React.Component {
         }
     }
     onMouseUp = (e) => {
+      if (this.placementTimeout != null) {
+        return
+      }
       const { isProjectHighlightMode, navigateNextProject } = this.props
       const { movingBlockMode, selectedBlockId, transitionState } = this.state
       if (transitionState == 'transitioning-out') return
@@ -294,6 +314,8 @@ class ProjectView extends React.Component {
           }, () => {
             this.updateMarkerForNextBlock(this.state.currentProjectBlocks, [])
             setTimeout(() => {
+              const { toggleMouseTracker } = this.props
+              toggleMouseTracker(true)
               this.setState({
                 placedBlocks: [],
                 transitionState: 'transitioning-in',
