@@ -20,7 +20,8 @@ class ProjectView extends React.Component {
             mouseDownX: 0, mouseDownY: 0,
             dX: 0, dY: 0
         },
-        hoverBlockId: null
+        hoverBlockId: null,
+        highlightBlockId: null
     }
     constructor(props) {
         super(props)
@@ -193,14 +194,20 @@ class ProjectView extends React.Component {
     onBlockMouseEnter = (blockId) => (e) => {
       const { movingBlockMode, placedBlocks } = this.state
       if (movingBlockMode.on) return
-      this.setState({ hoverBlockId: blockId })
+      this.setState({ hoverBlockId: blockId, highlightBlockId: blockId })
     }
     onBlockMouseLeave = (blockId) => (e) => {
-      const { movingBlockMode, hoverBlockId } = this.state
+      const { movingBlockMode, hoverBlockId, placedBlocks } = this.state
       const { isProjectHighlightMode } = this.props
       if (movingBlockMode.on) return
-      if (!isProjectHighlightMode) return
-      this.setState({ hoverBlockId: null })
+      if (!isProjectHighlightMode) {
+        this.setState({ 
+          hoverBlockId: null,
+          highlightBlockId: placedBlocks.length > 0 ? placedBlocks[placedBlocks.length - 1].block.id : null
+        })
+      } else {
+        this.setState({ hoverBlockId: null, highlightBlockId: null })
+      }
     }
     onBlockHighlightMouseDown = (blockId) => (e) => {
       const { selectedBlockId, movingBlockMode } = this.state
@@ -281,6 +288,7 @@ class ProjectView extends React.Component {
             currentProjectBlocks,
             remainingProjects: currentProjectBlocks.length,
             hoverBlockId: null,
+            highlightBlockId: null,
             isProjectHighlightMode: false,
             selectedBlockId: null,
           }, () => {
@@ -299,7 +307,7 @@ class ProjectView extends React.Component {
     }
     render() {
         const { isAboutPageOpen, isMouseTrackerVisible, isProjectHighlightMode, data } = this.props
-        const { selectedBlockId, transitionState, hoverBlockId } = this.state
+        const { selectedBlockId, transitionState, hoverBlockId, highlightBlockId } = this.state
 
         if (!data) { return null }
 
@@ -351,7 +359,7 @@ class ProjectView extends React.Component {
                         hoverBlockId={hoverBlockId}
                         isProjectHighlightMode={isProjectHighlightMode}
                         isProjectMoveMode={movingBlockMode.on}                        
-                        isDimmed={hoverBlockId != null && hoverBlockId != i.block.id}
+                        isDimmed={highlightBlockId != null && highlightBlockId != i.block.id}
                         onMouseEnter={this.onBlockMouseEnter(i.block.id)}
                         onMouseLeave={this.onBlockMouseLeave(i.block.id)}
                         onHighlightMouseUp={this.onBlockHighlightMouseUp(i.block.id)}
@@ -382,7 +390,7 @@ class ProjectView extends React.Component {
                             hoverBlockId={hoverBlockId}
                             isProjectHighlightMode={isProjectHighlightMode}
                             isProjectMoveMode={movingBlockMode.on}
-                            isDimmed={hoverBlockId != null && hoverBlockId != i.block.id}
+                            isDimmed={highlightBlockId != null && highlightBlockId != i.block.id}
                             onMouseEnter={this.onBlockMouseEnter(i.block.id)}
                             onMouseLeave={this.onBlockMouseLeave(i.block.id)}    
                             onHighlightMouseUp={this.onBlockHighlightMouseUp(i.block.id)}

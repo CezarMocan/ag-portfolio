@@ -60,11 +60,10 @@ class ProjectBlock extends React.Component {
     }
     onMouseLeave = (blockType) => (e) => {
       this.isMouseIn = false
-      const { onMouseLeave, isProjectHighlightMode, isProjectMoveMode, block } = this.props
-      const { toggleMouseTracker } = this.props
+      const { onMouseLeave } = this.props
       setTimeout(() => {
-        const { block, hoverBlockId } = this.props
-        if (hoverBlockId == null || (hoverBlockId == block.id)) toggleMouseTracker(true)
+        const { toggleMouseTracker, hoverBlockId } = this.props
+        if (hoverBlockId == null) toggleMouseTracker(true)
       }, 20)
       if (onMouseLeave) onMouseLeave()
       this.setState({ hovered: false })
