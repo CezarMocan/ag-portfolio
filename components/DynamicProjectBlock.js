@@ -31,62 +31,40 @@ class ProjectBlock extends React.Component {
       return (blockType == BlockTypes.TEXT || blockType == BlockTypes.PORTABLE_TEXT)
     }
     onWheel = (blockType) => (e) => {
-        // if (this.isTextBlockType(blockType))
-          e.stopPropagation()
+      e.stopPropagation()
     }
     onMouseDown = (blockType) => (e) => {
       this.isMouseDown = true    
       const { onHighlightMouseDown, isProjectHighlightMode, isProjectMoveMode, block, visible } = this.props
-
-      // if (this.isTextBlockType(blockType) && !isProjectMoveMode)
-      if (!isProjectMoveMode)
-        e.stopPropagation()
-
-      //if (isProjectHighlightMode && visible && onHighlightMouseDown) {
-      if (visible && onHighlightMouseDown) {
-        onHighlightMouseDown(e)
-      }
+      if (!isProjectMoveMode) e.stopPropagation()
+      if (visible && onHighlightMouseDown) onHighlightMouseDown(e)
     }
     onMouseUp = (blockType) => (e) => {
       const { onHighlightMouseUp, isProjectHighlightMode, isProjectMoveMode, block, visible } = this.props
       this.isMouseDown = false
 
-      // if (!isProjectHighlightMode && this.isTextBlockType(blockType) && this.isMouseDown) {
-      if (!isProjectHighlightMode && this.isMouseDown) {
-        e.stopPropagation()
-      }
-
-      // if (isProjectHighlightMode && visible && onHighlightMouseUp) {
-      if (visible && onHighlightMouseUp) {
-        onHighlightMouseUp(e)
-      }
-      if (!this.isMouseIn)
-        this.onMouseEnter(blockType)(e)
+      if (!isProjectHighlightMode && this.isMouseDown) e.stopPropagation()
+      if (visible && onHighlightMouseUp) onHighlightMouseUp(e)
+      if (!this.isMouseIn) this.onMouseEnter(blockType)(e)
     }
     onMouseEnter = (blockType) => (e) => {
       this.isMouseIn = true
       const { onMouseEnter, isProjectHighlightMode, isProjectMoveMode, visible } = this.props
       if (!visible) return
 
-      // if (this.isTextBlockType(blockType)) {
-        const { toggleMouseTracker } = this.props
-        toggleMouseTracker(false)
-      // }
+      const { toggleMouseTracker } = this.props
+      toggleMouseTracker(false)
 
       if (onMouseEnter) onMouseEnter()
-
-      // if (isProjectHighlightMode && !isProjectMoveMode) {
-      if (!isProjectMoveMode) {
-        this.setState({ hovered: true })
-      }
+      if (!isProjectMoveMode) this.setState({ hovered: true })
     }
     onMouseLeave = (blockType) => (e) => {
       this.isMouseIn = false
-      const { onMouseLeave, isProjectHighlightMode, isProjectMoveMode } = this.props
+      const { onMouseLeave, isProjectHighlightMode, isProjectMoveMode, block } = this.props
       const { toggleMouseTracker } = this.props
       setTimeout(() => {
         const { block, hoverBlockId } = this.props
-        if (hoverBlockId == null) toggleMouseTracker(true)
+        if (hoverBlockId == null || (hoverBlockId == block.id)) toggleMouseTracker(true)
       }, 20)
       if (onMouseLeave) onMouseLeave()
       this.setState({ hovered: false })
@@ -96,6 +74,8 @@ class ProjectBlock extends React.Component {
         if (!block || !transform) return null
 
         const { hovered } = this.state
+        const { highlightShadowColor, regularShadowColor } = this.props
+        const shadowColor = (hovered && !clicked) ? highlightShadowColor : regularShadowColor
 
         const wrapperCls = classnames({
           "project-block-container": true,
@@ -115,9 +95,6 @@ class ProjectBlock extends React.Component {
         x += (additionalTransform.x || 0)
         y += (additionalTransform.y || 0)
         
-        const { regularShadowColor, highlightShadowColor } = this.props
-        const shadowColor = (hovered && !clicked) ? highlightShadowColor : regularShadowColor
-
         // if (clicked && (block.type == BlockTypes.IMAGE || block.type == BlockTypes.VIDEO)) {
         if (clicked) {
           const { width, height } = getFullScreenDimensions(w, h, window.innerWidth, window.innerHeight, block.type)
@@ -158,9 +135,6 @@ ProjectBlock.defaultProps = {
     block: null,
     transform: null,
     visible: true,
-    regularShadowColor: 'rgba(0, 0, 0, 0)',
-    highlightShadowColor: 'rgba(0, 0, 0, 0)',
-    highlightBlockId: null,
     hovered: false,
     isProjectHighlightMode: false,
     isProjectMoveMode: false,
@@ -170,7 +144,9 @@ ProjectBlock.defaultProps = {
     onHighlightMouseUp: null,
     onHighlightMouseDown: null,
     onMouseEnter: null,
-    onMouseLeave: null
+    onMouseLeave: null,
+    regularShadowColor: 'rgba(0, 0, 0, 0)',
+    highlightShadowColor: 'rgba(0, 0, 0, 0)'
 }
 
 export default withMainContext((context, props) => ({
