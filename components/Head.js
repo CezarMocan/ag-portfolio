@@ -8,6 +8,14 @@ class HeadComponent extends React.Component {
     let usedTitle = getPageTitle() || title
     return (
       <Head>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-DK0YGTXHV9"></script>
+        <script dangerouslySetInnerHTML={{__html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-DK0YGTXHV9');
+        `}}></script>
         <title>{usedTitle}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
         <meta name="description" content="Anthony Gagliardi is an architect and co-founder of Almost Studio. He received a M.Arch from the Yale School of Architecture, where he was the Yansong Ma Scholar, and a B.S. in Architecture with Distinction from The Ohio State University."/>

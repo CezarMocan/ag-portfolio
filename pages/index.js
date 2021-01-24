@@ -6,18 +6,18 @@ import Navigation from '../components/Navigation'
 import About from '../components/About'
 import ProjectView from '../components/ProjectView'
 import { withPageRouter } from '../modules/withPageRouter'
-import GA4React from 'ga-4-react'
+// import GA4React from 'ga-4-react'
 
 const GA_ID = 'G-DK0YGTXHV9'
-const ga4react = new GA4React(GA_ID);
+// const ga4react = new GA4React(GA_ID);
 
 class Index extends React.Component {
     componentDidMount() {
-      ga4react.initialize().then((ga4) => {
-        ga4.gtag('event','pageview','path') // or your custom gtag event
-      },(err) => {
-        console.error(err)
-      })      
+      // ga4react.initialize().then((ga4) => {
+      //   ga4.gtag('event','pageview','path') // or your custom gtag event
+      // },(err) => {
+      //   console.error(err)
+      // })      
     }
     render() {
       return (
