@@ -8,13 +8,13 @@ class HeadComponent extends React.Component {
     let usedTitle = getPageTitle() || title
     return (
       <Head>
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-DK0YGTXHV9"></script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XX9CNJ7K80"></script>
         <script dangerouslySetInnerHTML={{__html: `
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
 
-          gtag('config', 'G-DK0YGTXHV9');
+          gtag('config', 'G-XX9CNJ7K80');
         `}}></script>
         <title>{usedTitle}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
