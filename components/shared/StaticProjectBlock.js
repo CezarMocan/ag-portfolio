@@ -1,11 +1,12 @@
 import React from 'react'
-import PortableBlockContent from '@sanity/block-content-to-react'
+import PortableTextBlock from '@sanity/block-content-to-react'
 import classnames from 'classnames'
 import { portableTextSerializers } from '../../context/SanityCMSBridge'
 import { withMainContext } from '../../context/MainContext'
 import { BlockTypes } from '../../context/DataModels'
 import VideoBlock from './VideoBlock'
 import ImageBlock from './ImageBlock'
+import TextBlock from './TextBlock'
 
 class SanityAssetBlock extends React.Component {
   state = {
@@ -51,13 +52,9 @@ class SanityAssetBlock extends React.Component {
     return false
   }
 
-  stopEvent = (e) => {
-    e.stopPropagation()
-  }
+  stopEvent = (e) => { e.stopPropagation() }
 
-  onLinkClick = (e) => {
-    e.stopPropagation()
-  }
+  onLinkClick = (e) => { this.stopEvent(e) }
 
   componentDidMount() {
     document.querySelectorAll('a').forEach(l => l.addEventListener('click', this.onLinkClick))
@@ -103,17 +100,14 @@ class SanityAssetBlock extends React.Component {
         }
 
         { block.type == BlockTypes.TEXT &&
-          <>
-            <div className="text-top-transparency-gradient"></div>
-            <div className={containerCls}>
-              <p className="project-text"> { block.text } </p>
-            </div>
-            <div className="text-bottom-transparency-gradient"></div>
-          </>
+          <TextBlock block={block}
+            isMobile={isMobile}
+            containerCls={containerCls}
+          />                    
         }
 
         { block.type == BlockTypes.PORTABLE_TEXT &&
-          <PortableBlockContent
+          <PortableTextBlock
             blocks={block.o}
             serializers={portableTextSerializers}
             className={containerCls}
