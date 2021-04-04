@@ -2,11 +2,11 @@ import React from 'react'
 import PortableBlockContent from '@sanity/block-content-to-react'
 import ProgressiveImage from 'react-progressive-image'
 import classnames from 'classnames'
-import { portableTextSerializers } from '../modules/sanity'
+import { portableTextSerializers } from '../context/SanityCMSBridge'
 import { withMainContext } from '../context/MainContext'
 import { BlockTypes } from '../context/DataModels'
 import { Player, ControlBar, BigPlayButton, Shortcut } from 'video-react'
-import HLSSource from './hlsSource'
+import HLSSource from '../utils/hlsSource'
 
 class SanityAssetBlock extends React.Component {
   state = {

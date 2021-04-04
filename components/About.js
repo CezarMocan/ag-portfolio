@@ -2,7 +2,7 @@ import React from 'react'
 import classnames from 'classnames'
 import PortableBlockContent from '@sanity/block-content-to-react'
 import { withMainContext } from '../context/MainContext'
-import { portableTextSerializers } from '../modules/sanity'
+import { portableTextSerializers } from '../context/SanityCMSBridge'
 import clipboard from 'clipboard-copy'
 
 class About extends React.Component {

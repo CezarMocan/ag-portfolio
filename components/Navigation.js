@@ -1,7 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
 import { withMainContext } from '../context/MainContext'
-import { isMobile } from '../modules/utils'
+import { isMobile } from '../utils/utils'
 
 class Navigation extends React.Component {
     state = {
@@ -10,9 +10,6 @@ class Navigation extends React.Component {
       isMobileFlag: false,
     }
     onTitleClick = (evt) => {
-      // const { titleString } = this.state
-      // const { toggleAboutPage, isAboutPageOpen } = this.props
-      // if (toggleAboutPage) toggleAboutPage(!isAboutPageOpen)
       const { navigateLandingPage } = this.props
       if (navigateLandingPage) navigateLandingPage()
     }

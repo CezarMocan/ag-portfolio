@@ -2,7 +2,7 @@ import React from 'react'
 import classnames from 'classnames'
 import { withMainContext } from '../context/MainContext'
 import { BlockTypes } from '../context/DataModels'
-import { toDeg } from '../modules/utils'
+import { toDeg } from '../utils/utils'
 import StaticProjectBlock from './StaticProjectBlock'
 
 const getFullScreenDimensions = (w, h, Ww, Wh, blockType) => {

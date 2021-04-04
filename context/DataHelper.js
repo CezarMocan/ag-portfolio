@@ -1,4 +1,4 @@
-import sanityClient, { queries } from '../modules/sanity'
+import sanityClient, { queries } from './SanityCMSBridge'
 import { TextBlock, PortableTextBlock, ImageBlock, VideoBlock } from './DataModels'
 
 

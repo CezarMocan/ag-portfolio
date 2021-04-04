@@ -1,6 +1,6 @@
-import sanityClient from '../modules/sanity'
+import sanityClient from './SanityCMSBridge'
 import imageUrlBuilder from '@sanity/image-url'
-import { mipmap } from '../modules/utils'
+import { mipmap } from '../utils/utils'
 
 const imageBuilder = imageUrlBuilder(sanityClient)
 const imageUrlFor = (source) => imageBuilder.image(source)

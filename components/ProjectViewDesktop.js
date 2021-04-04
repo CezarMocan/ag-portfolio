@@ -4,7 +4,7 @@ import clamp from 'lodash.clamp'
 import { CSSTransitionGroup } from 'react-transition-group'
 import { withMainContext } from '../context/MainContext'
 import ProjectBlock from './DynamicProjectBlock'
-import { toDeg, randInterval, measureText } from '../modules/utils'
+import { toDeg, randInterval, measureText } from '../utils/utils'
 import { BlockTypes } from '../context/DataModels'
 
 class ProjectView extends React.Component {
