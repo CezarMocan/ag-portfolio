@@ -1,24 +1,11 @@
 import sanityClient from './SanityCMSBridge'
 import imageUrlBuilder from '@sanity/image-url'
-import { mipmap } from '../utils/utils'
+import { mipmap, toDataURL } from '../utils/utils'
 
 const imageBuilder = imageUrlBuilder(sanityClient)
 const imageUrlFor = (source) => imageBuilder.image(source)
 const videoUrlFor = (asset) => `https://stream.mux.com/${asset.playbackId}.m3u8`
 const videoThumbnailUrlFor = (asset) => `https://image.mux.com/${asset.playbackId}/thumbnail.jpg?time=${asset.thumbTime}&width=1000`
-
-const toDataURL = (url, callback) => {
-  var xhr = new XMLHttpRequest();
-  xhr.onload = () => {
-    var reader = new FileReader();
-    reader.onloadend = () => { callback(reader.result) }
-    reader.readAsDataURL(xhr.response)
-  }
-  xhr.open('GET', url);
-  xhr.responseType = 'blob';
-  xhr.send();
-}
-
 
 let UID = 0
 
