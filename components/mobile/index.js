@@ -2,7 +2,6 @@ import React from 'react'
 import classnames from 'classnames'
 import { withMainContext } from '../../context/MainContext'
 import { BlockTypes } from '../../context/DataModels'
-import StaticProjectBlock from '../StaticProjectBlock'
 import ProjectImage from './ProjectImage'
 import ProjectText from './ProjectText'
 

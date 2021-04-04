@@ -1,6 +1,6 @@
 import React from 'react'
 import classnames from 'classnames'
-import StaticProjectBlock from '../StaticProjectBlock'
+import StaticProjectBlock from '../shared/StaticProjectBlock'
 
 class ProjectText extends React.Component {
   render() {

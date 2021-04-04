@@ -1,6 +1,6 @@
 import React from 'react'
 import classnames from 'classnames'
-import StaticProjectBlock from '../StaticProjectBlock'
+import StaticProjectBlock from '../shared/StaticProjectBlock'
 
 class ProjectImage extends React.Component {
   imageBoundingBox = { width: 0, height: 0 }
