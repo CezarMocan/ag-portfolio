@@ -1,7 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
 import { withMainContext } from '../context/MainContext'
-import { BlockTypes } from '../modules/DataModels'
+import { BlockTypes } from '../context/DataModels'
 import { toDeg } from '../modules/utils'
 import StaticProjectBlock from './StaticProjectBlock'
 

@@ -5,7 +5,7 @@ import { CSSTransitionGroup } from 'react-transition-group'
 import Div100vh from 'react-div-100vh'
 import { withMainContext } from '../context/MainContext'
 import StaticProjectBlock from './StaticProjectBlock'
-import { BlockTypes } from '../modules/DataModels'
+import { BlockTypes } from '../context/DataModels'
 
 class ProjectView extends React.Component {
     state = {

@@ -1,6 +1,6 @@
-import sanityClient from './sanity'
+import sanityClient from '../modules/sanity'
 import imageUrlBuilder from '@sanity/image-url'
-import { mipmap } from './utils'
+import { mipmap } from '../modules/utils'
 
 const imageBuilder = imageUrlBuilder(sanityClient)
 const imageUrlFor = (source) => imageBuilder.image(source)
@@ -48,41 +48,41 @@ export class PortableTextBlock {
 }
 
 export class TextBlock {
-    constructor(text, options = {}) {
-      this.type = BlockTypes.TEXT
-      this.id = UID++
-      this.text = text
-      this.options = options
-      this.minScale = options.textMinScale ? options.textMinScale / 100 : 0.3
-      this.maxScale = options.textMaxScale ? options.textMaxScale / 100 : 0.4
-      this.isSmallText = !!options.isSmallText
-    }
+  constructor(text, options = {}) {
+    this.type = BlockTypes.TEXT
+    this.id = UID++
+    this.text = text
+    this.options = options
+    this.minScale = options.textMinScale ? options.textMinScale / 100 : 0.3
+    this.maxScale = options.textMaxScale ? options.textMaxScale / 100 : 0.4
+    this.isSmallText = !!options.isSmallText
+  }
 }
 
 export class ImageBlock {
-    constructor(o) {
-      this.type = BlockTypes.IMAGE
-      this.id = UID++
+  constructor(o) {
+    this.type = BlockTypes.IMAGE
+    this.id = UID++
 
-      this.width = o.asset.originalWidth
-      this.height = o.asset.originalHeight
-      this.aspectRatio = o.asset.aspectRatio
-      this.minScale = o.minScale ? o.minScale / 100 : 0.25
-      this.maxScale = o.maxScale ? o.maxScale / 100 : 0.25
-      this.lqip = o.asset.lqip
-      this.o = o
-      this._url = imageUrlFor(o).width(750).url()
-    }
+    this.width = o.asset.originalWidth
+    this.height = o.asset.originalHeight
+    this.aspectRatio = o.asset.aspectRatio
+    this.minScale = o.minScale ? o.minScale / 100 : 0.25
+    this.maxScale = o.maxScale ? o.maxScale / 100 : 0.25
+    this.lqip = o.asset.lqip
+    this.o = o
+    this._url = imageUrlFor(o).width(750).url()
+  }
 
-    getUrl(width) {
-      if (!width) return this._url
-      const mmWidth = mipmap(width)
-      return imageUrlFor(this.o).width(mmWidth).url()
-    }
+  getUrl(width) {
+    if (!width) return this._url
+    const mmWidth = mipmap(width)
+    return imageUrlFor(this.o).width(mmWidth).url()
+  }
 
-    getLQUrl() {
-      return this.lqip
-    }
+  getLQUrl() {
+    return this.lqip
+  }
 }
 
 export class VideoBlock {

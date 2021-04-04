@@ -5,7 +5,7 @@ import { CSSTransitionGroup } from 'react-transition-group'
 import { withMainContext } from '../context/MainContext'
 import ProjectBlock from './DynamicProjectBlock'
 import { toDeg, randInterval, measureText } from '../modules/utils'
-import { BlockTypes } from '../modules/DataModels'
+import { BlockTypes } from '../context/DataModels'
 
 class ProjectView extends React.Component {
     state = {
