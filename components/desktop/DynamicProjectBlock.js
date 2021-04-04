@@ -1,9 +1,9 @@
 import React from 'react'
 import classnames from 'classnames'
-import { withMainContext } from '../context/MainContext'
-import { BlockTypes } from '../context/DataModels'
-import { toDeg } from '../utils/utils'
-import StaticProjectBlock from './shared/StaticProjectBlock'
+import { withMainContext } from '../../context/MainContext'
+import { BlockTypes } from '../../context/DataModels'
+import { toDeg } from '../../utils/utils'
+import StaticProjectBlock from '../shared/StaticProjectBlock'
 
 const getFullScreenDimensions = (w, h, Ww, Wh, blockType) => {
   if (blockType == BlockTypes.IMAGE || blockType == BlockTypes.VIDEO) {

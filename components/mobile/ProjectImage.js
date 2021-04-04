@@ -15,15 +15,18 @@ class ProjectImage extends React.Component {
       return { width: image.width * newRatio, height: bbox.height }
     }
   }
+
   onImageContainerRef = (r) => {
     if (!r) return
     let { width, height } = r.getBoundingClientRect()
     this.imageBoundingBox = { width, height }
   }
+
   onImageClick = (e) => {
     const { onImageClick } = this.props
     if (onImageClick) onImageClick()
   }
+  
   render() {
     const { transitioningImage, currentImageIndex, imageBlocks } = this.props
     let imageDimensions = this.getImageDimensions(this.imageBoundingBox, imageBlocks[currentImageIndex])

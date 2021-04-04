@@ -1,6 +1,6 @@
 import React from 'react'
-import ProjectViewDesktop from './ProjectViewDesktop'
-import ProjectViewMobile from './mobile'
+import ProjectViewDesktop from './desktop/ProjectView'
+import ProjectViewMobile from './mobile/ProjectView'
 import { withMainContext } from '../context/MainContext'
 
 class ProjectView extends React.Component {

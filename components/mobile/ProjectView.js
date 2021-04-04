@@ -14,6 +14,7 @@ class ProjectView extends React.Component {
       imageBlocks: [],
       textBlocks: []
     }
+    
     componentDidUpdate(oldProps) {
       const { currentProjectId, getCurrentProjectBlocks, forceRefreshCount } = this.props
 

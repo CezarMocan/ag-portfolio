@@ -28,8 +28,6 @@ export const measureText = (el, cls, txt, width) => {
   document.body.appendChild(p)
   const w = p.clientWidth
   const h = p.clientHeight
-//   document.body.removeChild(p)
-
   return {w, h}
 }
 
@@ -48,5 +46,25 @@ export const toDataURL = (url, callback) => {
   xhr.open('GET', url);
   xhr.responseType = 'blob';
   xhr.send();
+}
+
+export const getBlockDimensions = (block) => {
+  let newWidth = randInterval(block.minScale, block.maxScale) * window.innerWidth
+  let newHeight
+
+  if (block.width) {
+    newHeight = newWidth / block.width * block.height
+  } else if (block.text) {
+    let measurementUnit = block.isSmallText ? 'h6' : 'p'
+    let measurement = measureText(measurementUnit, '', block.text, newWidth)
+    let measurementNoWidth = measureText(measurementUnit, '', block.text)
+    newHeight = measurement.h
+    if (block.textBoxHeightRatio) newHeight *= block.textBoxHeightRatio
+    newWidth = Math.min(measurementNoWidth.w, newWidth)
+  } else {
+    newHeight = newWidth / 2
+  }
+  
+  return { newWidth, newHeight }
 }
 
