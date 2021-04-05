@@ -1,7 +1,7 @@
 ## avg.studio
 
 A personal website for Anthony Gagliardi, an architect based in Brooklyn.
-Still in progress (99% there,) can be viewed live [here](https://avg.studio).
+Still in progress (99% there,) can be viewed live [here](http://avg.studio).
 
 ![avg.studio](https://i.imgur.com/9lMcw9a.png)
 
